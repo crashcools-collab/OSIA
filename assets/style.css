@@ -407,6 +407,31 @@ body::after {
   box-shadow: var(--glow-cyan);
 }
 
+/* ========== FOOTER : liens légaux (présent toutes pages) ========== */
+
+.foot-legal-links {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.foot-legal-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  margin: 0 4px;
+  transition: color 0.2s ease;
+}
+
+.foot-legal-links a:hover {
+  color: var(--neon-cyan);
+}
+
+.foot-legal-links a.active {
+  color: var(--neon-cyan);
+}
+
 /* ========== CHATBOT (présent toutes les pages) ========== */
 
 .chatbot-toggle {
