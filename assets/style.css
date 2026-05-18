@@ -141,6 +141,73 @@ body::after {
   text-shadow: 0 0 10px var(--neon-cyan);
 }
 
+/* ===== SOUS-MENUS DROPDOWN ===== */
+
+.nav-links li.has-submenu {
+  position: relative;
+}
+
+.nav-links li.has-submenu > a::after {
+  content: " ▾";
+  font-size: 10px;
+  color: var(--neon-cyan);
+  margin-left: 2px;
+}
+
+.submenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  list-style: none;
+  background: rgba(5, 5, 16, 0.96);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glow);
+  border-radius: 6px;
+  padding: 4px;
+  min-width: 160px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
+}
+
+.nav-links li.has-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.submenu li {
+  list-style: none;
+}
+
+.submenu a {
+  display: block;
+  padding: 8px 14px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.submenu a:hover {
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.08);
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+.submenu a.active {
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.05);
+}
+
 /* ========== NAVBAR AUTO-HIDE ========== */
 
 .osia-nav.autohide {

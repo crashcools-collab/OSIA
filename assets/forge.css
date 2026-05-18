@@ -1,0 +1,289 @@
+/* ============================================================
+   OSIA - Forge & Agent pages
+   ============================================================ */
+
+.forge-main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 24px 32px 50px;
+  gap: 28px;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== HERO ===== */
+
+.forge-hero {
+  text-align: center;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.1s ease forwards;
+}
+
+.forge-hero .tag {
+  display: inline-block;
+  padding: 5px 14px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--neon-lime);
+  border: 1px solid var(--neon-lime);
+  border-radius: 100px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+}
+
+.forge-hero h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.forge-hero .accent-cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.forge-hero .accent-magenta {
+  color: var(--neon-magenta);
+  text-shadow: 0 0 20px rgba(255, 0, 245, 0.4);
+}
+
+.forge-hero .subtitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ===== PRODUIT : layout 2 colonnes ===== */
+
+.forge-product {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 24px 28px;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.2s ease forwards;
+}
+
+/* COLONNE GAUCHE : icône, prix, CTA */
+
+.product-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  border-right: 1px dashed var(--border-glow);
+  padding-right: 22px;
+}
+
+.product-icon-big {
+  font-size: 60px;
+  line-height: 1;
+  filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.5));
+}
+
+.product-price {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--neon-lime);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.product-price .per {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.product-availability {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon-cyan);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 100px;
+  background: rgba(0, 240, 255, 0.05);
+}
+
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.btn-ghost-large,
+.btn-fill-large {
+  display: block;
+  text-align: center;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-ghost-large {
+  background: transparent;
+  color: var(--neon-cyan);
+  border: 1px solid var(--neon-cyan);
+}
+
+.btn-ghost-large:hover {
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+.btn-fill-large {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+  color: var(--bg-deep);
+  border: 1px solid transparent;
+}
+
+.btn-fill-large:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 245, 0.5);
+  transform: translateY(-1px);
+}
+
+/* COLONNE DROITE : description sections */
+
+.product-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.product-section h3 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--neon-lime);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.product-section p {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.65;
+  margin-bottom: 6px;
+}
+
+.product-section p.small {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.product-section a {
+  color: var(--neon-cyan);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--neon-cyan);
+}
+
+.product-section a:hover {
+  color: var(--neon-magenta);
+  border-bottom-color: var(--neon-magenta);
+}
+
+.product-section code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--neon-cyan);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.examples-list,
+.receive-list {
+  list-style: none;
+  padding: 0;
+}
+
+.examples-list li,
+.receive-list li {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.7;
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.examples-list li::before {
+  content: "›";
+  position: absolute;
+  left: 0;
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.examples-list li strong {
+  color: var(--neon-cyan);
+}
+
+.receive-list li::before {
+  content: "";
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .forge-product {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .product-left {
+    border-right: none;
+    border-bottom: 1px dashed var(--border-glow);
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+  .forge-hero h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 540px) {
+  .forge-main {
+    padding: 18px 14px 30px;
+  }
+  .forge-product {
+    padding: 18px 16px;
+  }
+  .forge-hero h1 {
+    font-size: 24px;
+  }
+  .product-icon-big {
+    font-size: 48px;
+  }
+}

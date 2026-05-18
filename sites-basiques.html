@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSIA · Sites basiques</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/sites.css" />
+</head>
+<body>
+
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-submenu">
+        <a class="active" href="sites-basiques.html">Sites</a>
+        <ul class="submenu">
+          <li><a class="active" href="sites-basiques.html">Basiques</a></li>
+          <li><a href="sites-avances.html">Avancés</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="forge-workflow.html">Forges</a>
+        <ul class="submenu">
+          <li><a href="forge-workflow.html">Workflow</a></li>
+          <li><a href="forge-prompt.html">Prompt</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="agent-simple.html">Agents IA</a>
+        <ul class="submenu">
+          <li><a href="agent-simple.html">Simple</a></li>
+          <li><a href="agent-superieur.html">Supérieur</a></li>
+        </ul>
+      </li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="freebies.html">Freebies</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="osia-main sites-main">
+
+    <header class="sites-hero">
+      <span class="tag">// SITES BASIQUES</span>
+      <h1>4 formats essentiels.<br>1 prix : <span class="price-glow">297 €</span></h1>
+      <p class="subtitle">Sites pour artisans, indépendants, petits business. Livrés sous 24-48h en ZIP.</p>
+    </header>
+
+    <section class="formats-grid grid-4">
+
+      <article class="format-card" data-format="vitrine">
+        <div class="format-icon">🎨</div>
+        <h2>Vitrine</h2>
+        <p class="format-desc">Site présentation simple, multi-pages</p>
+        <ul class="format-feat">
+          <li>4-6 pages</li>
+          <li>Formulaire contact</li>
+          <li>Design cyberpunk ou clean</li>
+          <li>Comme osia-pro.com</li>
+        </ul>
+        <div class="format-price">297 €</div>
+        <div class="format-actions">
+          <a href="https://osia-pro.com" target="_blank" rel="noopener" class="btn-ghost">Voir exemple ↗</a>
+          <a href="contact.html?format=vitrine" class="btn-fill">Commander →</a>
+        </div>
+      </article>
+
+      <article class="format-card" data-format="restaurant">
+        <div class="format-icon">🍕</div>
+        <h2>Restaurant</h2>
+        <p class="format-desc">Menu + Réservation + Plan</p>
+        <ul class="format-feat">
+          <li>Menu interactif</li>
+          <li>Formulaire de résa</li>
+          <li>Horaires + Plan Google</li>
+          <li>Galerie photos</li>
+        </ul>
+        <div class="format-price">297 €</div>
+        <div class="format-actions">
+          <span class="btn-ghost disabled">Bientôt</span>
+          <a href="contact.html?format=restaurant" class="btn-fill">Commander →</a>
+        </div>
+      </article>
+
+      <article class="format-card" data-format="coach">
+        <div class="format-icon">💪</div>
+        <h2>Coach / Consultant</h2>
+        <p class="format-desc">Bio + Services + Prise de RDV</p>
+        <ul class="format-feat">
+          <li>Page Bio + expertise</li>
+          <li>Liste services + tarifs</li>
+          <li>Calendrier RDV (Calendly)</li>
+          <li>Témoignages clients</li>
+        </ul>
+        <div class="format-price">297 €</div>
+        <div class="format-actions">
+          <span class="btn-ghost disabled">Bientôt</span>
+          <a href="contact.html?format=coach" class="btn-fill">Commander →</a>
+        </div>
+      </article>
+
+      <article class="format-card" data-format="artisan">
+        <div class="format-icon">🔧</div>
+        <h2>Artisan</h2>
+        <p class="format-desc">Services + Devis + Réalisations</p>
+        <ul class="format-feat">
+          <li>Liste prestations</li>
+          <li>Formulaire devis</li>
+          <li>Galerie réalisations</li>
+          <li>Zone d'intervention</li>
+        </ul>
+        <div class="format-price">297 €</div>
+        <div class="format-actions">
+          <span class="btn-ghost disabled">Bientôt</span>
+          <a href="contact.html?format=artisan" class="btn-fill">Commander →</a>
+        </div>
+      </article>
+
+    </section>
+
+    <div class="sites-next">
+      <p>Tu cherches plus complexe ? <a href="sites-avances.html">Voir les sites avancés →</a></p>
+    </div>
+
+  </main>
+
+  <footer class="osia-foot">
+    <div class="page-indicator">SITES · BASIQUES (1/2)</div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="index.html">← Accueil</a>
+      <a href="sites-avances.html" class="next">Avancés →</a>
+    </div>
+  </footer>
+
+  <script src="assets/chatbot.js"></script>
+  <script>
+    document.querySelectorAll('.btn-fill').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.format-card');
+        if (card) {
+          try { localStorage.setItem('osia_format', card.dataset.format); } catch(_) {}
+        }
+      });
+    });
+  </script>
+</body>
+</html>

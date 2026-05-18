@@ -70,6 +70,33 @@
   width: 100%;
 }
 
+.formats-grid.grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Lien "voir l'autre page sites" */
+.sites-next {
+  text-align: center;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  opacity: 0;
+  animation: fadeUp 0.5s 0.5s ease forwards;
+}
+
+.sites-next a {
+  color: var(--neon-cyan);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--neon-cyan);
+  margin-left: 4px;
+}
+
+.sites-next a:hover {
+  color: var(--neon-magenta);
+  border-bottom-color: var(--neon-magenta);
+}
+
 .format-card {
   background: var(--bg-card);
   border: 1px solid var(--border-glow);
