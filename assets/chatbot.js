@@ -172,3 +172,72 @@ function osiaChatbotInit() {
 }
 
 document.addEventListener('DOMContentLoaded', osiaChatbotInit);
+
+
+/* ============================================================
+   OSIA - Nav auto-hide (apparait au hover en haut de l'ecran)
+   ============================================================ */
+
+function osiaNavAutohideInit() {
+  // SKIP sur la page d'accueil (nav normale toujours visible)
+  const path = window.location.pathname;
+  const isHome = (
+    path === '/' ||
+    path === '' ||
+    path.endsWith('/index.html') ||
+    path === '/index.html'
+  );
+  if (isHome) return;
+
+  const nav = document.querySelector('.osia-nav');
+  if (!nav) return;
+
+  // Ajoute la classe d'auto-hide (CSS controle le rendu)
+  nav.classList.add('autohide');
+
+  // Crée un indicateur visuel en haut de page
+  const hint = document.createElement('div');
+  hint.className = 'nav-hint';
+  hint.title = 'Survole pour afficher le menu';
+  document.body.appendChild(hint);
+
+  let hideTimer = null;
+
+  function showNav() {
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    nav.classList.add('is-visible');
+    hint.classList.add('faded');
+  }
+
+  function hideNav() {
+    hideTimer = setTimeout(() => {
+      nav.classList.remove('is-visible');
+      hint.classList.remove('faded');
+    }, 250);
+  }
+
+  // Détecte position de la souris (top 80px = zone d'apparition)
+  document.addEventListener('mousemove', (e) => {
+    if (e.clientY < 80) {
+      showNav();
+    } else if (e.clientY > 120) {
+      hideNav();
+    }
+  });
+
+  // Garde la nav visible quand on hover dessus
+  nav.addEventListener('mouseenter', showNav);
+  nav.addEventListener('mouseleave', hideNav);
+
+  // Show nav au scroll vers le haut (UX confort)
+  let lastScrollY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < lastScrollY && y < 100) {
+      showNav();
+    }
+    lastScrollY = y;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', osiaNavAutohideInit);
