@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSIA · Tarifs</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/tarifs.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="sites.html">Sites</a></li>
+      <li><a href="forges.html">Forges</a></li>
+      <li><a href="tarifs.html" class="active">Tarifs</a></li>
+      <li><a href="freebies.html">Freebies</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="osia-main tarifs-main">
+    <section class="tarifs-wrap">
+
+      <header class="tarifs-head">
+        <span class="tag">// TARIFS · SANS ABONNEMENT</span>
+        <h2>Pas de devis. Pas de surprise. <span class="accent">Tu paies. Tu reçois.</span></h2>
+      </header>
+
+      <div class="pricing-grid">
+
+        <!-- Card 1 : Site Essentiel (vedette) -->
+        <article class="price-card featured">
+          <div class="badge">★ POPULAIRE</div>
+          <h3 class="card-title">Site Essentiel</h3>
+          <p class="card-sub">Site vitrine pro, livré clé en main.</p>
+          <div class="card-price">
+            <span class="price">297</span>
+            <span class="currency">€</span>
+          </div>
+          <ul class="features">
+            <li>✓ 6 sections responsive</li>
+            <li>✓ Brief → livré en 48h</li>
+            <li>✓ ZIP + facture PDF</li>
+            <li>✓ 1 révision gratuite</li>
+            <li>✓ Hébergement guidé (Vercel/OVH)</li>
+          </ul>
+          <a href="contact.html?pack=essentiel" class="btn btn-primary">Commander →</a>
+        </article>
+
+        <!-- Card 2 : Workflow -->
+        <article class="price-card">
+          <h3 class="card-title">Workflow custom</h3>
+          <p class="card-sub">Automatisation IA prête à importer.</p>
+          <div class="card-price">
+            <span class="price">30</span>
+            <span class="currency">€</span>
+            <span class="unit">/ unité</span>
+          </div>
+          <ul class="features">
+            <li>✓ Format n8n JSON exportable</li>
+            <li>✓ Brief → livré sous 24h</li>
+            <li>✓ Documentation d'usage</li>
+            <li>✓ Tests inclus</li>
+          </ul>
+          <a href="contact.html?pack=workflow" class="btn btn-ghost">Commander →</a>
+        </article>
+
+        <!-- Card 3 : Prompt -->
+        <article class="price-card">
+          <h3 class="card-title">Prompt custom</h3>
+          <p class="card-sub">Prompt IA testé et optimisé.</p>
+          <div class="card-price">
+            <span class="price">30</span>
+            <span class="currency">€</span>
+            <span class="unit">/ unité</span>
+          </div>
+          <ul class="features">
+            <li>✓ Optimisé Claude / GPT</li>
+            <li>✓ Brief → livré sous 24h</li>
+            <li>✓ Format .md prêt à coller</li>
+            <li>✓ Cas d'usage documentés</li>
+          </ul>
+          <a href="contact.html?pack=prompt" class="btn btn-ghost">Commander →</a>
+        </article>
+
+        <!-- Card 4 : Freebies -->
+        <article class="price-card freebies-card">
+          <div class="badge badge-free">GRATUIT</div>
+          <h3 class="card-title">Pack découverte</h3>
+          <p class="card-sub">3 workflows + 3 prompts offerts.</p>
+          <div class="card-price">
+            <span class="price">0</span>
+            <span class="currency">€</span>
+          </div>
+          <ul class="features">
+            <li>✓ 3 workflows clés en main</li>
+            <li>✓ 3 prompts immédiatement utilisables</li>
+            <li>✓ Téléchargement direct</li>
+            <li>✓ Zéro spam, juste l'email</li>
+          </ul>
+          <a href="freebies.html" class="btn btn-lime">Récupérer →</a>
+        </article>
+
+      </div>
+
+      <p class="legal">
+        Régime micro-entreprise · TVA non applicable (art. 293 B du CGI) · Paiement par virement ou Stripe
+      </p>
+
+    </section>
+  </main>
+
+  <!-- ===== FOOTER NAV ===== -->
+  <footer class="osia-foot">
+    <div class="page-indicator">
+      PAGE <span class="current">04</span> / 06 · TARIFS
+    </div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="forges.html">← Forges</a>
+      <a href="freebies.html" class="next">Freebies →</a>
+    </div>
+  </footer>
+
+  <!-- ===== CHATBOT ===== -->
+  <script src="assets/chatbot.js"></script>
+</body>
+</html>
