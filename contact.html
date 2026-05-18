@@ -32,6 +32,13 @@
         <p class="sub">Réponse sous 24h. Pas de commercial, pas de spam.</p>
       </header>
 
+      <!-- BANDEAU FORMAT PRÉ-SÉLECTIONNÉ (si arrivée depuis sites.html) -->
+      <div id="formatBanner" class="format-banner" style="display:none;">
+        <span class="banner-icon" id="bannerIcon">📦</span>
+        <span class="banner-text">Tu as choisi : <strong id="bannerName"></strong> · <span class="banner-price">297 €</span></span>
+        <a href="sites.html" class="banner-change">Changer ↗</a>
+      </div>
+
       <form id="contactForm" class="contact-form" autocomplete="on">
 
         <!-- HONEYPOT : champ piégé invisible pour bloquer les bots -->
@@ -138,6 +145,52 @@
       }
     }
 
+    // === DÉTECTION FORMAT (depuis sites.html ?format=XXX) ===
+    const FORMATS_MAP = {
+      vitrine:     { icon: "🎨", name: "Vitrine" },
+      restaurant:  { icon: "🍕", name: "Restaurant" },
+      coach:       { icon: "💪", name: "Coach / Consultant" },
+      artisan:     { icon: "🔧", name: "Artisan" },
+      portfolio:   { icon: "📷", name: "Portfolio" },
+      ecommerce:   { icon: "🛍️", name: "E-commerce" },
+      association: { icon: "🏛️", name: "Association" },
+      landing:     { icon: "🚀", name: "Landing page" }
+    };
+
+    // Lit le format depuis URL puis localStorage en fallback
+    let formatChoisi = urlParams.get('format');
+    if (!formatChoisi) {
+      try { formatChoisi = localStorage.getItem('osia_format'); } catch(_) {}
+    }
+
+    if (formatChoisi && FORMATS_MAP[formatChoisi]) {
+      const fmt = FORMATS_MAP[formatChoisi];
+      const banner = document.getElementById('formatBanner');
+      document.getElementById('bannerIcon').textContent = fmt.icon;
+      document.getElementById('bannerName').textContent = fmt.name;
+      banner.style.display = 'flex';
+
+      // Force le pack Essentiel (tous les formats sont à 297€)
+      const packSelect = document.getElementById('pack');
+      for (const opt of packSelect.options) {
+        if (opt.value === 'essentiel') {
+          opt.selected = true;
+          break;
+        }
+      }
+
+      // Pré-rempli le message avec le format choisi
+      const msgField = document.getElementById('message');
+      if (!msgField.value) {
+        msgField.value = `Format souhaité : ${fmt.name}\n\n(Décris ici en quelques mots ton projet, ou laisse vide — on en parle au mail.)`;
+        document.getElementById('charCount').textContent = msgField.value.length;
+      }
+
+      // Mémorise pour les visites suivantes
+      try { localStorage.setItem('osia_format', formatChoisi); } catch(_) {}
+    }
+    // === FIN DÉTECTION FORMAT ===
+
     // Compteur caractères
     message.addEventListener('input', () => {
       charCount.textContent = message.value.length;
@@ -157,6 +210,7 @@
         pack: form.pack.value,
         message: form.message.value.trim(),
         company: form.company.value, // honeypot
+        format: formatChoisi || '', // format choisi depuis sites.html
       };
 
       try {
@@ -172,6 +226,9 @@
           status.innerHTML = '✓ <strong>Demande envoyée.</strong> Je te recontacte sous 24h sur ton email.';
           form.reset();
           charCount.textContent = '0';
+          // Nettoie le format choisi (commande passée)
+          try { localStorage.removeItem('osia_format'); } catch(_) {}
+          document.getElementById('formatBanner').style.display = 'none';
         } else {
           status.className = 'form-status error';
           status.textContent = '✗ ' + (data.error || 'Erreur réseau, réessaie dans un instant.');

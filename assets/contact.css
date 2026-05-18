@@ -166,6 +166,78 @@
   letter-spacing: 1px;
 }
 
+/* ===== BANDEAU FORMAT PRÉ-SÉLECTIONNÉ ===== */
+
+.format-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, rgba(0,240,255,0.08), rgba(255,0,245,0.05));
+  border: 1px solid var(--neon-cyan);
+  border-radius: 8px;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.15);
+  animation: bannerSlide 0.4s ease;
+}
+
+@keyframes bannerSlide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.banner-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.banner-text {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-main);
+  letter-spacing: 0.3px;
+}
+
+.banner-text strong {
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.banner-price {
+  color: var(--neon-lime);
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.banner-change {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid var(--border-glow);
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.banner-change:hover {
+  color: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+}
+
+@media (max-width: 600px) {
+  .format-banner {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .banner-text {
+    font-size: 12px;
+  }
+}
+
 /* ===== CHECKBOX RGPD ===== */
 
 .form-consent {
