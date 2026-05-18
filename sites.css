@@ -73,11 +73,11 @@
 .format-card {
   background: var(--bg-card);
   border: 1px solid var(--border-glow);
-  border-radius: 10px;
-  padding: 16px 16px 14px;
+  border-radius: 8px;
+  padding: 12px 14px 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -115,51 +115,46 @@
 .format-card:hover::before { opacity: 1; }
 
 .format-icon {
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 
 .format-card h2 {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--neon-cyan);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   margin: 0;
 }
 
 .format-desc {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-main);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .format-target {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-dim);
-  font-style: italic;
-  margin: 0 0 2px 0;
-  line-height: 1.4;
+  display: none;
 }
 
 .format-feat {
   list-style: none;
   padding: 0;
-  margin: 4px 0 6px;
+  margin: 3px 0 4px;
   border-top: 1px dashed var(--border-glow);
-  padding-top: 7px;
+  padding-top: 5px;
 }
 
 .format-feat li {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-main);
-  line-height: 1.6;
-  padding-left: 13px;
+  line-height: 1.45;
+  padding-left: 11px;
   position: relative;
 }
 
@@ -169,11 +164,12 @@
   left: 0;
   color: var(--neon-cyan);
   font-weight: 700;
+  font-size: 10px;
 }
 
 .format-price {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 900;
   color: var(--neon-lime);
   text-align: right;
@@ -194,13 +190,13 @@
 .btn-fill {
   flex: 1;
   text-align: center;
-  padding: 7px 6px;
+  padding: 6px 6px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 1.2px;
+  letter-spacing: 1px;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: uppercase;
