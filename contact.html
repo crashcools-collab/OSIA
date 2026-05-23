@@ -6,6 +6,178 @@
   <title>OSIA · Contact</title>
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/contact.css" />
+  <style>
+    /* ============================================================
+       BRIEF DETAILLE - styles inline pour les 6 nouveaux champs
+       ============================================================ */
+    .brief-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px dashed rgba(255,255,255,0.15);
+    }
+    .brief-section h3 {
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      color: var(--accent, #ff00aa);
+    }
+    .brief-section .brief-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Style cards : Minimaliste, Moderne, Luxe... */
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .style-card {
+      position: relative;
+      padding: 0.8rem 0.6rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: rgba(255,255,255,0.02);
+    }
+    .style-card:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+    .style-card input { display: none; }
+    .style-card input:checked + .style-content { color: #fff; }
+    .style-card:has(input:checked) {
+      border-color: var(--accent, #ff00aa);
+      background: rgba(255,0,170,0.08);
+    }
+    .style-name {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    .style-desc {
+      display: block;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Palettes de couleurs */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .palette-card {
+      padding: 0.8rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: rgba(255,255,255,0.02);
+    }
+    .palette-card:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+    .palette-card input { display: none; }
+    .palette-card:has(input:checked) {
+      border-color: var(--accent, #ff00aa);
+      background: rgba(255,0,170,0.08);
+    }
+    .palette-swatches {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .palette-swatches span {
+      flex: 1;
+      height: 28px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .palette-name {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* Sections checkboxes */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+    .section-check {
+      padding: 0.7rem 0.8rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.02);
+      font-size: 0.9rem;
+    }
+    .section-check:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+    .section-check input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent, #ff00aa);
+    }
+    .section-check:has(input:checked) {
+      border-color: var(--accent, #ff00aa);
+      background: rgba(255,0,170,0.08);
+    }
+
+    /* Delai radio cards */
+    .delay-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .delay-options label {
+      padding: 0.7rem 0.5rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      font-size: 0.9rem;
+    }
+    .delay-options label:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+    .delay-options input { display: none; }
+    .delay-options label:has(input:checked) {
+      border-color: var(--accent, #ff00aa);
+      background: rgba(255,0,170,0.08);
+      color: #fff;
+    }
+
+    /* Petit spacing dans la section brief */
+    .brief-section .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .brief-section label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -55,7 +227,7 @@
         <p class="sub">Réponse sous 24h. Pas de commercial, pas de spam.</p>
       </header>
 
-      <!-- BANDEAU FORMAT PRÉ-SÉLECTIONNÉ (si arrivée depuis sites.html) -->
+      <!-- BANDEAU FORMAT PRÉ-SÉLECTIONNÉ -->
       <div id="formatBanner" class="format-banner" style="display:none;">
         <span class="banner-icon" id="bannerIcon">📦</span>
         <span class="banner-text">Tu as choisi : <strong id="bannerName"></strong> · <span class="banner-price">297 €</span></span>
@@ -64,11 +236,15 @@
 
       <form id="contactForm" class="contact-form" autocomplete="on">
 
-        <!-- HONEYPOT : champ piégé invisible pour bloquer les bots -->
+        <!-- HONEYPOT -->
         <div class="hp-field" aria-hidden="true">
           <label for="company">Company (laisse vide)</label>
           <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
         </div>
+
+        <!-- ============================================================
+             SECTION 1 : INFOS PRINCIPALES (obligatoires)
+             ============================================================ -->
 
         <div class="form-row">
           <div class="form-group">
@@ -96,6 +272,9 @@
               <option value="prompt">Prompt custom — 30 € / unité</option>
               <option value="agent-simple">Agent IA Simple — 597 €</option>
               <option value="agent-superieur">Agent IA Supérieur — 1 497 €</option>
+              <option value="cerveau">Cerveau IA — 2 497 €</option>
+              <option value="os">OS IA — 4 997 €</option>
+              <option value="pack-complet">🔥 Pack Complet — 8 997 €</option>
               <option value="">Je sais pas encore, on en parle</option>
             </select>
           </div>
@@ -103,11 +282,192 @@
 
         <div class="form-group">
           <label for="message">Brief / message <span class="opt">(optionnel)</span></label>
-          <textarea id="message" name="message" rows="5" maxlength="2000" placeholder="Dis-moi en 2 lignes : c'est pour quoi, c'est quand, et tout ce que tu juges utile."></textarea>
+          <textarea id="message" name="message" rows="4" maxlength="2000" placeholder="Dis-moi en 2 lignes : c'est pour quoi, c'est quand, et tout ce que tu juges utile."></textarea>
           <div class="char-count"><span id="charCount">0</span> / 2000</div>
         </div>
 
-        <!-- RGPD : checkbox obligatoire -->
+        <!-- ============================================================
+             SECTION 2 : BRIEF DETAILLE (optionnel)
+             6 nouveaux champs : style / palette / sections / public / inspi / delai
+             ============================================================ -->
+        <div class="brief-section">
+          <h3>// Brief détaillé</h3>
+          <p class="brief-sub">Tout est optionnel — mais plus tu remplis, mieux je te livre.</p>
+
+          <!-- 1. STYLE VISUEL -->
+          <div class="form-group">
+            <label>✨ Style visuel souhaité</label>
+            <div class="style-grid">
+              <label class="style-card">
+                <input type="radio" name="style" value="minimaliste">
+                <span class="style-content">
+                  <span class="style-name">Minimaliste</span>
+                  <span class="style-desc">Épuré, beaucoup de blanc</span>
+                </span>
+              </label>
+              <label class="style-card">
+                <input type="radio" name="style" value="moderne">
+                <span class="style-content">
+                  <span class="style-name">Moderne</span>
+                  <span class="style-desc">Tendance, dynamique</span>
+                </span>
+              </label>
+              <label class="style-card">
+                <input type="radio" name="style" value="luxe">
+                <span class="style-content">
+                  <span class="style-name">Luxe</span>
+                  <span class="style-desc">Élégant, premium</span>
+                </span>
+              </label>
+              <label class="style-card">
+                <input type="radio" name="style" value="fun">
+                <span class="style-content">
+                  <span class="style-name">Fun</span>
+                  <span class="style-desc">Coloré, friendly</span>
+                </span>
+              </label>
+              <label class="style-card">
+                <input type="radio" name="style" value="pro">
+                <span class="style-content">
+                  <span class="style-name">Pro</span>
+                  <span class="style-desc">Sérieux, corporate</span>
+                </span>
+              </label>
+              <label class="style-card">
+                <input type="radio" name="style" value="sombre">
+                <span class="style-content">
+                  <span class="style-name">Sombre</span>
+                  <span class="style-desc">Dark, gaming/tech</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2. PALETTE DE COULEURS -->
+          <div class="form-group">
+            <label>🎨 Palette de couleurs préférée</label>
+            <div class="palette-grid">
+              <label class="palette-card">
+                <input type="radio" name="palette" value="bleu-blanc">
+                <div class="palette-swatches">
+                  <span style="background:#0066CC"></span>
+                  <span style="background:#FFFFFF"></span>
+                  <span style="background:#1a1a1a"></span>
+                </div>
+                <span class="palette-name">Bleu / Blanc (corporate)</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="vert-nature">
+                <div class="palette-swatches">
+                  <span style="background:#2D6A4F"></span>
+                  <span style="background:#95D5B2"></span>
+                  <span style="background:#F1FAEE"></span>
+                </div>
+                <span class="palette-name">Vert nature</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="orange-chaleur">
+                <div class="palette-swatches">
+                  <span style="background:#F77F00"></span>
+                  <span style="background:#FCBF49"></span>
+                  <span style="background:#003049"></span>
+                </div>
+                <span class="palette-name">Orange chaleureux</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="rose-feminin">
+                <div class="palette-swatches">
+                  <span style="background:#FF6F91"></span>
+                  <span style="background:#FFC1C8"></span>
+                  <span style="background:#845EC2"></span>
+                </div>
+                <span class="palette-name">Rose / Violet</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="noir-or">
+                <div class="palette-swatches">
+                  <span style="background:#0a0a0a"></span>
+                  <span style="background:#D4AF37"></span>
+                  <span style="background:#FFFFFF"></span>
+                </div>
+                <span class="palette-name">Noir / Or (luxe)</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="cyberpunk">
+                <div class="palette-swatches">
+                  <span style="background:#0a0a0a"></span>
+                  <span style="background:#FF00AA"></span>
+                  <span style="background:#00FFFF"></span>
+                </div>
+                <span class="palette-name">Cyberpunk (néons)</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="pastel">
+                <div class="palette-swatches">
+                  <span style="background:#FFE5EC"></span>
+                  <span style="background:#FFC2D1"></span>
+                  <span style="background:#A0E7E5"></span>
+                </div>
+                <span class="palette-name">Pastel doux</span>
+              </label>
+              <label class="palette-card">
+                <input type="radio" name="palette" value="autre">
+                <div class="palette-swatches">
+                  <span style="background:linear-gradient(90deg,#f00,#ff0,#0f0,#00f,#f0f)"></span>
+                </div>
+                <span class="palette-name">Autre (je précise plus haut)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. SECTIONS SOUHAITEES -->
+          <div class="form-group">
+            <label>📋 Sections souhaitées (coche ce qui s'applique)</label>
+            <div class="sections-grid">
+              <label class="section-check"><input type="checkbox" name="sections" value="galerie"><span>🖼 Galerie photos</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="reservation"><span>📅 Réservation</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="boutique"><span>🛍 Boutique</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="blog"><span>📰 Blog / Actus</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="faq"><span>❓ FAQ</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="temoignages"><span>💬 Témoignages</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="newsletter"><span>📧 Newsletter</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="map"><span>📍 Plan / Map</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="equipe"><span>👥 Équipe / À propos</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="services"><span>🛠 Services / Tarifs</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="portfolio"><span>📂 Portfolio / Réalisations</span></label>
+              <label class="section-check"><input type="checkbox" name="sections" value="chat"><span>💬 Chatbot IA</span></label>
+            </div>
+          </div>
+
+          <!-- 4. PUBLIC CIBLE -->
+          <div class="form-group">
+            <label for="audience">🎯 Public cible</label>
+            <input type="text" id="audience" name="audience" maxlength="200" placeholder="Ex: Restaurateurs 30-50 ans, dirigeants PME, étudiants en école d'art…" />
+          </div>
+
+          <!-- 5. INSPIRATIONS -->
+          <div class="form-group">
+            <label for="inspirations">🔗 Sites ou marques qui t'inspirent</label>
+            <textarea id="inspirations" name="inspirations" rows="2" maxlength="500" placeholder="Ex: apple.com, le style de Patagonia, restau-xyz.fr…"></textarea>
+          </div>
+
+          <!-- 6. DELAI -->
+          <div class="form-group">
+            <label>📞 Délai souhaité</label>
+            <div class="delay-options">
+              <label><input type="radio" name="delay" value="1sem"><span>1 semaine</span></label>
+              <label><input type="radio" name="delay" value="2sem"><span>2 semaines</span></label>
+              <label><input type="radio" name="delay" value="1mois"><span>1 mois</span></label>
+              <label><input type="radio" name="delay" value="pas-urgent"><span>Pas urgent</span></label>
+            </div>
+          </div>
+
+        </div>
+        <!-- ============================================================
+             FIN SECTION 2 : BRIEF DETAILLE
+             ============================================================ -->
+
+        <!-- RGPD -->
         <div class="form-consent">
           <label class="consent-label">
             <input type="checkbox" id="consent" name="consent" required />
@@ -150,7 +510,6 @@
 
   <!-- ===== FORM HANDLER ===== -->
   <script>
-    // URL de l'API OSIA gateway
     const API_URL = "https://api.osia-pro.com/api/lead";
 
     const form = document.getElementById('contactForm');
@@ -159,43 +518,36 @@
     const message = document.getElementById('message');
     const charCount = document.getElementById('charCount');
 
-    // Pré-remplir le pack si URL ?pack=workflow
+    // Pre-remplir le pack si URL ?pack=workflow
     const urlParams = new URLSearchParams(window.location.search);
     const packParam = urlParams.get('pack');
     if (packParam) {
       const packSelect = document.getElementById('pack');
       for (const opt of packSelect.options) {
-        if (opt.value === packParam) {
-          opt.selected = true;
-          break;
-        }
+        if (opt.value === packParam) { opt.selected = true; break; }
       }
     }
 
-    // === DÉTECTION FORMAT (depuis sites/forge/agent pages ?format=XXX) ===
+    // === DETECTION FORMAT (depuis pages produit ?format=XXX) ===
     const FORMATS_MAP = {
-      // Sites Basiques (297€ - pack essentiel)
       vitrine:           { icon: "🎨", name: "Vitrine",                pack: "essentiel" },
       coach:             { icon: "💪", name: "Coach / Consultant",     pack: "essentiel" },
       artisan:           { icon: "🔧", name: "Artisan",                pack: "essentiel" },
-      // Sites Intermédiaires (497€ - pack pro)
       restaurant:        { icon: "🍕", name: "Restaurant",             pack: "pro" },
       portfolio:         { icon: "📷", name: "Portfolio",              pack: "pro" },
       landing:           { icon: "🚀", name: "Landing page",           pack: "pro" },
-      // Sites Complexes (697€ - pack premium)
       ecommerce:         { icon: "🛍️", name: "E-commerce",             pack: "premium" },
       association:       { icon: "🏛️", name: "Association",            pack: "premium" },
-      // Forges (30€ - packs custom)
       workflow:          { icon: "⚡", name: "Forge Workflow",         pack: "workflow" },
-      prompt:            { icon: "🧠", name: "Forge Prompt",           pack: "prompt" },
-      // Agents IA (sur devis)
+      prompt:            { icon: "📝", name: "Forge Prompt",           pack: "prompt" },
       "agent-simple":    { icon: "🤖", name: "Agent IA Simple",        pack: "agent-simple" },
       "agent-superieur": { icon: "🧬", name: "Agent IA Supérieur",     pack: "agent-superieur" },
-      // Forum / général
+      cerveau:           { icon: "🧠", name: "Cerveau IA",             pack: "cerveau" },
+      os:                { icon: "🌐", name: "OS IA",                  pack: "os" },
+      "pack-complet":    { icon: "🌌", name: "Pack Complet",           pack: "pack-complet" },
       forum:             { icon: "💬", name: "Communauté Discord",     pack: "" }
     };
 
-    // Lit le format depuis URL puis localStorage en fallback
     let formatChoisi = urlParams.get('format');
     if (!formatChoisi) {
       try { formatChoisi = localStorage.getItem('osia_format'); } catch(_) {}
@@ -207,7 +559,6 @@
       document.getElementById('bannerIcon').textContent = fmt.icon;
       document.getElementById('bannerName').textContent = fmt.name;
 
-      // Cache le prix dans le bandeau pour agents (sur devis)
       const bannerPrice = document.querySelector('.banner-price');
       if (bannerPrice) {
         const priceByPack = {
@@ -218,39 +569,64 @@
           "prompt":          "30 € / unité",
           "agent-simple":    "597 €",
           "agent-superieur": "1 497 €",
+          "cerveau":         "2 497 €",
+          "os":              "4 997 €",
+          "pack-complet":    "8 997 €",
         };
         bannerPrice.textContent = priceByPack[fmt.pack] || "";
       }
 
       banner.style.display = 'flex';
 
-      // Force le bon pack selon le format
       if (fmt.pack) {
         const packSelect = document.getElementById('pack');
         for (const opt of packSelect.options) {
-          if (opt.value === fmt.pack) {
-            opt.selected = true;
-            break;
-          }
+          if (opt.value === fmt.pack) { opt.selected = true; break; }
         }
       }
 
-      // Pré-rempli le message avec le format choisi
       const msgField = document.getElementById('message');
       if (!msgField.value) {
         msgField.value = `Format souhaité : ${fmt.name}\n\n(Décris ici en quelques mots ton projet, ou laisse vide — on en parle au mail.)`;
         document.getElementById('charCount').textContent = msgField.value.length;
       }
 
-      // Mémorise pour les visites suivantes
       try { localStorage.setItem('osia_format', formatChoisi); } catch(_) {}
     }
-    // === FIN DÉTECTION FORMAT ===
+    // === FIN DETECTION FORMAT ===
 
-    // Compteur caractères
+    // Compteur caracteres
     message.addEventListener('input', () => {
       charCount.textContent = message.value.length;
     });
+
+    /**
+     * Construit le message final en concatenant le message libre du client
+     * avec le brief detaille rempli (style, palette, sections, etc.).
+     */
+    function buildFinalMessage(userMessage) {
+      const style = form.querySelector('input[name="style"]:checked')?.value;
+      const palette = form.querySelector('input[name="palette"]:checked')?.value;
+      const sections = Array.from(form.querySelectorAll('input[name="sections"]:checked')).map(c => c.value);
+      const audience = form.audience.value.trim();
+      const inspirations = form.inspirations.value.trim();
+      const delay = form.querySelector('input[name="delay"]:checked')?.value;
+
+      const briefParts = [];
+      if (style) briefParts.push(`- Style : ${style}`);
+      if (palette) briefParts.push(`- Palette : ${palette}`);
+      if (sections.length) briefParts.push(`- Sections : ${sections.join(', ')}`);
+      if (audience) briefParts.push(`- Public cible : ${audience}`);
+      if (inspirations) briefParts.push(`- Inspirations : ${inspirations}`);
+      if (delay) briefParts.push(`- Délai souhaité : ${delay}`);
+
+      if (briefParts.length === 0) {
+        return userMessage;
+      }
+
+      const briefBlock = "\n\n--- Brief détaillé ---\n" + briefParts.join("\n");
+      return (userMessage || '') + briefBlock;
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -259,14 +635,17 @@
       status.className = 'form-status';
       status.textContent = '';
 
+      // Concatene le brief detaille au message
+      const finalMessage = buildFinalMessage(form.message.value.trim());
+
       const payload = {
         name: form.name.value.trim(),
         email: form.email.value.trim(),
         phone: form.phone.value.trim(),
         pack: form.pack.value,
-        message: form.message.value.trim(),
+        message: finalMessage,
         company: form.company.value, // honeypot
-        format: formatChoisi || '', // format choisi depuis sites.html
+        format: formatChoisi || '',
       };
 
       try {
@@ -282,7 +661,6 @@
           status.innerHTML = '✓ <strong>Demande envoyée.</strong> Je te recontacte sous 24h sur ton email.';
           form.reset();
           charCount.textContent = '0';
-          // Nettoie le format choisi (commande passée)
           try { localStorage.removeItem('osia_format'); } catch(_) {}
           document.getElementById('formatBanner').style.display = 'none';
         } else {
