@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/tarifs.css" />
 </head>
-<body>
+<body class="tarifs-page">
 
   <!-- ===== NAVBAR ===== -->
   <nav class="osia-nav">
@@ -37,6 +37,7 @@
       </li>
       <li><a class="active" href="tarifs.html">Tarifs</a></li>
       <li><a href="forum.html">Forum</a></li>
+      <li><a href="temoignages.html">Témoignages</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
@@ -48,87 +49,281 @@
       <header class="tarifs-head">
         <span class="tag">// TARIFS · SANS ABONNEMENT</span>
         <h2>Pas de devis. Pas de surprise. <span class="accent">Tu paies. Tu reçois.</span></h2>
+        <p class="tarifs-baseline">12 produits livrés clé en main · brief → livraison sous 24-48h selon pack · paiement à la livraison</p>
       </header>
 
-      <div class="pricing-grid">
+      <!-- ============================================================ -->
+      <!-- SECTION 1 — SITES                                            -->
+      <!-- ============================================================ -->
+      <section class="cat-section">
+        <header class="cat-head">
+          <span class="cat-icon">▣</span>
+          <h3 class="cat-title">Sites Web</h3>
+          <span class="cat-meta">8 formats · 3 paliers · livrés sous 48h</span>
+        </header>
 
-        <!-- Card 1 : Site Essentiel (vedette) -->
-        <article class="price-card featured">
-          <div class="badge">★ POPULAIRE</div>
-          <h3 class="card-title">Site Essentiel</h3>
-          <p class="card-sub">Site vitrine pro, livré clé en main.</p>
-          <div class="card-price">
-            <span class="price">297</span>
-            <span class="currency">€</span>
+        <!-- Palier Basiques 297€ -->
+        <div class="tier-block tier-basique">
+          <div class="tier-head">
+            <span class="tier-label">// BASIQUES</span>
+            <span class="tier-price">297 €</span>
           </div>
-          <ul class="features">
-            <li>✓ 6 sections responsive</li>
-            <li>✓ Brief → livré en 48h</li>
-            <li>✓ ZIP + facture PDF</li>
-            <li>✓ 1 révision gratuite</li>
-            <li>✓ Hébergement guidé (Vercel/OVH)</li>
-          </ul>
-          <a href="contact.html?pack=essentiel" class="btn btn-primary">Commander →</a>
-        </article>
+          <div class="pricing-grid grid-3">
 
-        <!-- Card 2 : Workflow -->
-        <article class="price-card">
-          <h3 class="card-title">Workflow custom</h3>
-          <p class="card-sub">Automatisation IA prête à importer.</p>
-          <div class="card-price">
-            <span class="price">30</span>
-            <span class="currency">€</span>
-            <span class="unit">/ unité</span>
+            <article class="price-card featured">
+              <div class="badge">★ POPULAIRE</div>
+              <h4 class="card-title">Vitrine</h4>
+              <p class="card-sub">Site présentation pro, multi-pages.</p>
+              <ul class="features">
+                <li>✓ 4-6 pages responsive</li>
+                <li>✓ Formulaire contact</li>
+                <li>✓ Design cyberpunk ou clean</li>
+                <li>✓ 1 révision gratuite</li>
+              </ul>
+              <a href="contact.html?pack=vitrine" class="btn btn-primary">Commander →</a>
+            </article>
+
+            <article class="price-card">
+              <h4 class="card-title">Coach / Consultant</h4>
+              <p class="card-sub">Bio + services + RDV.</p>
+              <ul class="features">
+                <li>✓ Page bio + expertise</li>
+                <li>✓ Liste services + tarifs</li>
+                <li>✓ Calendrier RDV (Calendly)</li>
+                <li>✓ Témoignages clients</li>
+              </ul>
+              <a href="contact.html?pack=coach" class="btn btn-ghost">Commander →</a>
+            </article>
+
+            <article class="price-card">
+              <h4 class="card-title">Artisan</h4>
+              <p class="card-sub">Services + devis + réalisations.</p>
+              <ul class="features">
+                <li>✓ Liste prestations</li>
+                <li>✓ Formulaire devis</li>
+                <li>✓ Galerie réalisations</li>
+                <li>✓ Zone d'intervention</li>
+              </ul>
+              <a href="contact.html?pack=artisan" class="btn btn-ghost">Commander →</a>
+            </article>
+
           </div>
-          <ul class="features">
-            <li>✓ Format n8n JSON exportable</li>
-            <li>✓ Brief → livré sous 24h</li>
-            <li>✓ Documentation d'usage</li>
-            <li>✓ Tests inclus</li>
-          </ul>
-          <a href="contact.html?pack=workflow" class="btn btn-ghost">Commander →</a>
-        </article>
+        </div>
 
-        <!-- Card 3 : Prompt -->
-        <article class="price-card">
-          <h3 class="card-title">Prompt custom</h3>
-          <p class="card-sub">Prompt IA testé et optimisé.</p>
-          <div class="card-price">
-            <span class="price">30</span>
-            <span class="currency">€</span>
-            <span class="unit">/ unité</span>
+        <!-- Palier Intermédiaires 497€ -->
+        <div class="tier-block tier-inter">
+          <div class="tier-head">
+            <span class="tier-label">// INTERMÉDIAIRES</span>
+            <span class="tier-price">497 €</span>
           </div>
-          <ul class="features">
-            <li>✓ Optimisé Claude / GPT</li>
-            <li>✓ Brief → livré sous 24h</li>
-            <li>✓ Format .md prêt à coller</li>
-            <li>✓ Cas d'usage documentés</li>
-          </ul>
-          <a href="contact.html?pack=prompt" class="btn btn-ghost">Commander →</a>
-        </article>
+          <div class="pricing-grid grid-3">
 
-        <!-- Card 4 : Forum communauté -->
-        <article class="price-card freebies-card">
-          <div class="badge badge-free">GRATUIT</div>
-          <h3 class="card-title">Communauté OSIA</h3>
-          <p class="card-sub">Forum Discord libre, sans engagement.</p>
-          <div class="card-price">
-            <span class="price">0</span>
-            <span class="currency">€</span>
+            <article class="price-card">
+              <h4 class="card-title">Restaurant</h4>
+              <p class="card-sub">Menu + réservation + plan.</p>
+              <ul class="features">
+                <li>✓ Menu interactif</li>
+                <li>✓ Formulaire de résa</li>
+                <li>✓ Horaires + Google Maps</li>
+                <li>✓ Galerie photos</li>
+              </ul>
+              <a href="contact.html?pack=restaurant" class="btn btn-ghost">Commander →</a>
+            </article>
+
+            <article class="price-card">
+              <h4 class="card-title">Portfolio</h4>
+              <p class="card-sub">Galerie + bio + contact.</p>
+              <ul class="features">
+                <li>✓ Galerie image plein écran</li>
+                <li>✓ Filtres par catégorie</li>
+                <li>✓ Page À propos</li>
+                <li>✓ Contact + réseaux</li>
+              </ul>
+              <a href="contact.html?pack=portfolio" class="btn btn-ghost">Commander →</a>
+            </article>
+
+            <article class="price-card">
+              <h4 class="card-title">Landing page</h4>
+              <p class="card-sub">1 page focus conversion.</p>
+              <ul class="features">
+                <li>✓ 1 seule page longue</li>
+                <li>✓ Hero + bénéfices + CTA</li>
+                <li>✓ Témoignages + FAQ</li>
+                <li>✓ Optimisé conversion</li>
+              </ul>
+              <a href="contact.html?pack=landing" class="btn btn-ghost">Commander →</a>
+            </article>
+
           </div>
-          <ul class="features">
-            <li>✓ Partage de workflows + prompts</li>
-            <li>✓ Aide technique entre membres</li>
-            <li>✓ Annonces nouvelles features OSIA</li>
-            <li>✓ Cas d'usage business concrets</li>
-          </ul>
-          <a href="forum.html" class="btn btn-lime">Rejoindre →</a>
-        </article>
+        </div>
 
-      </div>
+        <!-- Palier Complexes 697€ -->
+        <div class="tier-block tier-complex">
+          <div class="tier-head">
+            <span class="tier-label">// COMPLEXES</span>
+            <span class="tier-price">697 €</span>
+          </div>
+          <div class="pricing-grid grid-2">
 
+            <article class="price-card">
+              <h4 class="card-title">E-commerce</h4>
+              <p class="card-sub">Catalogue + panier (basique).</p>
+              <ul class="features">
+                <li>✓ Catalogue produits</li>
+                <li>✓ Panier + commande</li>
+                <li>✓ Lien Stripe / PayPal</li>
+                <li>✓ Page produit détaillée</li>
+              </ul>
+              <a href="contact.html?pack=ecommerce" class="btn btn-ghost">Commander →</a>
+            </article>
+
+            <article class="price-card">
+              <h4 class="card-title">Association</h4>
+              <p class="card-sub">Mission + événements + adhésion.</p>
+              <ul class="features">
+                <li>✓ Page Mission</li>
+                <li>✓ Agenda événements</li>
+                <li>✓ Formulaire adhésion</li>
+                <li>✓ Bouton don (HelloAsso)</li>
+              </ul>
+              <a href="contact.html?pack=association" class="btn btn-ghost">Commander →</a>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 2 — FORGES                                           -->
+      <!-- ============================================================ -->
+      <section class="cat-section">
+        <header class="cat-head">
+          <span class="cat-icon">⚡</span>
+          <h3 class="cat-title">Forges</h3>
+          <span class="cat-meta">Automatisations IA · livraison sous 24h</span>
+        </header>
+
+        <div class="tier-block tier-forge">
+          <div class="tier-head">
+            <span class="tier-label">// FORGES</span>
+            <span class="tier-price">30 € / unité</span>
+          </div>
+          <div class="pricing-grid grid-2">
+
+            <article class="price-card">
+              <h4 class="card-title">Workflow custom</h4>
+              <p class="card-sub">Automatisation IA prête à importer.</p>
+              <ul class="features">
+                <li>✓ Format n8n JSON exportable</li>
+                <li>✓ Brief → livré sous 24h</li>
+                <li>✓ Documentation d'usage</li>
+                <li>✓ Tests inclus</li>
+              </ul>
+              <a href="contact.html?pack=workflow" class="btn btn-ghost">Commander →</a>
+            </article>
+
+            <article class="price-card">
+              <h4 class="card-title">Prompt custom</h4>
+              <p class="card-sub">Prompt IA testé et optimisé.</p>
+              <ul class="features">
+                <li>✓ Optimisé Claude / GPT</li>
+                <li>✓ Brief → livré sous 24h</li>
+                <li>✓ Format .md prêt à coller</li>
+                <li>✓ Cas d'usage documentés</li>
+              </ul>
+              <a href="contact.html?pack=prompt" class="btn btn-ghost">Commander →</a>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 3 — AGENTS IA                                        -->
+      <!-- ============================================================ -->
+      <section class="cat-section">
+        <header class="cat-head">
+          <span class="cat-icon">🧬</span>
+          <h3 class="cat-title">Agents IA</h3>
+          <span class="cat-meta">Scripts orchestrés et systèmes autonomes</span>
+        </header>
+
+        <div class="tier-block tier-agent">
+          <div class="pricing-grid grid-2">
+
+            <article class="price-card">
+              <div class="card-tier-tag">// SIMPLE</div>
+              <h4 class="card-title">Agent IA Simple</h4>
+              <p class="card-sub">Script orchestré mono-tâche.</p>
+              <div class="card-price">
+                <span class="price">597</span>
+                <span class="currency">€</span>
+              </div>
+              <ul class="features">
+                <li>✓ Script Python prêt à exécuter</li>
+                <li>✓ Documentation complète</li>
+                <li>✓ Fichier .env exemple</li>
+                <li>✓ 1 session config (Zoom)</li>
+                <li>✓ Livré sous 3-5 jours</li>
+              </ul>
+              <a href="contact.html?pack=agent-simple" class="btn btn-ghost">Commander →</a>
+            </article>
+
+            <article class="price-card card-premium">
+              <div class="badge badge-pro">⚡ PRO</div>
+              <div class="card-tier-tag">// SUPÉRIEUR</div>
+              <h4 class="card-title">Agent IA Supérieur</h4>
+              <p class="card-sub">Système autonome multi-outils.</p>
+              <div class="card-price">
+                <span class="price">1 497</span>
+                <span class="currency">€</span>
+              </div>
+              <ul class="features">
+                <li>✓ Codebase Python modulaire</li>
+                <li>✓ Dashboard de monitoring</li>
+                <li>✓ Logs détaillés</li>
+                <li>✓ 2-3 sessions Zoom</li>
+                <li>✓ 30 jours de support</li>
+                <li>✓ Livré sous 1-2 semaines</li>
+              </ul>
+              <a href="contact.html?pack=agent-superieur" class="btn btn-primary">Commander →</a>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 4 — COMMUNAUTÉ                                       -->
+      <!-- ============================================================ -->
+      <section class="cat-section">
+        <div class="tier-block tier-free">
+          <div class="pricing-grid grid-1">
+
+            <article class="price-card freebies-card">
+              <div class="badge badge-free">GRATUIT</div>
+              <h4 class="card-title">Communauté OSIA</h4>
+              <p class="card-sub">Forum Discord libre, sans engagement.</p>
+              <div class="card-price">
+                <span class="price">0</span>
+                <span class="currency">€</span>
+              </div>
+              <ul class="features features-row">
+                <li>✓ Partage workflows + prompts</li>
+                <li>✓ Aide technique entre membres</li>
+                <li>✓ Annonces features OSIA</li>
+                <li>✓ Cas d'usage business</li>
+              </ul>
+              <a href="forum.html" class="btn btn-lime">Rejoindre →</a>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Mention légale ===== -->
       <p class="legal">
-        Régime micro-entreprise · TVA non applicable (art. 293 B du CGI) · Paiement par virement ou Stripe
+        Régime micro-entreprise · TVA non applicable (art. 293 B du CGI) · Tarifs HT
       </p>
 
     </section>
