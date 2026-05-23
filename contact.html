@@ -7,181 +7,65 @@
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/contact.css" />
   <style>
-    /* ============================================================
-       BRIEF DETAILLE - styles inline pour les 6 nouveaux champs
-       ============================================================ */
     .brief-section {
-      margin-top: 2rem;
-      padding-top: 2rem;
+      margin-top: 2rem; padding-top: 2rem;
       border-top: 1px dashed rgba(255,255,255,0.15);
     }
     .brief-section h3 {
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.3rem;
+      font-size: 0.95rem; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 0.3rem;
       color: var(--accent, #ff00aa);
     }
     .brief-section .brief-sub {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.55);
+      font-size: 0.85rem; color: rgba(255,255,255,0.55);
       margin-bottom: 1.5rem;
     }
-
-    /* Style cards : Minimaliste, Moderne, Luxe... */
-    .style-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+    .style-grid, .palette-grid, .sections-grid, .delay-options {
+      display: grid; gap: 0.5rem; margin-top: 0.5rem;
     }
-    .style-card {
-      position: relative;
-      padding: 0.8rem 0.6rem;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s;
+    .style-grid, .palette-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .sections-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .delay-options { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+    .style-card, .palette-card, .section-check, .delay-options label {
+      padding: 0.8rem; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px; cursor: pointer; transition: all 0.15s;
       background: rgba(255,255,255,0.02);
     }
-    .style-card:hover {
-      border-color: rgba(255,255,255,0.4);
-      background: rgba(255,255,255,0.05);
+    .style-card:hover, .palette-card:hover, .section-check:hover, .delay-options label:hover {
+      border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05);
     }
-    .style-card input { display: none; }
-    .style-card input:checked + .style-content { color: #fff; }
-    .style-card:has(input:checked) {
-      border-color: var(--accent, #ff00aa);
-      background: rgba(255,0,170,0.08);
+    .style-card input, .palette-card input, .delay-options input { display: none; }
+    .style-card:has(input:checked), .palette-card:has(input:checked),
+    .section-check:has(input:checked), .delay-options label:has(input:checked) {
+      border-color: var(--accent, #ff00aa); background: rgba(255,0,170,0.08);
     }
-    .style-name {
-      display: block;
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 0.2rem;
-    }
-    .style-desc {
-      display: block;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.5);
-    }
-
-    /* Palettes de couleurs */
-    .palette-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    .palette-card {
-      padding: 0.8rem;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s;
-      background: rgba(255,255,255,0.02);
-    }
-    .palette-card:hover {
-      border-color: rgba(255,255,255,0.4);
-      background: rgba(255,255,255,0.05);
-    }
-    .palette-card input { display: none; }
-    .palette-card:has(input:checked) {
-      border-color: var(--accent, #ff00aa);
-      background: rgba(255,0,170,0.08);
-    }
-    .palette-swatches {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 0.5rem;
-    }
+    .style-name { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .style-desc { display: block; font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+    .palette-swatches { display: flex; gap: 4px; margin-bottom: 0.5rem; }
     .palette-swatches span {
-      flex: 1;
-      height: 28px;
-      border-radius: 4px;
+      flex: 1; height: 28px; border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.1);
     }
-    .palette-name {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.85);
-    }
+    .palette-name { font-size: 0.85rem; color: rgba(255,255,255,0.85); }
+    .section-check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+    .section-check input { width: 16px; height: 16px; accent-color: var(--accent, #ff00aa); }
+    .delay-options label { text-align: center; font-size: 0.9rem; }
+    .brief-section .form-group { margin-bottom: 1.5rem; }
+    .brief-section label { display: block; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
 
-    /* Sections checkboxes */
-    .sections-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
-    .section-check {
-      padding: 0.7rem 0.8rem;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255,255,255,0.02);
+    /* Info box pour les gros produits */
+    .premium-notice {
+      margin: 1.5rem 0; padding: 1rem 1.2rem;
+      border: 1px dashed #FFD700;
+      border-radius: 8px; background: rgba(255,215,0,0.04);
       font-size: 0.9rem;
     }
-    .section-check:hover {
-      border-color: rgba(255,255,255,0.4);
-      background: rgba(255,255,255,0.05);
-    }
-    .section-check input {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--accent, #ff00aa);
-    }
-    .section-check:has(input:checked) {
-      border-color: var(--accent, #ff00aa);
-      background: rgba(255,0,170,0.08);
-    }
-
-    /* Delai radio cards */
-    .delay-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    .delay-options label {
-      padding: 0.7rem 0.5rem;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
-      background: rgba(255,255,255,0.02);
-      font-size: 0.9rem;
-    }
-    .delay-options label:hover {
-      border-color: rgba(255,255,255,0.4);
-      background: rgba(255,255,255,0.05);
-    }
-    .delay-options input { display: none; }
-    .delay-options label:has(input:checked) {
-      border-color: var(--accent, #ff00aa);
-      background: rgba(255,0,170,0.08);
-      color: #fff;
-    }
-
-    /* Petit spacing dans la section brief */
-    .brief-section .form-group {
-      margin-bottom: 1.5rem;
-    }
-    .brief-section label {
-      display: block;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
+    .premium-notice strong { color: #FFD700; }
+    .premium-notice a { color: #FFD700; }
   </style>
 </head>
 <body>
 
-  <!-- ===== NAVBAR ===== -->
   <nav class="osia-nav">
     <div class="osia-logo">OSIA<span class="dot">.</span></div>
     <ul class="nav-links">
@@ -218,7 +102,6 @@
     </ul>
   </nav>
 
-  <!-- ===== MAIN ===== -->
   <main class="osia-main contact-main">
     <section class="contact-wrap">
 
@@ -228,7 +111,13 @@
         <p class="sub">Réponse sous 24h. Pas de commercial, pas de spam.</p>
       </header>
 
-      <!-- BANDEAU FORMAT PRÉ-SÉLECTIONNÉ -->
+      <!-- Notice : pour les gros produits, passer par support -->
+      <div class="premium-notice">
+        💡 <strong>Tu cherches Cerveau IA, OS IA ou Pack Complet&nbsp;?</strong>
+        Ces produits nécessitent un échange direct.
+        <a href="support.html">Contacte le support →</a>
+      </div>
+
       <div id="formatBanner" class="format-banner" style="display:none;">
         <span class="banner-icon" id="bannerIcon">📦</span>
         <span class="banner-text">Tu as choisi : <strong id="bannerName"></strong> · <span class="banner-price">297 €</span></span>
@@ -237,15 +126,10 @@
 
       <form id="contactForm" class="contact-form" autocomplete="on">
 
-        <!-- HONEYPOT -->
         <div class="hp-field" aria-hidden="true">
           <label for="company">Company (laisse vide)</label>
           <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
         </div>
-
-        <!-- ============================================================
-             SECTION 1 : INFOS PRINCIPALES (obligatoires)
-             ============================================================ -->
 
         <div class="form-row">
           <div class="form-group">
@@ -273,9 +157,6 @@
               <option value="prompt">Prompt custom — 30 € / unité</option>
               <option value="agent-simple">Agent IA Simple — 597 €</option>
               <option value="agent-superieur">Agent IA Supérieur — 1 497 €</option>
-              <option value="cerveau">Cerveau IA — 2 497 €</option>
-              <option value="os">OS IA — 4 997 €</option>
-              <option value="pack-complet">🔥 Pack Complet — 8 997 €</option>
               <option value="">Je sais pas encore, on en parle</option>
             </select>
           </div>
@@ -287,141 +168,36 @@
           <div class="char-count"><span id="charCount">0</span> / 2000</div>
         </div>
 
-        <!-- ============================================================
-             SECTION 2 : BRIEF DETAILLE (optionnel)
-             6 nouveaux champs : style / palette / sections / public / inspi / delai
-             ============================================================ -->
         <div class="brief-section">
           <h3>// Brief détaillé</h3>
           <p class="brief-sub">Tout est optionnel — mais plus tu remplis, mieux je te livre.</p>
 
-          <!-- 1. STYLE VISUEL -->
           <div class="form-group">
             <label>✨ Style visuel souhaité</label>
             <div class="style-grid">
-              <label class="style-card">
-                <input type="radio" name="style" value="minimaliste">
-                <span class="style-content">
-                  <span class="style-name">Minimaliste</span>
-                  <span class="style-desc">Épuré, beaucoup de blanc</span>
-                </span>
-              </label>
-              <label class="style-card">
-                <input type="radio" name="style" value="moderne">
-                <span class="style-content">
-                  <span class="style-name">Moderne</span>
-                  <span class="style-desc">Tendance, dynamique</span>
-                </span>
-              </label>
-              <label class="style-card">
-                <input type="radio" name="style" value="luxe">
-                <span class="style-content">
-                  <span class="style-name">Luxe</span>
-                  <span class="style-desc">Élégant, premium</span>
-                </span>
-              </label>
-              <label class="style-card">
-                <input type="radio" name="style" value="fun">
-                <span class="style-content">
-                  <span class="style-name">Fun</span>
-                  <span class="style-desc">Coloré, friendly</span>
-                </span>
-              </label>
-              <label class="style-card">
-                <input type="radio" name="style" value="pro">
-                <span class="style-content">
-                  <span class="style-name">Pro</span>
-                  <span class="style-desc">Sérieux, corporate</span>
-                </span>
-              </label>
-              <label class="style-card">
-                <input type="radio" name="style" value="sombre">
-                <span class="style-content">
-                  <span class="style-name">Sombre</span>
-                  <span class="style-desc">Dark, gaming/tech</span>
-                </span>
-              </label>
+              <label class="style-card"><input type="radio" name="style" value="minimaliste"><span class="style-content"><span class="style-name">Minimaliste</span><span class="style-desc">Épuré, beaucoup de blanc</span></span></label>
+              <label class="style-card"><input type="radio" name="style" value="moderne"><span class="style-content"><span class="style-name">Moderne</span><span class="style-desc">Tendance, dynamique</span></span></label>
+              <label class="style-card"><input type="radio" name="style" value="luxe"><span class="style-content"><span class="style-name">Luxe</span><span class="style-desc">Élégant, premium</span></span></label>
+              <label class="style-card"><input type="radio" name="style" value="fun"><span class="style-content"><span class="style-name">Fun</span><span class="style-desc">Coloré, friendly</span></span></label>
+              <label class="style-card"><input type="radio" name="style" value="pro"><span class="style-content"><span class="style-name">Pro</span><span class="style-desc">Sérieux, corporate</span></span></label>
+              <label class="style-card"><input type="radio" name="style" value="sombre"><span class="style-content"><span class="style-name">Sombre</span><span class="style-desc">Dark, gaming/tech</span></span></label>
             </div>
           </div>
 
-          <!-- 2. PALETTE DE COULEURS -->
           <div class="form-group">
             <label>🎨 Palette de couleurs préférée</label>
             <div class="palette-grid">
-              <label class="palette-card">
-                <input type="radio" name="palette" value="bleu-blanc">
-                <div class="palette-swatches">
-                  <span style="background:#0066CC"></span>
-                  <span style="background:#FFFFFF"></span>
-                  <span style="background:#1a1a1a"></span>
-                </div>
-                <span class="palette-name">Bleu / Blanc (corporate)</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="vert-nature">
-                <div class="palette-swatches">
-                  <span style="background:#2D6A4F"></span>
-                  <span style="background:#95D5B2"></span>
-                  <span style="background:#F1FAEE"></span>
-                </div>
-                <span class="palette-name">Vert nature</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="orange-chaleur">
-                <div class="palette-swatches">
-                  <span style="background:#F77F00"></span>
-                  <span style="background:#FCBF49"></span>
-                  <span style="background:#003049"></span>
-                </div>
-                <span class="palette-name">Orange chaleureux</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="rose-feminin">
-                <div class="palette-swatches">
-                  <span style="background:#FF6F91"></span>
-                  <span style="background:#FFC1C8"></span>
-                  <span style="background:#845EC2"></span>
-                </div>
-                <span class="palette-name">Rose / Violet</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="noir-or">
-                <div class="palette-swatches">
-                  <span style="background:#0a0a0a"></span>
-                  <span style="background:#D4AF37"></span>
-                  <span style="background:#FFFFFF"></span>
-                </div>
-                <span class="palette-name">Noir / Or (luxe)</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="cyberpunk">
-                <div class="palette-swatches">
-                  <span style="background:#0a0a0a"></span>
-                  <span style="background:#FF00AA"></span>
-                  <span style="background:#00FFFF"></span>
-                </div>
-                <span class="palette-name">Cyberpunk (néons)</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="pastel">
-                <div class="palette-swatches">
-                  <span style="background:#FFE5EC"></span>
-                  <span style="background:#FFC2D1"></span>
-                  <span style="background:#A0E7E5"></span>
-                </div>
-                <span class="palette-name">Pastel doux</span>
-              </label>
-              <label class="palette-card">
-                <input type="radio" name="palette" value="autre">
-                <div class="palette-swatches">
-                  <span style="background:linear-gradient(90deg,#f00,#ff0,#0f0,#00f,#f0f)"></span>
-                </div>
-                <span class="palette-name">Autre (je précise plus haut)</span>
-              </label>
+              <label class="palette-card"><input type="radio" name="palette" value="bleu-blanc"><div class="palette-swatches"><span style="background:#0066CC"></span><span style="background:#FFFFFF"></span><span style="background:#1a1a1a"></span></div><span class="palette-name">Bleu / Blanc (corporate)</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="vert-nature"><div class="palette-swatches"><span style="background:#2D6A4F"></span><span style="background:#95D5B2"></span><span style="background:#F1FAEE"></span></div><span class="palette-name">Vert nature</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="orange-chaleur"><div class="palette-swatches"><span style="background:#F77F00"></span><span style="background:#FCBF49"></span><span style="background:#003049"></span></div><span class="palette-name">Orange chaleureux</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="rose-feminin"><div class="palette-swatches"><span style="background:#FF6F91"></span><span style="background:#FFC1C8"></span><span style="background:#845EC2"></span></div><span class="palette-name">Rose / Violet</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="noir-or"><div class="palette-swatches"><span style="background:#0a0a0a"></span><span style="background:#D4AF37"></span><span style="background:#FFFFFF"></span></div><span class="palette-name">Noir / Or (luxe)</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="cyberpunk"><div class="palette-swatches"><span style="background:#0a0a0a"></span><span style="background:#FF00AA"></span><span style="background:#00FFFF"></span></div><span class="palette-name">Cyberpunk (néons)</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="pastel"><div class="palette-swatches"><span style="background:#FFE5EC"></span><span style="background:#FFC2D1"></span><span style="background:#A0E7E5"></span></div><span class="palette-name">Pastel doux</span></label>
+              <label class="palette-card"><input type="radio" name="palette" value="autre"><div class="palette-swatches"><span style="background:linear-gradient(90deg,#f00,#ff0,#0f0,#00f,#f0f)"></span></div><span class="palette-name">Autre (je précise plus haut)</span></label>
             </div>
           </div>
 
-          <!-- 3. SECTIONS SOUHAITEES -->
           <div class="form-group">
             <label>📋 Sections souhaitées (coche ce qui s'applique)</label>
             <div class="sections-grid">
@@ -440,19 +216,16 @@
             </div>
           </div>
 
-          <!-- 4. PUBLIC CIBLE -->
           <div class="form-group">
             <label for="audience">🎯 Public cible</label>
             <input type="text" id="audience" name="audience" maxlength="200" placeholder="Ex: Restaurateurs 30-50 ans, dirigeants PME, étudiants en école d'art…" />
           </div>
 
-          <!-- 5. INSPIRATIONS -->
           <div class="form-group">
             <label for="inspirations">🔗 Sites ou marques qui t'inspirent</label>
             <textarea id="inspirations" name="inspirations" rows="2" maxlength="500" placeholder="Ex: apple.com, le style de Patagonia, restau-xyz.fr…"></textarea>
           </div>
 
-          <!-- 6. DELAI -->
           <div class="form-group">
             <label>📞 Délai souhaité</label>
             <div class="delay-options">
@@ -464,11 +237,7 @@
           </div>
 
         </div>
-        <!-- ============================================================
-             FIN SECTION 2 : BRIEF DETAILLE
-             ============================================================ -->
 
-        <!-- RGPD -->
         <div class="form-consent">
           <label class="consent-label">
             <input type="checkbox" id="consent" name="consent" required />
@@ -490,11 +259,8 @@
     </section>
   </main>
 
-  <!-- ===== FOOTER NAV ===== -->
   <footer class="osia-foot">
-    <div class="page-indicator">
-      PAGE <span class="current">06</span> / 06 · CONTACT
-    </div>
+    <div class="page-indicator">PAGE <span class="current">06</span> / 06 · CONTACT</div>
     <div class="foot-legal-links">
       <a href="mentions-legales.html">Mentions légales</a> ·
       <a href="cgv.html">CGV</a> ·
@@ -506,20 +272,15 @@
     </div>
   </footer>
 
-  <!-- ===== CHATBOT ===== -->
   <script src="assets/chatbot.js"></script>
-
-  <!-- ===== FORM HANDLER ===== -->
   <script>
     const API_URL = "https://api.osia-pro.com/api/lead";
-
     const form = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const status = document.getElementById('formStatus');
     const message = document.getElementById('message');
     const charCount = document.getElementById('charCount');
 
-    // Pre-remplir le pack si URL ?pack=workflow
     const urlParams = new URLSearchParams(window.location.search);
     const packParam = urlParams.get('pack');
     if (packParam) {
@@ -529,7 +290,7 @@
       }
     }
 
-    // === DETECTION FORMAT (depuis pages produit ?format=XXX) ===
+    // FORMATS_MAP : SANS cerveau / os / pack-complet (ces produits passent par support)
     const FORMATS_MAP = {
       vitrine:           { icon: "🎨", name: "Vitrine",                pack: "essentiel" },
       coach:             { icon: "💪", name: "Coach / Consultant",     pack: "essentiel" },
@@ -543,15 +304,17 @@
       prompt:            { icon: "📝", name: "Forge Prompt",           pack: "prompt" },
       "agent-simple":    { icon: "🤖", name: "Agent IA Simple",        pack: "agent-simple" },
       "agent-superieur": { icon: "🧬", name: "Agent IA Supérieur",     pack: "agent-superieur" },
-      cerveau:           { icon: "🧠", name: "Cerveau IA",             pack: "cerveau" },
-      os:                { icon: "🌐", name: "OS IA",                  pack: "os" },
-      "pack-complet":    { icon: "🌌", name: "Pack Complet",           pack: "pack-complet" },
       forum:             { icon: "💬", name: "Communauté Discord",     pack: "" }
     };
 
     let formatChoisi = urlParams.get('format');
     if (!formatChoisi) {
       try { formatChoisi = localStorage.getItem('osia_format'); } catch(_) {}
+    }
+
+    // Si format = cerveau/os/pack-complet (ancien lien), redirige vers support
+    if (formatChoisi && ["cerveau", "os", "pack-complet"].includes(formatChoisi)) {
+      window.location.href = "support.html";
     }
 
     if (formatChoisi && FORMATS_MAP[formatChoisi]) {
@@ -570,9 +333,6 @@
           "prompt":          "30 € / unité",
           "agent-simple":    "597 €",
           "agent-superieur": "1 497 €",
-          "cerveau":         "2 497 €",
-          "os":              "4 997 €",
-          "pack-complet":    "8 997 €",
         };
         bannerPrice.textContent = priceByPack[fmt.pack] || "";
       }
@@ -594,17 +354,11 @@
 
       try { localStorage.setItem('osia_format', formatChoisi); } catch(_) {}
     }
-    // === FIN DETECTION FORMAT ===
 
-    // Compteur caracteres
     message.addEventListener('input', () => {
       charCount.textContent = message.value.length;
     });
 
-    /**
-     * Construit le message final en concatenant le message libre du client
-     * avec le brief detaille rempli (style, palette, sections, etc.).
-     */
     function buildFinalMessage(userMessage) {
       const style = form.querySelector('input[name="style"]:checked')?.value;
       const palette = form.querySelector('input[name="palette"]:checked')?.value;
@@ -621,10 +375,7 @@
       if (inspirations) briefParts.push(`- Inspirations : ${inspirations}`);
       if (delay) briefParts.push(`- Délai souhaité : ${delay}`);
 
-      if (briefParts.length === 0) {
-        return userMessage;
-      }
-
+      if (briefParts.length === 0) return userMessage;
       const briefBlock = "\n\n--- Brief détaillé ---\n" + briefParts.join("\n");
       return (userMessage || '') + briefBlock;
     }
@@ -636,7 +387,6 @@
       status.className = 'form-status';
       status.textContent = '';
 
-      // Concatene le brief detaille au message
       const finalMessage = buildFinalMessage(form.message.value.trim());
 
       const payload = {
@@ -645,7 +395,7 @@
         phone: form.phone.value.trim(),
         pack: form.pack.value,
         message: finalMessage,
-        company: form.company.value, // honeypot
+        company: form.company.value,
         format: formatChoisi || '',
       };
 
