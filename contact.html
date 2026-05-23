@@ -87,9 +87,12 @@
             <label for="pack">Pack qui m'intéresse</label>
             <select id="pack" name="pack">
               <option value="essentiel">Site Essentiel — 297 €</option>
+              <option value="pro">Site Pro — 497 €</option>
+              <option value="premium">Site Premium — 697 €</option>
               <option value="workflow">Workflow custom — 30 € / unité</option>
               <option value="prompt">Prompt custom — 30 € / unité</option>
-              <option value="agent">Agent IA — sur devis</option>
+              <option value="agent-simple">Agent IA Simple — 597 €</option>
+              <option value="agent-superieur">Agent IA Supérieur — 1 497 €</option>
               <option value="">Je sais pas encore, on en parle</option>
             </select>
           </div>
@@ -168,21 +171,23 @@
 
     // === DÉTECTION FORMAT (depuis sites/forge/agent pages ?format=XXX) ===
     const FORMATS_MAP = {
-      // Sites (297€ - pack essentiel)
+      // Sites Basiques (297€ - pack essentiel)
       vitrine:           { icon: "🎨", name: "Vitrine",                pack: "essentiel" },
-      restaurant:        { icon: "🍕", name: "Restaurant",             pack: "essentiel" },
       coach:             { icon: "💪", name: "Coach / Consultant",     pack: "essentiel" },
       artisan:           { icon: "🔧", name: "Artisan",                pack: "essentiel" },
-      portfolio:         { icon: "📷", name: "Portfolio",              pack: "essentiel" },
-      ecommerce:         { icon: "🛍️", name: "E-commerce",             pack: "essentiel" },
-      association:       { icon: "🏛️", name: "Association",            pack: "essentiel" },
-      landing:           { icon: "🚀", name: "Landing page",           pack: "essentiel" },
+      // Sites Intermédiaires (497€ - pack pro)
+      restaurant:        { icon: "🍕", name: "Restaurant",             pack: "pro" },
+      portfolio:         { icon: "📷", name: "Portfolio",              pack: "pro" },
+      landing:           { icon: "🚀", name: "Landing page",           pack: "pro" },
+      // Sites Complexes (697€ - pack premium)
+      ecommerce:         { icon: "🛍️", name: "E-commerce",             pack: "premium" },
+      association:       { icon: "🏛️", name: "Association",            pack: "premium" },
       // Forges (30€ - packs custom)
       workflow:          { icon: "⚡", name: "Forge Workflow",         pack: "workflow" },
       prompt:            { icon: "🧠", name: "Forge Prompt",           pack: "prompt" },
       // Agents IA (sur devis)
-      "agent-simple":    { icon: "🤖", name: "Agent IA Simple",        pack: "agent" },
-      "agent-superieur": { icon: "🧬", name: "Agent IA Supérieur",     pack: "agent" },
+      "agent-simple":    { icon: "🤖", name: "Agent IA Simple",        pack: "agent-simple" },
+      "agent-superieur": { icon: "🧬", name: "Agent IA Supérieur",     pack: "agent-superieur" },
       // Forum / général
       forum:             { icon: "💬", name: "Communauté Discord",     pack: "" }
     };
@@ -202,15 +207,16 @@
       // Cache le prix dans le bandeau pour agents (sur devis)
       const bannerPrice = document.querySelector('.banner-price');
       if (bannerPrice) {
-        if (fmt.pack === "agent") {
-          bannerPrice.textContent = "Sur devis";
-        } else if (fmt.pack === "workflow" || fmt.pack === "prompt") {
-          bannerPrice.textContent = "30 € / unité";
-        } else if (fmt.pack === "essentiel") {
-          bannerPrice.textContent = "297 €";
-        } else {
-          bannerPrice.textContent = "";
-        }
+        const priceByPack = {
+          "essentiel":       "297 €",
+          "pro":             "497 €",
+          "premium":         "697 €",
+          "workflow":        "30 € / unité",
+          "prompt":          "30 € / unité",
+          "agent-simple":    "597 €",
+          "agent-superieur": "1 497 €",
+        };
+        bannerPrice.textContent = priceByPack[fmt.pack] || "";
       }
 
       banner.style.display = 'flex';
