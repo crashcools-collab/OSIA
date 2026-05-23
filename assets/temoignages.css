@@ -1,0 +1,490 @@
+/* ============================================================
+   OSIA · Témoignages · Style cohérent cyberpunk
+   ============================================================ */
+
+/* Override scroll body (cette page doit scroller) */
+body.temoignages-page,
+html:has(body.temoignages-page) {
+  overflow: auto !important;
+  height: auto !important;
+  min-height: 100vh;
+}
+
+body.temoignages-page .osia-main {
+  overflow: visible;
+  align-items: flex-start;
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+/* ========== Conteneur ========== */
+
+.temoignages-wrap {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ========== Header ========== */
+
+.temoignages-head {
+  text-align: center;
+  margin-bottom: 50px;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.1s ease forwards;
+}
+
+.temoignages-head .tag {
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--neon-magenta);
+  border: 1px solid var(--neon-magenta);
+  border-radius: 100px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.temoignages-head h2 {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  letter-spacing: -1px;
+}
+
+.temoignages-head h2 .accent {
+  background: linear-gradient(90deg, var(--neon-magenta), var(--neon-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(255, 0, 245, 0.4));
+}
+
+.temoignages-baseline {
+  color: var(--text-dim);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ========== Layout 2 colonnes ========== */
+
+.temoignages-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* ========== FORM ========== */
+
+.form-side {
+  position: sticky;
+  top: 20px;
+}
+
+.form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 28px 26px;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  animation: fadeUp 0.7s 0.2s ease forwards;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.form-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.review-form .field {
+  margin-bottom: 18px;
+}
+
+.review-form label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.review-form input[type="text"],
+.review-form textarea,
+.review-form select {
+  width: 100%;
+  background: rgba(5, 5, 16, 0.6);
+  border: 1px solid var(--border-glow);
+  border-radius: 6px;
+  padding: 11px 14px;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.review-form input[type="text"]:focus,
+.review-form textarea:focus,
+.review-form select:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+}
+
+.review-form input[type="text"]::placeholder,
+.review-form textarea::placeholder {
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+
+.review-form textarea {
+  resize: vertical;
+  min-height: 110px;
+  font-family: var(--font-mono);
+  line-height: 1.5;
+}
+
+.review-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4l3 3 3-3' stroke='%2300f0ff' fill='none' stroke-width='1.5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 32px;
+}
+
+.review-form select option {
+  background: var(--bg-deep);
+  color: var(--text-main);
+}
+
+/* Rating stars input */
+.rating-input {
+  display: flex;
+  gap: 4px;
+}
+
+.rating-input button {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.rating-input button:hover,
+.rating-input button.active {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-cyan);
+  transform: scale(1.1);
+}
+
+/* Char counter */
+.char-count {
+  display: block;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.char-count.warn {
+  color: var(--neon-magenta);
+}
+
+/* Submit button */
+.submit-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 6px;
+  position: relative;
+}
+
+.submit-btn .btn-loading {
+  display: none;
+}
+
+.submit-btn.loading .btn-label {
+  display: none;
+}
+
+.submit-btn.loading .btn-loading {
+  display: inline-flex;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Feedback */
+.form-feedback {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  display: none;
+}
+
+.form-feedback.ok {
+  display: block;
+  background: rgba(184, 255, 0, 0.1);
+  border: 1px solid var(--neon-lime);
+  color: var(--neon-lime);
+}
+
+.form-feedback.err {
+  display: block;
+  background: rgba(255, 0, 245, 0.1);
+  border: 1px solid var(--neon-magenta);
+  color: var(--neon-magenta);
+}
+
+/* ========== REVIEWS LIST ========== */
+
+.reviews-side {
+  opacity: 0;
+  animation: fadeUp 0.7s 0.35s ease forwards;
+}
+
+.reviews-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-glow);
+}
+
+.reviews-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  letter-spacing: 2px;
+}
+
+.reviews-stats {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.reviews-stats .stat span {
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.reviews-stats .stat-sep {
+  color: var(--border-glow);
+}
+
+/* Filter */
+.reviews-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.reviews-filter label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.reviews-filter select {
+  flex: 1;
+  background: rgba(5, 5, 16, 0.6);
+  border: 1px solid var(--border-glow);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4l3 3 3-3' stroke='%2300f0ff' fill='none' stroke-width='1.5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+  cursor: pointer;
+}
+
+.reviews-filter select:focus {
+  border-color: var(--neon-cyan);
+}
+
+/* Reviews list */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 8px;
+  padding: 18px 20px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  animation: fadeUp 0.4s ease forwards;
+}
+
+.review-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+}
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.review-author {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.review-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.review-product {
+  color: var(--neon-cyan);
+}
+
+.review-sep {
+  color: var(--border-glow);
+}
+
+.review-rating {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  margin-bottom: 10px;
+}
+
+.review-msg {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* States */
+.reviews-loading,
+.reviews-empty,
+.reviews-error {
+  padding: 40px 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-glow);
+  border-radius: 8px;
+}
+
+.reviews-error {
+  color: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+}
+
+/* ========== Légal ========== */
+
+.legal {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(0, 240, 255, 0.15);
+  line-height: 1.8;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 1024px) {
+  .temoignages-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .form-side {
+    position: static;
+  }
+}
+
+@media (max-width: 700px) {
+  body.temoignages-page .osia-main {
+    padding: 24px 16px;
+  }
+  .temoignages-head h2 {
+    font-size: 26px;
+  }
+  .form-card {
+    padding: 22px 18px;
+  }
+  .reviews-head {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .review-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
