@@ -6,7 +6,22 @@
   <title>OSIA · Support / SAV / Aide</title>
   <link rel="stylesheet" href="assets/style.css" />
   <style>
-    .support-main { padding: 2rem 1rem 4rem; }
+    /* FORCE le layout vertical sur la page support
+       (contournement du grid/flex parent dans osia-main) */
+    .support-main {
+      display: block !important;
+      padding: 2rem 1rem 4rem;
+    }
+    .support-wrap {
+      display: block;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .support-wrap > * {
+      display: block;
+      width: 100%;
+    }
 
     .support-hero {
       text-align: center;
@@ -25,11 +40,13 @@
     .support-hero h1 {
       font-size: 2.5rem;
       margin: 0 0 0.5rem;
+      text-align: center;
     }
     .support-hero .subtitle {
       color: rgba(255,255,255,0.65);
       font-size: 1.05rem;
       margin: 0 auto 2rem;
+      text-align: center;
     }
     .support-email-main {
       display: inline-block;
@@ -52,12 +69,14 @@
       font-size: 0.85rem;
       color: rgba(255,255,255,0.45);
       margin-top: 1rem;
+      text-align: center;
     }
 
-    /* Section categories */
+    /* Section titles */
     .support-section-title {
-      max-width: 1100px;
-      margin: 3rem auto 1.5rem;
+      display: block;
+      width: 100%;
+      margin: 3rem 0 1.5rem;
       font-size: 1.3rem;
       font-weight: 700;
       letter-spacing: 0.05em;
@@ -67,12 +86,13 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
+    /* Grille des categories */
     .support-cats {
-      max-width: 1100px;
-      margin: 0 auto 3rem;
-      display: grid;
+      display: grid !important;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1rem;
+      width: 100%;
+      margin-bottom: 3rem;
     }
     .support-card {
       padding: 1.5rem;
@@ -82,7 +102,7 @@
       transition: all 0.2s;
       text-decoration: none;
       color: inherit;
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       gap: 0.5rem;
     }
@@ -113,18 +133,21 @@
       margin-top: 0.5rem;
     }
 
-    /* FAQ */
+    /* FAQ - layout vertical force */
     .support-faq {
+      display: block !important;
+      width: 100%;
       max-width: 800px;
       margin: 0 auto 3rem;
     }
     .faq-item {
+      display: block;
       padding: 1.2rem 1.5rem;
       margin-bottom: 0.6rem;
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px;
       background: rgba(255,255,255,0.02);
-      transition: all 0.15s;
+      transition: border-color 0.15s;
     }
     .faq-item:hover {
       border-color: rgba(255,255,255,0.25);
@@ -138,6 +161,9 @@
       gap: 1rem;
       color: #fff;
       font-size: 1rem;
+    }
+    .faq-q span:first-child {
+      flex: 1;
     }
     .faq-toggle {
       font-size: 0.8rem;
@@ -157,8 +183,9 @@
     .faq-item.open .faq-a { display: block; }
     .faq-item.open .faq-toggle { transform: rotate(180deg); }
 
-    /* Block contact commande */
+    /* CTA commande */
     .support-cta-block {
+      display: block;
       max-width: 700px;
       margin: 3rem auto 0;
       padding: 2rem;
@@ -227,152 +254,149 @@
   </nav>
 
   <main class="osia-main support-main">
+    <section class="support-wrap">
 
-    <header class="support-hero">
-      <span class="tag">// SUPPORT · SAV · AIDE</span>
-      <h1>Besoin d'aide ?</h1>
-      <p class="subtitle">Documentation, problèmes techniques, réclamations, modifications. Je traite chaque demande personnellement, sans bot.</p>
-      <a href="mailto:crashcool.iaos@gmail.com" class="support-email-main">📧 crashcool.iaos@gmail.com</a>
-      <p class="support-delay">Réponse sous 24h ouvrées (lun-ven)</p>
-    </header>
+      <!-- HERO -->
+      <header class="support-hero">
+        <span class="tag">// SUPPORT · SAV · AIDE</span>
+        <h1>Besoin d'aide ?</h1>
+        <p class="subtitle">Documentation, problèmes techniques, réclamations, modifications. Je traite chaque demande personnellement, sans bot.</p>
+        <a href="mailto:crashcool.iaos@gmail.com" class="support-email-main">📧 crashcool.iaos@gmail.com</a>
+        <p class="support-delay">Réponse sous 24h ouvrées (lun-ven)</p>
+      </header>
 
-    <!-- ============================================================
-         CATEGORIES DE DEMANDES
-         ============================================================ -->
-    <div class="support-section-title">Quelle est ta demande ?</div>
-    <section class="support-cats">
+      <!-- CATEGORIES -->
+      <h2 class="support-section-title">Quelle est ta demande ?</h2>
+      <div class="support-cats">
 
-      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BDOC%5D%20Question%20documentation%20%2F%20produit&body=Bonjour%2C%0A%0AMa%20question%20concerne%20%3A%0A%0A" class="support-card">
-        <div class="icon-big">📚</div>
-        <h3>Documentation</h3>
-        <p class="desc">Questions sur un produit, ce qui est inclus, comment ça fonctionne, prérequis techniques…</p>
-        <span class="cta">Écrire à OSIA →</span>
-      </a>
+        <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BDOC%5D%20Question%20documentation%20%2F%20produit&body=Bonjour%2C%0A%0AMa%20question%20concerne%20%3A%0A%0A" class="support-card">
+          <div class="icon-big">📚</div>
+          <h3>Documentation</h3>
+          <p class="desc">Questions sur un produit, ce qui est inclus, comment ça fonctionne, prérequis techniques…</p>
+          <span class="cta">Écrire à OSIA →</span>
+        </a>
 
-      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BSAV%5D%20Probl%C3%A8me%20technique&body=Bonjour%2C%0A%0AJe%20rencontre%20un%20probl%C3%A8me%20avec%20%3A%0A%0ANom%20du%20produit%20%3A%20%0ANom%20du%20projet%20%2F%20ID%20%3A%20%0ADescription%20du%20probl%C3%A8me%20%3A%20%0A%0A" class="support-card">
-        <div class="icon-big">🔧</div>
-        <h3>SAV technique</h3>
-        <p class="desc">Un livrable ne fonctionne pas comme prévu, erreur de déploiement, bug, problème de configuration.</p>
-        <span class="cta">Signaler →</span>
-      </a>
+        <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BSAV%5D%20Probl%C3%A8me%20technique&body=Bonjour%2C%0A%0AJe%20rencontre%20un%20probl%C3%A8me%20avec%20%3A%0A%0ANom%20du%20produit%20%3A%20%0ANom%20du%20projet%20%2F%20ID%20%3A%20%0ADescription%20du%20probl%C3%A8me%20%3A%20%0A%0A" class="support-card">
+          <div class="icon-big">🔧</div>
+          <h3>SAV technique</h3>
+          <p class="desc">Un livrable ne fonctionne pas comme prévu, erreur de déploiement, bug, problème de configuration.</p>
+          <span class="cta">Signaler →</span>
+        </a>
 
-      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BMODIF%5D%20Demande%20de%20modification&body=Bonjour%2C%0A%0AJe%20souhaite%20une%20modification%20sur%20%3A%0A%0AProduit%20concern%C3%A9%20%3A%20%0ANature%20de%20la%20modification%20%3A%20%0A%0A" class="support-card">
-        <div class="icon-big">🔄</div>
-        <h3>Modification / MAJ</h3>
-        <p class="desc">Tu veux ajuster ton site, ton agent, ton cerveau après livraison. Modifications mineures gratuites pendant 30j.</p>
-        <span class="cta">Demander →</span>
-      </a>
+        <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BMODIF%5D%20Demande%20de%20modification&body=Bonjour%2C%0A%0AJe%20souhaite%20une%20modification%20sur%20%3A%0A%0AProduit%20concern%C3%A9%20%3A%20%0ANature%20de%20la%20modification%20%3A%20%0A%0A" class="support-card">
+          <div class="icon-big">🔄</div>
+          <h3>Modification / MAJ</h3>
+          <p class="desc">Tu veux ajuster ton site, ton agent, ton cerveau après livraison. Modifications mineures gratuites pendant 30j.</p>
+          <span class="cta">Demander →</span>
+        </a>
 
-      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BCOMMERCIAL%5D%20Demande%20commerciale&body=Bonjour%2C%0A%0AMa%20demande%20commerciale%20%3A%0A%0A" class="support-card">
-        <div class="icon-big">💼</div>
-        <h3>Demande commerciale</h3>
-        <p class="desc">Partenariat, devis personnalisé, projet sur-mesure hors-grille, revente, white-label.</p>
-        <span class="cta">Proposer →</span>
-      </a>
+        <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BCOMMERCIAL%5D%20Demande%20commerciale&body=Bonjour%2C%0A%0AMa%20demande%20commerciale%20%3A%0A%0A" class="support-card">
+          <div class="icon-big">💼</div>
+          <h3>Demande commerciale</h3>
+          <p class="desc">Partenariat, devis personnalisé, projet sur-mesure hors-grille, revente, white-label.</p>
+          <span class="cta">Proposer →</span>
+        </a>
 
-      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BPLAINTE%5D%20R%C3%A9clamation&body=Bonjour%2C%0A%0AJe%20souhaite%20faire%20une%20r%C3%A9clamation%20concernant%20%3A%0A%0ANature%20du%20probl%C3%A8me%20%3A%20%0AAttente%20de%20r%C3%A9solution%20%3A%20%0A%0A" class="support-card">
-        <div class="icon-big">🚨</div>
-        <h3>Plainte / Réclamation</h3>
-        <p class="desc">Quelque chose ne va pas. Tu n'es pas satisfait. Je traite chaque réclamation sous 48h.</p>
-        <span class="cta">Signaler →</span>
-      </a>
+        <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BPLAINTE%5D%20R%C3%A9clamation&body=Bonjour%2C%0A%0AJe%20souhaite%20faire%20une%20r%C3%A9clamation%20concernant%20%3A%0A%0ANature%20du%20probl%C3%A8me%20%3A%20%0AAttente%20de%20r%C3%A9solution%20%3A%20%0A%0A" class="support-card">
+          <div class="icon-big">🚨</div>
+          <h3>Plainte / Réclamation</h3>
+          <p class="desc">Quelque chose ne va pas. Tu n'es pas satisfait. Je traite chaque réclamation sous 48h.</p>
+          <span class="cta">Signaler →</span>
+        </a>
 
-      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BAUTRE%5D%20Autre%20demande&body=Bonjour%2C%0A%0A" class="support-card">
-        <div class="icon-big">❓</div>
-        <h3>Autre demande</h3>
-        <p class="desc">Question RGPD, suppression de données, presse, partenariat technique, autre sujet non listé.</p>
-        <span class="cta">Écrire →</span>
-      </a>
+        <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BAUTRE%5D%20Autre%20demande&body=Bonjour%2C%0A%0A" class="support-card">
+          <div class="icon-big">❓</div>
+          <h3>Autre demande</h3>
+          <p class="desc">Question RGPD, suppression de données, presse, partenariat technique, autre sujet non listé.</p>
+          <span class="cta">Écrire →</span>
+        </a>
+
+      </div>
+
+      <!-- FAQ -->
+      <h2 class="support-section-title">Questions fréquentes</h2>
+      <div class="support-faq">
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Combien de temps pour recevoir mon livrable ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            Sites basiques : 3-7 jours. Sites intermédiaires/complexes : 1 semaine. Forges : 24-48h. Agents : 1-2 semaines selon complexité. Cerveau/OS : 2-3 semaines. Pack Complet : 3-4 semaines (audit + setup inclus).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Comment je mets mon site en ligne après livraison ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            Tu reçois un ZIP avec le site (HTML/CSS/JS), un README détaillé, et un fichier INSTRUCTIONS pour Vercel/OVH/Netlify. C'est du 100% statique : tu uploades, ça marche. Si tu bloques, je t'aide via le SAV technique.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Puis-je modifier mon site après livraison ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            Oui. Le code t'appartient à 100%. Tu peux modifier toi-même (HTML/CSS classique), ou demander des modifs via le SAV. Modifications mineures gratuites pendant 30 jours, ensuite tarif horaire (50€/h) ou nouveau pack.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Quel est le délai de réponse au support ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            24h ouvrées (lun-ven 9h-19h). En SAV technique : 4h pour les bugs critiques sur Pack Complet (90j de support inclus). Le week-end, je réponds dès que possible mais sans engagement.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Comment je paie ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            Virement bancaire ou paiement en ligne (Stripe Payment Link). Facture envoyée immédiatement à validation du brief. Possibilité de paiement en 2x pour les commandes au-dessus de 1500€.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Et si je ne suis pas satisfait ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            On ajuste jusqu'à satisfaction (dans les limites du brief initial). En cas de désaccord persistant, voir les CGV pour les modalités de remboursement partiel. Mon objectif : que tu repartes content, c'est ce qui fait tourner OSIA.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Mes données sont-elles en sécurité ?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-a">
+            Oui. Aucune donnée client n'est partagée avec un tiers. Stockage local en France (mon serveur OSIA), hébergement Vercel pour le site vitrine. Pour toute demande RGPD (accès, suppression), écris à <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BRGPD%5D">crashcool.iaos@gmail.com</a>.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA commande -->
+      <div class="support-cta-block">
+        <h3>💡 Pour passer une commande</h3>
+        <p>Cette page est dédiée au support et au SAV. Pour passer une nouvelle commande, utilise le formulaire contact.</p>
+        <a href="contact.html" class="btn-primary">Passer une commande →</a>
+      </div>
 
     </section>
-
-    <!-- ============================================================
-         FAQ
-         ============================================================ -->
-    <div class="support-section-title">Questions fréquentes</div>
-    <section class="support-faq">
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Combien de temps pour recevoir mon livrable ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          Sites basiques : 3-7 jours. Sites intermédiaires/complexes : 1 semaine. Forges : 24-48h. Agents : 1-2 semaines selon complexité. Cerveau/OS : 2-3 semaines. Pack Complet : 3-4 semaines (audit + setup inclus).
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Comment je mets mon site en ligne après livraison ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          Tu reçois un ZIP avec le site (HTML/CSS/JS), un README détaillé, et un fichier INSTRUCTIONS pour Vercel/OVH/Netlify. C'est du 100% statique : tu uploades, ça marche. Si tu bloques, je t'aide via le SAV technique.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Puis-je modifier mon site après livraison ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          Oui. Le code t'appartient à 100%. Tu peux modifier toi-même (HTML/CSS classique), ou demander des modifs via le SAV. Modifications mineures gratuites pendant 30 jours, ensuite tarif horaire (50€/h) ou nouveau pack.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Quel est le délai de réponse au support ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          24h ouvrées (lun-ven 9h-19h). En SAV technique : 4h pour les bugs critiques sur Pack Complet (90j de support inclus). Le week-end, je réponds dès que possible mais sans engagement.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Comment je paie ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          Virement bancaire ou paiement en ligne (Stripe Payment Link). Facture envoyée immédiatement à validation du brief. Possibilité de paiement en 2x pour les commandes au-dessus de 1500€.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Et si je ne suis pas satisfait ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          On ajuste jusqu'à satisfaction (dans les limites du brief initial). En cas de désaccord persistant, voir les CGV pour les modalités de remboursement partiel. Mon objectif : que tu repartes content, c'est ce qui fait tourner OSIA.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">
-          <span>Mes données sont-elles en sécurité ?</span>
-          <span class="faq-toggle">▼</span>
-        </div>
-        <div class="faq-a">
-          Oui. Aucune donnée client n'est partagée avec un tiers. Stockage local en France (mon serveur OSIA), hébergement Vercel pour le site vitrine. Pour toute demande RGPD (accès, suppression), écris à <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BRGPD%5D">crashcool.iaos@gmail.com</a>.
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ============================================================
-         CTA pour les commandes (renvoie vers contact)
-         ============================================================ -->
-    <div class="support-cta-block">
-      <h3>💡 Pour passer une commande</h3>
-      <p>Cette page est dédiée au support et au SAV. Pour passer une nouvelle commande, utilise le formulaire contact.</p>
-      <a href="contact.html" class="btn-primary">Passer une commande →</a>
-    </div>
-
   </main>
 
   <footer class="osia-foot">
@@ -390,7 +414,6 @@
 
   <script src="assets/chatbot.js"></script>
   <script>
-    // Toggle FAQ
     document.querySelectorAll('.faq-item').forEach(item => {
       item.querySelector('.faq-q').addEventListener('click', () => {
         item.classList.toggle('open');
