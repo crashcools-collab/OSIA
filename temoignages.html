@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSIA · Témoignages</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/temoignages.css" />
+</head>
+<body class="temoignages-page">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-submenu">
+        <a href="sites-basiques.html">Sites</a>
+        <ul class="submenu">
+          <li><a href="sites-basiques.html">Basiques</a></li>
+          <li><a href="sites-avances.html">Avancés</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="forge-workflow.html">Forges</a>
+        <ul class="submenu">
+          <li><a href="forge-workflow.html">Workflow</a></li>
+          <li><a href="forge-prompt.html">Prompt</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="agent-simple.html">Agents IA</a>
+        <ul class="submenu">
+          <li><a href="agent-simple.html">Simple</a></li>
+          <li><a href="agent-superieur.html">Supérieur</a></li>
+        </ul>
+      </li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a class="active" href="temoignages.html">Témoignages</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="osia-main temoignages-main">
+    <section class="temoignages-wrap">
+
+      <!-- Header -->
+      <header class="temoignages-head">
+        <span class="tag">// PHASE DE TEST · BETA OUVERTE</span>
+        <h2>Donne ton avis. <span class="accent">Aide OSIA à grandir.</span></h2>
+        <p class="temoignages-baseline">
+          OSIA est en phase de test. Ton avis nous aide à corriger les bugs, ajuster les produits,
+          et préparer l'ouverture officielle. Tous les retours sont publiés en direct.
+        </p>
+      </header>
+
+      <!-- 2-col layout : formulaire + avis -->
+      <div class="temoignages-layout">
+
+        <!-- ====== FORM ====== -->
+        <aside class="form-side">
+          <div class="form-card">
+            <h3 class="form-title">// LAISSE TON RETOUR</h3>
+            <p class="form-sub">Tous les champs marqués * sont obligatoires.</p>
+
+            <form id="reviewForm" class="review-form" novalidate>
+
+              <div class="field">
+                <label for="rev-name">Pseudo / Prénom *</label>
+                <input type="text" id="rev-name" name="name" maxlength="80" required placeholder="ex : Cedric, Anonyme22, etc." />
+              </div>
+
+              <div class="field">
+                <label for="rev-product">Produit testé</label>
+                <select id="rev-product" name="product">
+                  <option value="global">Avis général sur OSIA</option>
+                  <option value="site-vitrine">Site Vitrine (297€)</option>
+                  <option value="site-coach">Site Coach (297€)</option>
+                  <option value="site-artisan">Site Artisan (297€)</option>
+                  <option value="site-restaurant">Site Restaurant (497€)</option>
+                  <option value="site-portfolio">Site Portfolio (497€)</option>
+                  <option value="site-landing">Site Landing (497€)</option>
+                  <option value="site-ecommerce">Site E-commerce (697€)</option>
+                  <option value="site-association">Site Association (697€)</option>
+                  <option value="forge-workflow">Forge Workflow (30€)</option>
+                  <option value="forge-prompt">Forge Prompt (30€)</option>
+                  <option value="agent-simple">Agent IA Simple (597€)</option>
+                  <option value="agent-superieur">Agent IA Supérieur (1497€)</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Note *</label>
+                <div class="rating-input" id="ratingInput">
+                  <button type="button" data-rate="1" aria-label="1 étoile">★</button>
+                  <button type="button" data-rate="2" aria-label="2 étoiles">★</button>
+                  <button type="button" data-rate="3" aria-label="3 étoiles">★</button>
+                  <button type="button" data-rate="4" aria-label="4 étoiles">★</button>
+                  <button type="button" data-rate="5" aria-label="5 étoiles">★</button>
+                </div>
+                <input type="hidden" id="rev-rating" name="rating" value="5" required />
+              </div>
+
+              <div class="field">
+                <label for="rev-message">Ton retour *</label>
+                <textarea id="rev-message" name="message" rows="5" maxlength="2000" required placeholder="Qu'est-ce qui marche ? Qu'est-ce qui bug ? Qu'est-ce qui manque ?"></textarea>
+                <span class="char-count" id="charCount">0 / 2000</span>
+              </div>
+
+              <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">
+                <span class="btn-label">Envoyer mon avis →</span>
+                <span class="btn-loading">Envoi…</span>
+              </button>
+
+              <div class="form-feedback" id="formFeedback" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </aside>
+
+        <!-- ====== REVIEWS LIST ====== -->
+        <section class="reviews-side">
+          <div class="reviews-head">
+            <h3 class="reviews-title">// AVIS DES TESTEURS</h3>
+            <div class="reviews-stats" id="reviewsStats">
+              <span class="stat"><span id="statCount">—</span> avis</span>
+              <span class="stat-sep">·</span>
+              <span class="stat"><span id="statAvg">—</span> / 5 ★</span>
+            </div>
+          </div>
+
+          <div class="reviews-filter">
+            <label for="filterProduct">Filtrer :</label>
+            <select id="filterProduct">
+              <option value="all">Tous les produits</option>
+            </select>
+          </div>
+
+          <div class="reviews-list" id="reviewsList">
+            <div class="reviews-loading">Chargement des témoignages…</div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Note de bas -->
+      <p class="legal">
+        Cette page est temporaire et sera retirée à l'ouverture officielle d'OSIA.
+        Aucun avis n'est filtré · tous les retours s'affichent en direct.
+      </p>
+
+    </section>
+  </main>
+
+  <!-- ===== FOOTER NAV ===== -->
+  <footer class="osia-foot">
+    <div class="page-indicator">
+      PAGE <span class="current">07</span> / 07 · TÉMOIGNAGES
+    </div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="forum.html">← Forum</a>
+      <a href="contact.html" class="next">Contact →</a>
+    </div>
+  </footer>
+
+  <!-- ===== CHATBOT ===== -->
+  <script src="assets/chatbot.js"></script>
+
+  <!-- ===== TEMOIGNAGES LOGIC ===== -->
+  <script>
+  (function () {
+    'use strict';
+
+    // ----- API endpoint (même origine) -----
+    const API_URL = '/api/temoignages';
+
+    // ----- Labels lisibles des produits -----
+    const PRODUCT_LABELS = {
+      'global': 'Avis général',
+      'site-vitrine': 'Site Vitrine',
+      'site-coach': 'Site Coach',
+      'site-artisan': 'Site Artisan',
+      'site-restaurant': 'Site Restaurant',
+      'site-portfolio': 'Site Portfolio',
+      'site-landing': 'Site Landing',
+      'site-ecommerce': 'Site E-commerce',
+      'site-association': 'Site Association',
+      'forge-workflow': 'Forge Workflow',
+      'forge-prompt': 'Forge Prompt',
+      'agent-simple': 'Agent IA Simple',
+      'agent-superieur': 'Agent IA Supérieur',
+    };
+
+    // ----- Elements -----
+    const form = document.getElementById('reviewForm');
+    const ratingInput = document.getElementById('ratingInput');
+    const ratingValue = document.getElementById('rev-rating');
+    const messageField = document.getElementById('rev-message');
+    const charCount = document.getElementById('charCount');
+    const submitBtn = document.getElementById('submitBtn');
+    const feedback = document.getElementById('formFeedback');
+    const reviewsList = document.getElementById('reviewsList');
+    const filterProduct = document.getElementById('filterProduct');
+    const statCount = document.getElementById('statCount');
+    const statAvg = document.getElementById('statAvg');
+
+    let allReviews = [];
+
+    // ----- Rating stars -----
+    function setRating(n) {
+      ratingValue.value = n;
+      const buttons = ratingInput.querySelectorAll('button');
+      buttons.forEach((b) => {
+        b.classList.toggle('active', parseInt(b.dataset.rate, 10) <= n);
+      });
+    }
+    setRating(5);
+    ratingInput.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-rate]');
+      if (!btn) return;
+      setRating(parseInt(btn.dataset.rate, 10));
+    });
+
+    // ----- Char counter -----
+    messageField.addEventListener('input', () => {
+      const len = messageField.value.length;
+      charCount.textContent = len + ' / 2000';
+      charCount.classList.toggle('warn', len > 1800);
+    });
+
+    // ----- Escape HTML for safe display -----
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ----- Format relative time -----
+    function timeAgo(iso) {
+      const d = new Date(iso);
+      const sec = Math.floor((Date.now() - d.getTime()) / 1000);
+      if (sec < 60) return 'à l\'instant';
+      if (sec < 3600) return Math.floor(sec / 60) + ' min';
+      if (sec < 86400) return Math.floor(sec / 3600) + 'h';
+      if (sec < 2592000) return Math.floor(sec / 86400) + ' j';
+      return d.toLocaleDateString('fr-FR');
+    }
+
+    // ----- Render reviews -----
+    function renderReviews(filter) {
+      const filtered = filter && filter !== 'all'
+        ? allReviews.filter((r) => r.product === filter)
+        : allReviews;
+
+      if (filtered.length === 0) {
+        reviewsList.innerHTML = '<div class="reviews-empty">Aucun avis ' +
+          (filter && filter !== 'all' ? 'pour ce produit.' : 'pour l\'instant. Sois le premier à témoigner !') + '</div>';
+        return;
+      }
+
+      reviewsList.innerHTML = filtered.map((r) => {
+        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        const productLabel = PRODUCT_LABELS[r.product] || r.product || 'Avis';
+        return `
+          <article class="review-card">
+            <header class="review-head">
+              <div class="review-author">${escapeHtml(r.name)}</div>
+              <div class="review-meta">
+                <span class="review-product">${escapeHtml(productLabel)}</span>
+                <span class="review-sep">·</span>
+                <span class="review-date">${escapeHtml(timeAgo(r.timestamp))}</span>
+              </div>
+            </header>
+            <div class="review-rating">${stars}</div>
+            <p class="review-msg">${escapeHtml(r.message)}</p>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // ----- Render stats + filter options -----
+    function renderStats() {
+      statCount.textContent = allReviews.length;
+      if (allReviews.length === 0) {
+        statAvg.textContent = '—';
+      } else {
+        const avg = allReviews.reduce((s, r) => s + r.rating, 0) / allReviews.length;
+        statAvg.textContent = avg.toFixed(1);
+      }
+
+      // Rebuild filter options based on actual products
+      const presentProducts = new Set();
+      allReviews.forEach((r) => presentProducts.add(r.product));
+
+      const currentValue = filterProduct.value;
+      filterProduct.innerHTML = '<option value="all">Tous les produits (' + allReviews.length + ')</option>';
+      presentProducts.forEach((p) => {
+        const count = allReviews.filter((r) => r.product === p).length;
+        const label = PRODUCT_LABELS[p] || p;
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.textContent = label + ' (' + count + ')';
+        filterProduct.appendChild(opt);
+      });
+
+      // Restore previous filter if still valid
+      if ([...filterProduct.options].some((o) => o.value === currentValue)) {
+        filterProduct.value = currentValue;
+      }
+    }
+
+    // ----- Load reviews -----
+    async function loadReviews() {
+      try {
+        const r = await fetch(API_URL, { method: 'GET' });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const data = await r.json();
+        allReviews = data.reviews || [];
+        renderStats();
+        renderReviews(filterProduct.value);
+      } catch (e) {
+        reviewsList.innerHTML = '<div class="reviews-error">⚠ Impossible de charger les avis pour le moment. (' + escapeHtml(e.message) + ')</div>';
+      }
+    }
+
+    // ----- Filter change -----
+    filterProduct.addEventListener('change', () => renderReviews(filterProduct.value));
+
+    // ----- Submit form -----
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      feedback.textContent = '';
+      feedback.className = 'form-feedback';
+
+      const name = document.getElementById('rev-name').value.trim();
+      const product = document.getElementById('rev-product').value;
+      const rating = parseInt(ratingValue.value, 10);
+      const message = messageField.value.trim();
+
+      if (name.length < 2) {
+        feedback.textContent = '⚠ Pseudo trop court (min 2 caractères).';
+        feedback.className = 'form-feedback err';
+        return;
+      }
+      if (message.length < 10) {
+        feedback.textContent = '⚠ Message trop court (min 10 caractères).';
+        feedback.className = 'form-feedback err';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+
+      try {
+        const r = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, product, rating, message }),
+        });
+        const data = await r.json();
+
+        if (!r.ok || !data.ok) {
+          throw new Error(data.error || 'HTTP ' + r.status);
+        }
+
+        // Succès
+        feedback.textContent = '✓ Merci ! Ton avis est en ligne.';
+        feedback.className = 'form-feedback ok';
+        form.reset();
+        setRating(5);
+        charCount.textContent = '0 / 2000';
+        charCount.classList.remove('warn');
+
+        // Recharge la liste
+        await loadReviews();
+      } catch (e) {
+        feedback.textContent = '✗ Erreur : ' + e.message;
+        feedback.className = 'form-feedback err';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+      }
+    });
+
+    // ----- Init -----
+    loadReviews();
+  })();
+  </script>
+</body>
+</html>
