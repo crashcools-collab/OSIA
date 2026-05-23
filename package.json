@@ -1,0 +1,9 @@
+{
+  "name": "osia-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OSIA · Site agence web automatisée par IA",
+  "dependencies": {
+    "@vercel/kv": "^2.0.0"
+  }
+}
