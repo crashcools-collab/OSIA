@@ -1,8 +1,16 @@
 // ============================================================
 // OSIA · Vercel Function · Témoignages
+// GET  /api/temoignages       → liste tous les avis
+// POST /api/temoignages       → ajoute un nouvel avis
+// Stockage : Upstash Redis — clé "osia:temoignages"
 // ============================================================
 
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+});
 
 const KEY = 'osia:temoignages';
 const MAX_NAME = 80;
@@ -23,7 +31,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const items = await kv.lrange(KEY, 0, MAX_FETCH - 1);
+      const items = await redis.lrange(KEY, 0, MAX_FETCH - 1);
       const reviews = (items || []).map((it) => {
         if (typeof it === 'string') {
           try { return JSON.parse(it); } catch { return null; }
@@ -71,7 +79,7 @@ export default async function handler(req, res) {
         timestamp: new Date().toISOString(),
       };
 
-      await kv.lpush(KEY, JSON.stringify(review));
+      await redis.lpush(KEY, JSON.stringify(review));
 
       return res.status(200).json({ ok: true, review });
     }
