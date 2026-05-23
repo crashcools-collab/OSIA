@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSIA · Support / SAV / Aide</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .support-main { padding: 2rem 1rem 4rem; }
+
+    .support-hero {
+      text-align: center;
+      margin-bottom: 3rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .support-hero .tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 0.8rem;
+    }
+    .support-hero h1 {
+      font-size: 2.5rem;
+      margin: 0 0 0.5rem;
+    }
+    .support-hero .subtitle {
+      color: rgba(255,255,255,0.65);
+      font-size: 1.05rem;
+      margin: 0 auto 2rem;
+    }
+    .support-email-main {
+      display: inline-block;
+      padding: 1.2rem 2.5rem;
+      border: 2px solid #FF00AA;
+      border-radius: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.2s;
+      background: rgba(255,0,170,0.05);
+    }
+    .support-email-main:hover {
+      background: rgba(255,0,170,0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255,0,170,0.2);
+    }
+    .support-delay {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 1rem;
+    }
+
+    /* Section categories */
+    .support-section-title {
+      max-width: 1100px;
+      margin: 3rem auto 1.5rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .support-cats {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .support-card {
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .support-card:hover {
+      border-color: #FF00AA;
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-2px);
+    }
+    .support-card .icon-big {
+      font-size: 2.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .support-card h3 {
+      font-size: 1.1rem;
+      margin: 0;
+      color: #fff;
+    }
+    .support-card .desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
+      flex-grow: 1;
+    }
+    .support-card .cta {
+      color: #FF00AA;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    /* FAQ */
+    .support-faq {
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+    .faq-item {
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 0.6rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+      transition: all 0.15s;
+    }
+    .faq-item:hover {
+      border-color: rgba(255,255,255,0.25);
+    }
+    .faq-q {
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .faq-toggle {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .faq-a {
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.65);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-toggle { transform: rotate(180deg); }
+
+    /* Block contact commande */
+    .support-cta-block {
+      max-width: 700px;
+      margin: 3rem auto 0;
+      padding: 2rem;
+      text-align: center;
+      border: 1px dashed rgba(255,255,255,0.2);
+      border-radius: 10px;
+    }
+    .support-cta-block h3 {
+      font-size: 1.2rem;
+      margin: 0 0 0.5rem;
+    }
+    .support-cta-block p {
+      color: rgba(255,255,255,0.6);
+      margin: 0 0 1.2rem;
+    }
+    .support-cta-block .btn-primary {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: #FF00AA;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .support-cta-block .btn-primary:hover {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-submenu">
+        <a href="sites-basiques.html">Sites</a>
+        <ul class="submenu">
+          <li><a href="sites-basiques.html">Basiques</a></li>
+          <li><a href="sites-avances.html">Avancés</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="forge-workflow.html">Forges</a>
+        <ul class="submenu">
+          <li><a href="forge-workflow.html">Workflow</a></li>
+          <li><a href="forge-prompt.html">Prompt</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="agent-simple.html">Agents IA</a>
+        <ul class="submenu">
+          <li><a href="agent-simple.html">Simple</a></li>
+          <li><a href="agent-superieur.html">Supérieur</a></li>
+        </ul>
+      </li>
+      <li><a href="cerveaux.html">Cerveau</a></li>
+      <li><a href="os.html">OS</a></li>
+      <li><a href="pack-complet.html">Pack &#x1F525;</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="temoignages.html">Témoignages</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a class="active" href="support.html">Support</a></li>
+    </ul>
+  </nav>
+
+  <main class="osia-main support-main">
+
+    <header class="support-hero">
+      <span class="tag">// SUPPORT · SAV · AIDE</span>
+      <h1>Besoin d'aide ?</h1>
+      <p class="subtitle">Documentation, problèmes techniques, réclamations, modifications. Je traite chaque demande personnellement, sans bot.</p>
+      <a href="mailto:crashcool.iaos@gmail.com" class="support-email-main">📧 crashcool.iaos@gmail.com</a>
+      <p class="support-delay">Réponse sous 24h ouvrées (lun-ven)</p>
+    </header>
+
+    <!-- ============================================================
+         CATEGORIES DE DEMANDES
+         ============================================================ -->
+    <div class="support-section-title">Quelle est ta demande ?</div>
+    <section class="support-cats">
+
+      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BDOC%5D%20Question%20documentation%20%2F%20produit&body=Bonjour%2C%0A%0AMa%20question%20concerne%20%3A%0A%0A" class="support-card">
+        <div class="icon-big">📚</div>
+        <h3>Documentation</h3>
+        <p class="desc">Questions sur un produit, ce qui est inclus, comment ça fonctionne, prérequis techniques…</p>
+        <span class="cta">Écrire à OSIA →</span>
+      </a>
+
+      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BSAV%5D%20Probl%C3%A8me%20technique&body=Bonjour%2C%0A%0AJe%20rencontre%20un%20probl%C3%A8me%20avec%20%3A%0A%0ANom%20du%20produit%20%3A%20%0ANom%20du%20projet%20%2F%20ID%20%3A%20%0ADescription%20du%20probl%C3%A8me%20%3A%20%0A%0A" class="support-card">
+        <div class="icon-big">🔧</div>
+        <h3>SAV technique</h3>
+        <p class="desc">Un livrable ne fonctionne pas comme prévu, erreur de déploiement, bug, problème de configuration.</p>
+        <span class="cta">Signaler →</span>
+      </a>
+
+      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BMODIF%5D%20Demande%20de%20modification&body=Bonjour%2C%0A%0AJe%20souhaite%20une%20modification%20sur%20%3A%0A%0AProduit%20concern%C3%A9%20%3A%20%0ANature%20de%20la%20modification%20%3A%20%0A%0A" class="support-card">
+        <div class="icon-big">🔄</div>
+        <h3>Modification / MAJ</h3>
+        <p class="desc">Tu veux ajuster ton site, ton agent, ton cerveau après livraison. Modifications mineures gratuites pendant 30j.</p>
+        <span class="cta">Demander →</span>
+      </a>
+
+      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BCOMMERCIAL%5D%20Demande%20commerciale&body=Bonjour%2C%0A%0AMa%20demande%20commerciale%20%3A%0A%0A" class="support-card">
+        <div class="icon-big">💼</div>
+        <h3>Demande commerciale</h3>
+        <p class="desc">Partenariat, devis personnalisé, projet sur-mesure hors-grille, revente, white-label.</p>
+        <span class="cta">Proposer →</span>
+      </a>
+
+      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BPLAINTE%5D%20R%C3%A9clamation&body=Bonjour%2C%0A%0AJe%20souhaite%20faire%20une%20r%C3%A9clamation%20concernant%20%3A%0A%0ANature%20du%20probl%C3%A8me%20%3A%20%0AAttente%20de%20r%C3%A9solution%20%3A%20%0A%0A" class="support-card">
+        <div class="icon-big">🚨</div>
+        <h3>Plainte / Réclamation</h3>
+        <p class="desc">Quelque chose ne va pas. Tu n'es pas satisfait. Je traite chaque réclamation sous 48h.</p>
+        <span class="cta">Signaler →</span>
+      </a>
+
+      <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BAUTRE%5D%20Autre%20demande&body=Bonjour%2C%0A%0A" class="support-card">
+        <div class="icon-big">❓</div>
+        <h3>Autre demande</h3>
+        <p class="desc">Question RGPD, suppression de données, presse, partenariat technique, autre sujet non listé.</p>
+        <span class="cta">Écrire →</span>
+      </a>
+
+    </section>
+
+    <!-- ============================================================
+         FAQ
+         ============================================================ -->
+    <div class="support-section-title">Questions fréquentes</div>
+    <section class="support-faq">
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Combien de temps pour recevoir mon livrable ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          Sites basiques : 3-7 jours. Sites intermédiaires/complexes : 1 semaine. Forges : 24-48h. Agents : 1-2 semaines selon complexité. Cerveau/OS : 2-3 semaines. Pack Complet : 3-4 semaines (audit + setup inclus).
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Comment je mets mon site en ligne après livraison ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          Tu reçois un ZIP avec le site (HTML/CSS/JS), un README détaillé, et un fichier INSTRUCTIONS pour Vercel/OVH/Netlify. C'est du 100% statique : tu uploades, ça marche. Si tu bloques, je t'aide via le SAV technique.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Puis-je modifier mon site après livraison ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          Oui. Le code t'appartient à 100%. Tu peux modifier toi-même (HTML/CSS classique), ou demander des modifs via le SAV. Modifications mineures gratuites pendant 30 jours, ensuite tarif horaire (50€/h) ou nouveau pack.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Quel est le délai de réponse au support ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          24h ouvrées (lun-ven 9h-19h). En SAV technique : 4h pour les bugs critiques sur Pack Complet (90j de support inclus). Le week-end, je réponds dès que possible mais sans engagement.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Comment je paie ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          Virement bancaire ou paiement en ligne (Stripe Payment Link). Facture envoyée immédiatement à validation du brief. Possibilité de paiement en 2x pour les commandes au-dessus de 1500€.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Et si je ne suis pas satisfait ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          On ajuste jusqu'à satisfaction (dans les limites du brief initial). En cas de désaccord persistant, voir les CGV pour les modalités de remboursement partiel. Mon objectif : que tu repartes content, c'est ce qui fait tourner OSIA.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span>Mes données sont-elles en sécurité ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-a">
+          Oui. Aucune donnée client n'est partagée avec un tiers. Stockage local en France (mon serveur OSIA), hébergement Vercel pour le site vitrine. Pour toute demande RGPD (accès, suppression), écris à <a href="mailto:crashcool.iaos@gmail.com?subject=%5BOSIA%20Support%5D%20%5BRGPD%5D">crashcool.iaos@gmail.com</a>.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         CTA pour les commandes (renvoie vers contact)
+         ============================================================ -->
+    <div class="support-cta-block">
+      <h3>💡 Pour passer une commande</h3>
+      <p>Cette page est dédiée au support et au SAV. Pour passer une nouvelle commande, utilise le formulaire contact.</p>
+      <a href="contact.html" class="btn-primary">Passer une commande →</a>
+    </div>
+
+  </main>
+
+  <footer class="osia-foot">
+    <div class="page-indicator">SUPPORT · SAV · AIDE</div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="contact.html">← Contact</a>
+      <a href="index.html" class="next">Retour accueil →</a>
+    </div>
+  </footer>
+
+  <script src="assets/chatbot.js"></script>
+  <script>
+    // Toggle FAQ
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.querySelector('.faq-q').addEventListener('click', () => {
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
