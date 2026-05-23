@@ -145,7 +145,7 @@ body.tarifs-page .osia-main {
   border-left-color: var(--neon-lime);
 }
 
-.tier-block.tier-forge .tier-head,
+/* tier-forge .tier-head is now visible to show "30 € / unité" */
 .tier-block.tier-agent .tier-head {
   display: none;
 }
