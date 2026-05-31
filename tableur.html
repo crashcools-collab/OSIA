@@ -435,6 +435,7 @@ document.getElementById("formulaInput").addEventListener("keydown",e=>{
 
 /* ---------- AI PROF — ROUTER MULTI-LLM ---------- */
 const PROVIDERS={
+  osia:{label:"OSIA",sub:"relais IA",url:"/api/chat",model:"",type:"osia"},
   deepseek:{label:"DeepSeek",sub:"deepseek-chat",url:"https://api.deepseek.com/v1/chat/completions",model:"deepseek-chat",type:"openai"},
   nvidia:{label:"NVIDIA NIM",sub:"llama-3.3-70b",url:"https://integrate.api.nvidia.com/v1/chat/completions",model:"meta/llama-3.3-70b-instruct",type:"openai"},
   groq:{label:"Groq",sub:"llama-3.3-70b",url:"https://api.groq.com/openai/v1/chat/completions",model:"llama-3.3-70b-versatile",type:"openai"},
@@ -450,8 +451,9 @@ const PROV_ORDER=["deepseek","nvidia","groq","gemini","mistral","cerebras","open
 function cfg(){ return JSON.parse(localStorage.getItem("osia_tableur_api")||"{}"); }
 function chain(){
   const c=cfg().providers||{};
-  return PROV_ORDER.filter(id=>c[id]&&c[id].on&&(c[id].key||id==="gateway"))
+  const extra=PROV_ORDER.filter(id=>c[id]&&c[id].on&&(c[id].key||id==="gateway"))
     .sort((a,b)=>(c[a].prio||9)-(c[b].prio||9));
+  return ["osia",...extra.filter(id=>id!=="osia")];  // relais OSIA toujours actif en 1er
 }
 function refreshStatus(){
   const ch=chain(), el=document.getElementById("apiStatus");
@@ -469,6 +471,13 @@ async function callProvider(id,userMsg){
   const url=c.url||P.url, model=c.model||P.model, key=c.key||"";
   if(!url) throw new Error("URL manquante ("+P.label+")");
   let res;
+  if(P.type==="osia"){
+    res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model,messages:[{role:"system",content:SYSTEM},{role:"user",content:userMsg}]})});
+    const d=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(d.error||("HTTP "+res.status));
+    if(!d.content) throw new Error("réponse vide"); return d.content;
+  }
   if(P.type==="anthropic"){
     res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
       body:JSON.stringify({model,max_tokens:1000,system:SYSTEM,messages:[{role:"user",content:userMsg}]})});
@@ -633,7 +642,7 @@ document.getElementById("clearBtn").onclick=()=>{if(confirm("Tout effacer ?")){p
 document.getElementById("undoBtn").onclick=undo;
 document.getElementById("redoBtn").onclick=redo;
 load(); buildGrid(); render(); selectCell("A1"); refreshStatus();
-addMsg("bot","Salut 👋 Je suis Maître Tableur, ton prof de tableur. Charge un modèle (📋 en haut), ou demande-moi par exemple : « comment additionner B2 à B10 ? » — je te donne la formule + un bouton pour l'insérer direct.\n\n💡 Le tableur fonctionne tout seul (formules, modèles, graphique, CSV). Pour activer le prof IA, ouvre ⚙ API et colle ta clé — ou attends la version connectée OSIA. Ctrl+Z pour annuler.");
+addMsg("bot","Salut 👋 Je suis Maître Tableur, ton prof de tableur connecté à l'IA. Charge un modèle (📋 en haut), ou demande-moi par exemple : « comment additionner B2 à B10 ? » — je te donne la formule + un bouton pour l'insérer direct. Ctrl+Z pour annuler.");
 </script>
 </body>
 </html>
