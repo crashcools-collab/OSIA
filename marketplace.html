@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSIA — L'App Store des Agents IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* OSIA — manifesto stylesheet */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+
+
+:root {
+  --paper: #F2EFE8;
+  --paper-2: #EAE6DC;
+  --paper-3: #DCD7C9;
+  --ink: #0B0B0C;
+  --ink-2: #2A2A2E;
+  --ink-3: #5A5A60;
+  --ink-4: #8E8E92;
+  --acid: oklch(0.86 0.20 122);  /* electric lime */
+  --acid-deep: oklch(0.66 0.20 122);
+  --warn: oklch(0.72 0.18 35);
+  --hairline: rgba(11,11,12,0.14);
+  --hairline-strong: rgba(11,11,12,0.32);
+
+  --display: "Instrument Serif", "Times New Roman", serif;
+  --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --gutter: 32px;
+  --row: 88px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-density="compact"] { --gutter: 20px; --row: 64px; }
+body[data-density="airy"] { --gutter: 48px; --row: 120px; }
+
+::selection { background: var(--acid); color: var(--ink); }
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+/* âââââââââ Layout âââââââââ */
+
+.frame {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
+.hairline-strong { border: 0; border-top: 1px solid var(--hairline-strong); margin: 0; }
+
+.row { display: flex; align-items: center; gap: 16px; }
+.spread { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  background: transparent;
+  border: 1px solid var(--hairline-strong);
+  color: var(--ink-2);
+}
+.tag .dot { width: 6px; height: 6px; background: var(--acid-deep); border-radius: 50%; }
+.tag.live .dot { background: var(--warn); animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+
+/* âââââââââ Top bar âââââââââ */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+  backdrop-filter: saturate(140%) blur(8px);
+}
+.topbar .inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 56px;
+}
+.wordmark {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--display); font-size: 26px; line-height: 1;
+}
+.wordmark .crash { font-style: italic; }
+.wordmark .dot {
+  width: 7px; height: 7px; background: var(--acid-deep); border-radius: 50%;
+  display: inline-block; transform: translateY(-3px);
+}
+.wordmark .id {
+  font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+  letter-spacing: 0.08em;
+}
+.nav-links { display: flex; gap: 28px; justify-content: center; font-size: 13.5px; }
+.nav-links a { position: relative; color: var(--ink-2); }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a.active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -19px; height: 2px; background: var(--ink);
+}
+
+.lang-toggle {
+  display: inline-flex; border: 1px solid var(--hairline-strong); height: 28px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+}
+.lang-toggle button {
+  background: transparent; border: 0; padding: 0 10px; cursor: pointer; color: var(--ink-3);
+}
+.lang-toggle button.on { background: var(--ink); color: var(--paper); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 44px; padding: 0 18px; border: 1px solid var(--ink); background: var(--ink);
+  color: var(--paper); font-size: 13.5px; cursor: pointer; font-family: inherit;
+  transition: transform .12s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn .arr { font-family: var(--mono); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.acid { background: var(--acid); border-color: var(--acid-deep); color: var(--ink); }
+.btn.sm { height: 32px; padding: 0 12px; font-size: 12px; }
+
+/* âââââââââ Hero âââââââââ */
+
+.hero { padding: 60px 0 24px; position: relative; }
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(72px, 11vw, 184px);
+  line-height: 0.86;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+.hero h1 em { font-style: italic; }
+.hero h1 .acid-mark {
+  background: var(--acid);
+  padding: 0 0.08em;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  margin-top: 48px;
+  align-items: end;
+}
+.hero-blurb { max-width: 560px; font-size: 18px; line-height: 1.5; color: var(--ink-2); }
+.hero-blurb b { font-weight: 600; color: var(--ink); }
+
+.hero-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--hairline-strong);
+  border-bottom: 1px solid var(--hairline-strong);
+}
+.hero-meta .cell {
+  padding: 16px 0; padding-right: 16px;
+  border-right: 1px solid var(--hairline);
+}
+.hero-meta .cell:last-child { border-right: 0; padding-left: 16px; padding-right: 0; }
+.hero-meta .num {
+  font-family: var(--display); font-size: 44px; line-height: 1; margin-top: 4px;
+}
+
+.hero-cta { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+
+.hero-bottombar {
+  margin-top: 40px;
+  padding: 14px 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  display: flex; justify-content: space-between; gap: 24px; align-items: center;
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero-bottombar .live-num { color: var(--ink); }
+
+/* âââââââââ OSIA panel âââââââââ */
+
+.aria-shell {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 0;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+.aria-left { padding: 36px 32px; display: flex; flex-direction: column; justify-content: space-between; }
+.aria-left h3 {
+  font-family: var(--display); font-weight: 400; font-size: 56px; line-height: 0.95;
+  margin: 0;
+}
+.aria-left .sub {
+  margin-top: 14px; max-width: 320px; font-size: 14px; line-height: 1.5; color: rgba(242,239,232,0.65);
+}
+.aria-left .badge {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--acid); display: inline-flex; align-items: center; gap: 8px;
+}
+
+.aria-right {
+  background: #0F0F11;
+  padding: 24px 28px;
+  display: flex; flex-direction: column;
+  min-height: 360px;
+  border-left: 1px solid rgba(242,239,232,0.12);
+}
+.aria-right .head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 10.5px; color: rgba(242,239,232,0.45);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding-bottom: 16px; border-bottom: 1px solid rgba(242,239,232,0.08);
+}
+.aria-msgs { flex: 1; padding: 18px 0; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+.aria-msg { max-width: 86%; font-size: 14.5px; line-height: 1.5; }
+.aria-msg.user {
+  align-self: flex-end; background: rgba(242,239,232,0.08); padding: 10px 14px;
+  color: var(--paper);
+}
+.aria-msg.aria { color: rgba(242,239,232,0.92); padding-left: 0; position: relative; }
+.aria-msg.aria::before {
+  content: "OSIA"; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--acid); display: block; margin-bottom: 4px;
+}
+.aria-msg.aria .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.aria-msg.aria .pill {
+  font-family: var(--mono); font-size: 11px;
+  padding: 4px 10px; border: 1px solid rgba(242,239,232,0.25);
+  cursor: pointer; transition: background .15s;
+}
+.aria-msg.aria .pill:hover { background: var(--acid); color: var(--ink); border-color: var(--acid); }
+.aria-msg.aria .typing-cursor {
+  display: inline-block; width: 8px; height: 1em; background: var(--acid); vertical-align: -2px;
+  margin-left: 1px; animation: blink 0.9s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.aria-input {
+  margin-top: auto;
+  display: flex; gap: 0;
+  border: 1px solid rgba(242,239,232,0.2);
+}
+.aria-input input {
+  flex: 1; background: transparent; border: 0; outline: none; color: var(--paper);
+  padding: 0 14px; font-family: inherit; font-size: 13.5px;
+}
+.aria-input button {
+  background: var(--acid); color: var(--ink); border: 0; padding: 10px 18px; cursor: pointer;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* âââââââââ Section header âââââââââ */
+.section { padding: 80px 0 24px; }
+.section-head {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 32px;
+  padding-bottom: 24px; border-bottom: 1px solid var(--ink);
+}
+.section-head .num {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-3);
+  align-self: start; padding-top: 8px;
+}
+.section-head h2 {
+  font-family: var(--display); font-weight: 400; margin: 0;
+  font-size: clamp(40px, 5vw, 72px); line-height: 0.95; letter-spacing: -0.02em;
+}
+.section-head h2 em { font-style: italic; }
+.section-head .meta {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em;
+  text-align: right; text-transform: uppercase;
+}
+
+/* âââââââââ Category carousel âââââââââ */
+.carousel-wrap { position: relative; padding: 24px 0 8px; }
+.carousel-track {
+  display: flex; gap: 14px; overflow: hidden;
+  scroll-behavior: smooth; padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  cursor: grab;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track.dragging { cursor: grabbing; }
+
+.cat-card {
+  flex: 0 0 320px; min-height: 220px;
+  border: 1px solid var(--hairline-strong);
+  background: var(--paper-2);
+  padding: 18px 20px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  cursor: pointer; transition: background .2s, border-color .2s, transform .2s;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cat-card:hover .cat-num, .cat-card:hover .cat-sub { color: rgba(242,239,232,0.65); }
+.cat-card.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cat-card.active .cat-num, .cat-card.active .cat-sub { color: rgba(242,239,232,0.65); }
+.cat-card .cat-num { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em; }
+.cat-card .cat-name {
+  font-family: var(--display); font-size: 38px; line-height: 1; margin-top: 16px; letter-spacing: -0.01em;
+}
+.cat-card .cat-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; line-height: 1.4; }
+.cat-card .cat-foot {
+  display: flex; justify-content: space-between; align-items: end; margin-top: 18px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+}
+.cat-card .cat-count { font-family: var(--display); font-size: 32px; line-height: 1; }
+
+.carousel-nav { position: absolute; top: 24px; right: 0; display: flex; gap: 6px; }
+.carousel-nav button {
+  width: 36px; height: 36px; border: 1px solid var(--ink); background: var(--paper);
+  font-family: var(--mono); cursor: pointer; font-size: 14px;
+}
+.carousel-nav button:hover { background: var(--ink); color: var(--paper); }
+
+/* âââââââââ Filter bar âââââââââ */
+.filter-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.filter-bar .label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3); margin-right: 8px;
+}
+.chip {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+  padding: 6px 10px; border: 1px solid var(--hairline-strong); background: transparent;
+  cursor: pointer; text-transform: uppercase;
+  transition: all .15s;
+}
+.chip:hover { border-color: var(--ink); }
+.chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.sort-select {
+  margin-left: auto; font-family: var(--mono); font-size: 11px; padding: 6px 10px;
+  border: 1px solid var(--hairline-strong); background: transparent; text-transform: uppercase;
+  color: var(--ink); letter-spacing: 0.05em; cursor: pointer;
+}
+
+/* âââââââââ Agent grid âââââââââ */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--hairline);
+}
+body[data-density="compact"] .agent-grid { grid-template-columns: repeat(4, 1fr); }
+body[data-density="airy"] .agent-grid { grid-template-columns: repeat(2, 1fr); }
+
+.agent-card {
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: 22px 22px 18px;
+  display: flex; flex-direction: column; gap: 14px;
+  cursor: pointer;
+  background: var(--paper);
+  transition: background .15s;
+  position: relative;
+  min-height: 280px;
+}
+body[data-density="compact"] .agent-card { padding: 16px 16px 14px; min-height: 220px; gap: 10px; }
+body[data-density="airy"] .agent-card { padding: 32px 32px 28px; min-height: 360px; gap: 18px; }
+
+.agent-card:hover { background: var(--paper-2); }
+.agent-card:hover .agent-preview { opacity: 1; transform: translateY(0); }
+
+.agent-card .top {
+  display: flex; justify-content: space-between; align-items: start;
+  font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.06em;
+}
+.agent-card .top .id { letter-spacing: 0.06em; }
+.agent-card .top .rating { color: var(--ink); }
+.agent-card .top .rating::before { content: "â "; color: var(--acid-deep); }
+
+.agent-card h3 {
+  font-family: var(--display); font-weight: 400; margin: 0;
+  font-size: 38px; line-height: 0.95; letter-spacing: -0.01em;
+}
+body[data-density="compact"] .agent-card h3 { font-size: 30px; }
+body[data-density="airy"] .agent-card h3 { font-size: 52px; }
+
+.agent-card .role {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--ink-3); text-transform: uppercase;
+}
+.agent-card .blurb {
+  font-size: 14px; line-height: 1.45; color: var(--ink-2);
+  margin-top: -4px;
+}
+body[data-density="compact"] .agent-card .blurb { font-size: 13px; }
+
+.agent-card .foot {
+  margin-top: auto;
+  display: flex; justify-content: space-between; align-items: end;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+}
+.agent-card .price {
+  font-family: var(--display); font-size: 26px; line-height: 1; color: var(--ink);
+}
+.agent-card .price .unit { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+.agent-card .deploys { color: var(--ink-3); }
+
+.agent-card .test-pill {
+  position: absolute;
+  top: 22px; right: 22px;
+  display: none;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink); background: var(--acid); padding: 3px 7px;
+  border: 1px solid var(--acid-deep);
+}
+.agent-card:hover .test-pill { display: inline-block; }
+
+/* âââââââââ Drawer âââââââââ */
+.drawer-scrim {
+  position: fixed; inset: 0; background: rgba(11,11,12,0.45);
+  z-index: 80; opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.drawer-scrim.on { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(720px, 100vw);
+  background: var(--paper);
+  z-index: 90;
+  transform: translateX(100%); transition: transform .35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex; flex-direction: column;
+  border-left: 1px solid var(--ink);
+}
+.drawer.on { transform: translateX(0); }
+.drawer .top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 24px; border-bottom: 1px solid var(--hairline-strong);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.drawer .top button {
+  background: transparent; border: 1px solid var(--ink); padding: 4px 10px; cursor: pointer;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; color: var(--ink);
+}
+.drawer .body { overflow: auto; flex: 1; padding: 32px 24px; }
+.drawer h2 {
+  font-family: var(--display); font-weight: 400; margin: 0;
+  font-size: clamp(48px, 6vw, 80px); line-height: 0.92; letter-spacing: -0.02em;
+}
+.drawer h2 em { font-style: italic; }
+.drawer .role {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink-3);
+  text-transform: uppercase; margin-top: 8px;
+}
+.drawer .quote {
+  font-family: var(--display); font-style: italic; font-size: 28px; line-height: 1.2;
+  margin: 28px 0 32px; color: var(--ink); padding-left: 16px;
+  border-left: 2px solid var(--ink);
+}
+
+.drawer .stat-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--hairline);
+  margin-bottom: 32px;
+}
+.drawer .stat {
+  padding: 14px 14px; border-right: 1px solid var(--hairline);
+}
+.drawer .stat:last-child { border-right: 0; }
+.drawer .stat .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.drawer .stat .v { font-family: var(--display); font-size: 30px; line-height: 1; margin-top: 6px; }
+.drawer .stat .u { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+
+/* Test drive */
+.testdrive {
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  margin-bottom: 24px;
+}
+.testdrive .td-head {
+  background: var(--ink); color: var(--paper);
+  padding: 10px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.testdrive .td-head .left { display: flex; gap: 14px; align-items: center; }
+.testdrive .td-head .acid { color: var(--acid); }
+.testdrive .td-body { padding: 18px; min-height: 170px; }
+.testdrive .td-input { font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
+.testdrive .td-input::before { content: "âº "; color: var(--acid-deep); }
+.testdrive .td-out {
+  margin-top: 14px;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.65;
+  white-space: pre-wrap;
+}
+.testdrive .td-out .blink { display: inline-block; width: 7px; height: 1em; background: var(--ink); vertical-align: -2px; animation: blink 0.9s steps(1) infinite; }
+.testdrive .td-foot {
+  border-top: 1px solid var(--hairline);
+  padding: 10px 14px; font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  display: flex; justify-content: space-between;
+}
+
+.drawer .integrations { margin: 28px 0 12px; }
+.drawer .integrations .label { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+.drawer .int-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.drawer .int { font-family: var(--mono); font-size: 11px; padding: 4px 10px; border: 1px solid var(--hairline-strong); }
+
+.drawer-cta {
+  border-top: 1px solid var(--ink);
+  padding: 16px 24px;
+  display: flex; gap: 12px; align-items: center;
+}
+.drawer-cta .price-big {
+  font-family: var(--display); font-size: 40px; line-height: 1; margin-right: auto;
+}
+.drawer-cta .price-big .u { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+
+/* âââââââââ Manifesto âââââââââ */
+.manifesto {
+  margin-top: 80px;
+  padding: 60px 0 48px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.manifesto .lines {
+  font-family: var(--display); font-size: clamp(34px, 4.5vw, 64px); line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.manifesto .lines em { font-style: italic; }
+.manifesto .lines .acid-mark { background: var(--acid); padding: 0 0.08em; }
+.manifesto .lines p { margin: 0; }
+.manifesto .signature {
+  display: flex; justify-content: space-between; gap: 24px;
+  margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--hairline);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3);
+}
+
+/* âââââââââ Footer âââââââââ */
+.footer {
+  padding: 48px 0 28px;
+  font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); letter-spacing: 0.04em;
+}
+.footer .grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 28px; }
+.footer h4 { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); margin: 0 0 14px; }
+.footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.footer ul a { color: var(--ink-3); }
+.footer ul a:hover { color: var(--ink); }
+.footer .bot {
+  border-top: 1px solid var(--hairline);
+  padding-top: 16px; display: flex; justify-content: space-between;
+}
+
+/* âââââââââ Decorative big number rendered behind âââââââââ  */
+.bg-number {
+  position: absolute;
+  font-family: var(--display);
+  font-size: clamp(280px, 38vw, 540px);
+  line-height: 0.8;
+  color: var(--paper-3);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* âââââââââ Floating action âââââââââ */
+.float-ai {
+  position: fixed; bottom: 20px; right: 20px;
+  z-index: 60;
+  background: var(--ink); color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 0;
+  display: flex; align-items: center; gap: 0;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.float-ai .dot { width: 8px; height: 8px; background: var(--acid); border-radius: 50%; margin: 0 10px; animation: pulse 1.4s ease infinite; }
+.float-ai .lab { padding: 12px 18px 12px 0; text-transform: uppercase; }
+
+/* âââââââââ Responsive âââââââââ */
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .aria-shell { grid-template-columns: 1fr; }
+  .aria-right { border-left: 0; border-top: 1px solid rgba(242,239,232,0.12); }
+  .agent-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .footer .grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .agent-grid { grid-template-columns: 1fr !important; }
+  .drawer .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .drawer .stat { border-bottom: 1px solid var(--hairline); }
+}
+
+/* ===== THÈME OSIA — sombre / néon ===== */
+:root{
+  --paper:#070712 !important; --paper-2:#0e0e1c !important; --paper-3:#171730 !important;
+  --ink:#e8e8f5 !important; --ink-2:#bcbcd6 !important; --ink-3:#8c8caa !important; --ink-4:#6b6b88 !important;
+  --acid:#00f0ff !important; --acid-deep:#00c2da !important; --warn:#ff3d9a !important;
+  --hairline:rgba(0,240,255,.16) !important; --hairline-strong:rgba(0,240,255,.36) !important;
+}
+body{ background:var(--paper); color:var(--ink); }
+.btn:not(.ghost), .lang-toggle button.on, .chip.on,
+.cat-card.active, .cat-card:hover, .carousel-nav button:hover{
+  background:var(--acid) !important; color:#04121a !important; border-color:var(--acid) !important; box-shadow:0 0 16px rgba(0,240,255,.4);
+}
+.btn.ghost{ border-color:var(--hairline-strong) !important; color:var(--ink) !important; background:transparent !important; }
+.btn.ghost:hover{ border-color:var(--acid) !important; color:var(--acid) !important; }
+.aria-shell{ background:#0b0b18 !important; color:var(--ink) !important; border-color:var(--hairline) !important; }
+.aria-right{ background:#0b0b18 !important; }
+.aria-left h3, .aria-left .sub{ color:var(--ink) !important; }
+.aria-msg.user{ background:var(--acid) !important; color:#04121a !important; }
+.hero h1 .acid-mark, .manifesto .lines .acid-mark{ color:#04121a !important; }
+.drawer-scrim{ background:rgba(0,0,0,.6) !important; }
+.float-ai .dot{ background:var(--acid) !important; }
+
+/* nettoyage post-retrait fausses infos */
+.hero-grid{ grid-template-columns:1fr !important; }
+.agent-card .foot{ display:none !important; }
+
+.detail-block{ margin:0 0 16px; }
+.detail-label{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--acid); margin-bottom:8px; }
+.detail-list{ margin:0; padding:0; list-style:none; }
+.detail-list li{ font-size:14px; line-height:1.55; color:var(--ink); padding-left:18px; position:relative; margin-bottom:6px; }
+.detail-list li:before{ content:"→"; position:absolute; left:0; color:var(--acid); }
+.detail-text{ font-size:14px; line-height:1.6; color:var(--ink-2); margin:0; }
+.detail-build{ margin:18px 0 8px; padding:16px; border:1px solid var(--hairline-strong); border-radius:8px; background:rgba(0,240,255,.06); }
+</style></head><body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const OSIA_KB = `
+OSIA — agence web automatisée par IA. Site : osia-pro.com.
+PROMESSE : un site web clé en main, conçu, écrit et livré par IA en ~48h à partir d'un simple brief. Le client commande, reçoit, héberge.
+OFFRES SITES : Essentiel (~297€), Pro (~697€), Premium (~1497€). Prix exacts sur la page Tarifs.
+AGENTS IA : Agent Simple et Agent Supérieur (Agent Supérieur ~1497€).
+AUTRES : Forges (Workflow, Prompt), Cerveau, OS, Pack complet.
+OUTILS GRATUITS : Audit de site gratuit, Tableur avec prof IA gratuit.
+MARKETPLACE OSIA : l'App Store des agents IA — acheter, vendre et déployer des agents, prompts et workflows.
+PAGES : Accueil, Sites (Basiques/Avancés), Forges, Agents IA, Cerveau, OS, Pack, Tarifs, Forum, Témoignages, Contact, Support, Outils, Marketplace.
+CONTACT / DEVIS : page Contact (osia-pro.com/contact.html). PRIX : page Tarifs.
+`;
+
+
+/* DATA */
+// 60 high-level expert AI agents. Bilingual blurbs.
+// Categories: architects, trainers, jurists, medical experts, strategists, researchers
+const AGENTS = [
+  {"id": "AG-001", "n": 1, "name": "Support 24/7", "cat": "support", "role": {"fr": "Assistance client autonome", "en": "Autonomous support"}, "tag": {"fr": "Répond aux clients à toute heure.", "en": "Answers customers any time."}, "desc": {"fr": "Répond aux questions courantes, suit les commandes et résout les demandes simples sans intervention humaine. Pour décharger ton support et répondre instantanément.", "en": "Handles common questions and simple requests on its own, around the clock."}, "does": ["Répond aux questions fréquentes en langage naturel", "Suit l'état des commandes et des comptes", "Résout les demandes simples (infos, modifs)"], "forwho": "E-commerce, SaaS, tout service avec un volume de demandes répétitives.", "build": "LLM + ta FAQ/base de connaissances en RAG + connexion à ton outil de chat/helpdesk. Déclencheur : nouveau message client."},
+  {"id": "AG-002", "n": 2, "name": "Tri des tickets", "cat": "support", "role": {"fr": "Routage & priorisation", "en": "Ticket routing"}, "tag": {"fr": "Le bon ticket au bon endroit.", "en": "Right ticket, right place."}, "desc": {"fr": "Classe, priorise et oriente chaque ticket vers le bon service.", "en": "Sorts, prioritizes and routes each ticket."}, "does": ["Détecte le sujet et l'urgence", "Affecte au bon service ou à la bonne personne", "Étiquette et priorise la file"], "forwho": "Équipes support avec plusieurs files ou catégories.", "build": "LLM de classification + règles de routage + API de ton helpdesk (Zendesk/Freshdesk) pour assigner."},
+  {"id": "AG-003", "n": 3, "name": "Suivi de commande", "cat": "support", "role": {"fr": "Statuts & livraisons", "en": "Order tracking"}, "tag": {"fr": "Où en est ma commande ?", "en": "Where is my order?"}, "desc": {"fr": "Informe sur l'état d'une commande, gère retours et remboursements simples.", "en": "Updates customers on orders, handles simple returns."}, "does": ["Donne le statut d'une commande", "Gère retours et remboursements simples", "Notifie en cas de retard"], "forwho": "Boutiques en ligne, logistique.", "build": "Accès API commandes/transporteur + LLM pour formuler la réponse. Déclencheur : question client ou changement de statut."},
+  {"id": "AG-004", "n": 4, "name": "Base de connaissances", "cat": "support", "role": {"fr": "Réponses sourcées", "en": "Knowledge base"}, "tag": {"fr": "Répond depuis ta doc.", "en": "Answers from your docs."}, "desc": {"fr": "Puise dans ta FAQ et ta documentation pour répondre précisément, avec sources.", "en": "Pulls from your FAQ and docs, with sources."}, "does": ["Cherche dans ta doc/FAQ", "Répond avec la source citée", "Signale les trous de documentation"], "forwho": "Produits avec doc riche, support technique.", "build": "Indexation de tes docs (RAG/embeddings) + LLM. Mise à jour auto à chaque nouveau document."},
+  {"id": "AG-005", "n": 5, "name": "Satisfaction client", "cat": "support", "role": {"fr": "Enquêtes & feedback", "en": "CSAT agent"}, "tag": {"fr": "Mesure le ressenti client.", "en": "Measures how customers feel."}, "desc": {"fr": "Envoie des enquêtes, analyse les retours et remonte les irritants.", "en": "Sends surveys, analyzes feedback, surfaces issues."}, "does": ["Envoie enquêtes (CSAT/NPS) au bon moment", "Analyse les verbatims et le sentiment", "Remonte les irritants récurrents"], "forwho": "Toute équipe qui veut suivre la satisfaction.", "build": "Déclencheur post-interaction → envoi enquête + LLM d'analyse de sentiment → tableau de bord."},
+  {"id": "AG-006", "n": 6, "name": "Escalade humaine", "cat": "support", "role": {"fr": "Passage à l'humain", "en": "Smart escalation"}, "tag": {"fr": "Sait quand appeler un humain.", "en": "Knows when to hand off."}, "desc": {"fr": "Détecte les cas sensibles et les transmet à un humain avec le contexte.", "en": "Detects sensitive cases and hands them off with context."}, "does": ["Repère les cas sensibles ou complexes", "Transfère à un humain avec un résumé", "S'améliore à partir des cas escaladés"], "forwho": "Support hybride IA + humain.", "build": "Score de confiance du LLM + seuil ; sous le seuil → handoff vers ton outil avec le transcript."},
+  {"id": "AG-007", "n": 7, "name": "Qualif Leads", "cat": "sales", "role": {"fr": "Scoring & qualification", "en": "Lead scoring"}, "tag": {"fr": "Trie les bons prospects.", "en": "Spots your best leads."}, "desc": {"fr": "Note et qualifie tes leads selon ton client idéal, enrichit les fiches.", "en": "Scores and qualifies leads, enriches records."}, "does": ["Note chaque lead selon ton client idéal", "Enrichit la fiche (entreprise, rôle)", "Priorise pour l'équipe commerciale"], "forwho": "Équipes commerciales avec beaucoup d'entrants.", "build": "LLM + enrichissement (Clearbit/scraping) + scoring → mise à jour du CRM."},
+  {"id": "AG-008", "n": 8, "name": "SDR Prospection", "cat": "sales", "role": {"fr": "Outreach automatisé", "en": "SDR outreach"}, "tag": {"fr": "Prospecte à ta place.", "en": "Prospects for you."}, "desc": {"fr": "Identifie des prospects, rédige et envoie des messages personnalisés, relance.", "en": "Finds prospects, sends personalized outreach, follows up."}, "does": ["Trouve des prospects ciblés", "Rédige des messages personnalisés", "Relance automatiquement en séquence"], "forwho": "Outbound B2B.", "build": "Source de leads + LLM de rédaction + envoi email/LinkedIn + séquences de relance."},
+  {"id": "AG-009", "n": 9, "name": "Relances", "cat": "sales", "role": {"fr": "Suivi & relances", "en": "Follow-ups"}, "tag": {"fr": "N'oublie jamais une relance.", "en": "Never misses a follow-up."}, "desc": {"fr": "Programme et envoie les relances au bon moment selon le comportement du prospect.", "en": "Schedules and sends timely follow-ups."}, "does": ["Détecte les deals sans réponse", "Choisit le bon moment et le bon canal", "Envoie une relance contextualisée"], "forwho": "Tout cycle de vente avec suivi.", "build": "Lecture du CRM/boîte mail + LLM + règles de timing → envoi automatique."},
+  {"id": "AG-010", "n": 10, "name": "Analyse d'appels", "cat": "sales", "role": {"fr": "Insights commerciaux", "en": "Call insights"}, "tag": {"fr": "Comprend la santé de tes deals.", "en": "Reads deal health."}, "desc": {"fr": "Analyse appels et échanges, repère risques et signaux d'achat.", "en": "Analyzes calls, flags risks and buying signals."}, "does": ["Transcrit et résume les appels", "Repère objections et signaux d'achat", "Note la santé du deal"], "forwho": "Équipes vente qui veulent du coaching.", "build": "Transcription (Whisper) + LLM d'analyse + écriture des notes dans le CRM."},
+  {"id": "AG-011", "n": 11, "name": "Devis express", "cat": "sales", "role": {"fr": "Génération de devis", "en": "Instant quotes"}, "tag": {"fr": "Un devis en quelques secondes.", "en": "A quote in seconds."}, "desc": {"fr": "Construit un devis personnalisé à partir du besoin client.", "en": "Builds a tailored quote from the need."}, "does": ["Comprend le besoin exprimé", "Construit un devis chiffré", "Génère le PDF prêt à envoyer"], "forwho": "Services ou produits configurables.", "build": "Grille tarifaire + LLM + génération PDF + lien d'envoi."},
+  {"id": "AG-012", "n": 12, "name": "CRM auto", "cat": "sales", "role": {"fr": "Mise à jour du CRM", "en": "CRM autopilot"}, "tag": {"fr": "Garde ton CRM propre.", "en": "Keeps your CRM clean."}, "desc": {"fr": "Saisit et met à jour automatiquement le CRM après chaque échange.", "en": "Logs and updates your CRM after each interaction."}, "does": ["Capte les infos de chaque échange", "Met à jour fiches et deals", "Crée les tâches de suivi"], "forwho": "Équipes qui négligent la saisie CRM.", "build": "Écoute email/agenda/appels + LLM d'extraction + API CRM (HubSpot/Pipedrive)."},
+  {"id": "AG-013", "n": 13, "name": "Rédacteur SEO", "cat": "marketing", "role": {"fr": "Articles optimisés", "en": "SEO writer"}, "tag": {"fr": "Du contenu qui se positionne.", "en": "Content that ranks."}, "desc": {"fr": "Rédige des articles optimisés pour le référencement à partir de mots-clés.", "en": "Writes SEO-optimized articles from keywords."}, "does": ["Recherche intentions et mots-clés", "Rédige un article structuré et optimisé", "Propose titres et métadonnées"], "forwho": "Blogs, sites de contenu.", "build": "LLM + données SEO (volume/concurrence) + gabarit d'article + publication CMS."},
+  {"id": "AG-014", "n": 14, "name": "Community", "cat": "marketing", "role": {"fr": "Réseaux sociaux", "en": "Social manager"}, "tag": {"fr": "Anime tes réseaux.", "en": "Runs your socials."}, "desc": {"fr": "Crée, planifie et publie des posts adaptés à chaque plateforme.", "en": "Creates, schedules and posts per platform."}, "does": ["Crée des posts par plateforme", "Planifie le calendrier éditorial", "Publie et programme"], "forwho": "Marques actives sur les réseaux.", "build": "LLM + calendrier + API réseaux (Meta/X/LinkedIn) ou Buffer."},
+  {"id": "AG-015", "n": 15, "name": "Veille & écoute", "cat": "marketing", "role": {"fr": "Social listening", "en": "Social listening"}, "tag": {"fr": "Sait ce qu'on dit de toi.", "en": "Knows what's said about you."}, "desc": {"fr": "Surveille mentions, avis et tendances et te fait un rapport.", "en": "Monitors mentions, reviews and trends."}, "does": ["Surveille mentions et avis", "Analyse le sentiment", "Alerte sur tendances et crises"], "forwho": "Marques soucieuses de leur image.", "build": "Flux (mentions/Reddit/avis) + LLM de synthèse + alertes."},
+  {"id": "AG-016", "n": 16, "name": "Emailing", "cat": "marketing", "role": {"fr": "Campagnes email", "en": "Email campaigns"}, "tag": {"fr": "Des emails qui convertissent.", "en": "Emails that convert."}, "desc": {"fr": "Conçoit, segmente et personnalise tes campagnes email.", "en": "Designs, segments and personalizes email."}, "does": ["Segmente ta base", "Rédige et personnalise les emails", "Programme et A/B teste"], "forwho": "E-commerce, SaaS, newsletters commerciales.", "build": "LLM + plateforme email (Brevo/Mailchimp API) + segmentation."},
+  {"id": "AG-017", "n": 17, "name": "Pubs & accroches", "cat": "marketing", "role": {"fr": "Création publicitaire", "en": "Ad creative"}, "tag": {"fr": "Des variantes en série.", "en": "Variants at scale."}, "desc": {"fr": "Génère accroches, visuels et déclinaisons d'annonces.", "en": "Generates ad hooks, visuals and variations."}, "does": ["Génère des variantes d'accroches", "Décline visuels et formats", "Prépare les annonces"], "forwho": "Acquisition payante.", "build": "LLM + génération d'images + export vers les régies (Meta/Google Ads)."},
+  {"id": "AG-018", "n": 18, "name": "Newsletter", "cat": "marketing", "role": {"fr": "Lettre récurrente", "en": "Newsletter"}, "tag": {"fr": "Ta newsletter prête chaque semaine.", "en": "Ready every week."}, "desc": {"fr": "Rassemble, rédige et met en forme ta newsletter depuis tes sources.", "en": "Gathers, writes and formats your newsletter."}, "does": ["Rassemble tes sources", "Rédige et met en forme", "Programme l'envoi"], "forwho": "Créateurs, entreprises avec une audience.", "build": "Agrégation de sources + LLM + plateforme newsletter."},
+  {"id": "AG-019", "n": 19, "name": "Factures & relances", "cat": "finance", "role": {"fr": "Facturation", "en": "Invoicing"}, "tag": {"fr": "Facture et relance les impayés.", "en": "Invoices and chases late payers."}, "desc": {"fr": "Émet les factures, suit les paiements et relance les retards.", "en": "Issues invoices, tracks and chases payments."}, "does": ["Émet les factures", "Suit les paiements", "Relance les impayés"], "forwho": "Indépendants, PME.", "build": "Connexion outil de facturation (Stripe/Pennylane) + LLM pour les relances + règles d'échéance."},
+  {"id": "AG-020", "n": 20, "name": "Notes de frais", "cat": "finance", "role": {"fr": "Dépenses", "en": "Expenses"}, "tag": {"fr": "Traite tes notes de frais.", "en": "Handles expense reports."}, "desc": {"fr": "Lit les justificatifs, catégorise et contrôle les dépenses.", "en": "Reads receipts, categorizes and checks."}, "does": ["Lit les justificatifs (OCR)", "Catégorise les dépenses", "Contrôle la politique de frais"], "forwho": "Équipes avec des frais.", "build": "OCR + LLM de catégorisation + export vers ta compta."},
+  {"id": "AG-021", "n": 21, "name": "Rapprochement", "cat": "finance", "role": {"fr": "Réconciliation", "en": "Reconciliation"}, "tag": {"fr": "Réconcilie tes comptes.", "en": "Reconciles your books."}, "desc": {"fr": "Rapproche factures, paiements et relevés bancaires.", "en": "Matches invoices, payments and statements."}, "does": ["Rapproche factures/paiements/banque", "Repère les écarts", "Propose les correspondances"], "forwho": "Compta, finance.", "build": "Import relevés + factures + LLM/règles de matching."},
+  {"id": "AG-022", "n": 22, "name": "Anti-fraude", "cat": "finance", "role": {"fr": "Détection de fraude", "en": "Fraud watch"}, "tag": {"fr": "Repère les transactions suspectes.", "en": "Flags suspicious activity."}, "desc": {"fr": "Surveille les transactions et signale les anomalies en temps réel.", "en": "Monitors transactions, flags anomalies live."}, "does": ["Surveille les transactions", "Détecte les anomalies", "Bloque ou alerte en temps réel"], "forwho": "Fintech, e-commerce.", "build": "Flux de transactions + modèle de détection d'anomalies + règles + alertes."},
+  {"id": "AG-023", "n": 23, "name": "Tableau de bord", "cat": "finance", "role": {"fr": "Reporting financier", "en": "Finance reporting"}, "tag": {"fr": "Tes chiffres, expliqués.", "en": "Your numbers, explained."}, "desc": {"fr": "Consolide tes données et produit un reporting clair et commenté.", "en": "Consolidates data into clear reporting."}, "does": ["Consolide tes données financières", "Calcule les indicateurs clés", "Commente les variations"], "forwho": "Dirigeants, finance.", "build": "Connexion compta/banque + LLM d'analyse + dashboard."},
+  {"id": "AG-024", "n": 24, "name": "KYC / Conformité", "cat": "finance", "role": {"fr": "Vérification client", "en": "KYC agent"}, "tag": {"fr": "Vérifie l'identité de tes clients.", "en": "Verifies your clients."}, "desc": {"fr": "Réalise les vérifications KYC et suit les obligations.", "en": "Runs KYC checks and tracks compliance."}, "does": ["Vérifie l'identité (KYC)", "Contrôle les listes de sanctions", "Documente la conformité"], "forwho": "Fintech, secteurs régulés.", "build": "API KYC (Onfido/Veriff) + LLM + journal de conformité."},
+  {"id": "AG-025", "n": 25, "name": "Tri de CV", "cat": "rh", "role": {"fr": "Présélection", "en": "Resume screening"}, "tag": {"fr": "Trie les candidatures.", "en": "Sorts applications."}, "desc": {"fr": "Filtre et classe les CV selon tes critères.", "en": "Filters and ranks resumes."}, "does": ["Lit et structure les CV", "Note selon tes critères", "Classe les meilleurs profils"], "forwho": "Recruteurs avec beaucoup de candidatures.", "build": "Parsing CV + LLM de scoring vs fiche de poste + connexion ATS."},
+  {"id": "AG-026", "n": 26, "name": "Préqualif candidat", "cat": "rh", "role": {"fr": "Premiers échanges", "en": "Candidate prequal"}, "tag": {"fr": "Premier contact automatisé.", "en": "Automated first contact."}, "desc": {"fr": "Pose les questions clés aux candidats et planifie les entretiens.", "en": "Asks key questions and books interviews."}, "does": ["Pose les questions clés", "Évalue les réponses", "Planifie l'entretien"], "forwho": "Recrutement en volume.", "build": "LLM conversationnel + agenda + connexion ATS."},
+  {"id": "AG-027", "n": 27, "name": "Onboarding", "cat": "rh", "role": {"fr": "Intégration", "en": "Onboarding"}, "tag": {"fr": "Accueille les nouveaux.", "en": "Welcomes new hires."}, "desc": {"fr": "Guide le nouvel arrivant, envoie docs et étapes, répond à ses questions.", "en": "Guides new hires, sends docs, answers questions."}, "does": ["Envoie le parcours d'intégration", "Répond aux questions du nouvel arrivant", "Suit les étapes"], "forwho": "Toute entreprise qui recrute.", "build": "Base de docs RH (RAG) + LLM + checklist + notifications."},
+  {"id": "AG-028", "n": 28, "name": "Coach de carrière", "cat": "rh", "role": {"fr": "Montée en compétences", "en": "Career coach"}, "tag": {"fr": "Cartographie et comble les écarts.", "en": "Maps and closes skill gaps."}, "desc": {"fr": "Compare les compétences aux besoins du marché et propose des parcours.", "en": "Maps skills vs market and suggests paths."}, "does": ["Cartographie les compétences", "Compare aux besoins du marché", "Propose des parcours de formation"], "forwho": "RH, L&D.", "build": "Référentiel de compétences + LLM + catalogue de formations."},
+  {"id": "AG-029", "n": 29, "name": "Support RH", "cat": "rh", "role": {"fr": "Questions RH", "en": "HR helpdesk"}, "tag": {"fr": "Répond aux questions RH.", "en": "Answers HR questions."}, "desc": {"fr": "Répond aux questions courantes depuis tes documents RH.", "en": "Answers common HR questions from your docs."}, "does": ["Répond aux questions RH courantes", "Oriente vers les bons documents", "Escalade les cas sensibles"], "forwho": "Équipes RH chargées.", "build": "Docs RH en RAG + LLM + handoff vers un RH."},
+  {"id": "AG-030", "n": 30, "name": "Climat d'équipe", "cat": "rh", "role": {"fr": "Sondages internes", "en": "Team pulse"}, "tag": {"fr": "Prend le pouls de l'équipe.", "en": "Reads team mood."}, "desc": {"fr": "Lance des sondages, analyse le moral et remonte les signaux.", "en": "Runs surveys and surfaces morale signals."}, "does": ["Lance des sondages réguliers", "Analyse le moral", "Remonte les signaux faibles"], "forwho": "Managers, RH.", "build": "Sondages + LLM d'analyse + tableau de bord."},
+  {"id": "AG-031", "n": 31, "name": "Lecture de contrat", "cat": "legal", "role": {"fr": "Analyse de contrats", "en": "Contract review"}, "tag": {"fr": "Lit et repère les risques.", "en": "Reads and flags risks."}, "desc": {"fr": "Analyse un contrat, surligne les clauses à risque et suggère des ajustements.", "en": "Reviews a contract, highlights risky clauses."}, "does": ["Résume le contrat", "Surligne les clauses à risque", "Suggère des ajustements"], "forwho": "Indépendants, PME, juristes.", "build": "LLM + grille de clauses-types + comparaison à tes standards. À cadrer : information, pas conseil juridique."},
+  {"id": "AG-032", "n": 32, "name": "Conformité", "cat": "legal", "role": {"fr": "Suivi réglementaire", "en": "Compliance"}, "tag": {"fr": "Suit tes obligations.", "en": "Tracks your obligations."}, "desc": {"fr": "Surveille les exigences applicables et alerte sur les échéances.", "en": "Monitors requirements, alerts on deadlines."}, "does": ["Liste les obligations applicables", "Suit les échéances", "Alerte avant les dates clés"], "forwho": "Secteurs régulés.", "build": "Référentiel d'obligations + LLM + rappels automatiques."},
+  {"id": "AG-033", "n": 33, "name": "RGPD", "cat": "legal", "role": {"fr": "Données personnelles", "en": "GDPR"}, "tag": {"fr": "Veille sur tes données.", "en": "Watches your data."}, "desc": {"fr": "Repère les traitements à risque et aide à documenter la conformité RGPD.", "en": "Spots risky processing, helps document GDPR."}, "does": ["Repère les traitements de données", "Évalue le risque", "Aide à tenir le registre"], "forwho": "Toute entreprise traitant des données perso.", "build": "Cartographie des données + LLM + registre RGPD."},
+  {"id": "AG-034", "n": 34, "name": "Rédaction de clauses", "cat": "legal", "role": {"fr": "Modèles juridiques", "en": "Clause drafting"}, "tag": {"fr": "Génère des clauses types.", "en": "Generates standard clauses."}, "desc": {"fr": "Propose clauses et modèles adaptés à ton cas.", "en": "Suggests clauses and templates for your case."}, "does": ["Propose des clauses-types", "Adapte au cas précis", "Assemble le document"], "forwho": "Documents juridiques courants.", "build": "Bibliothèque de clauses + LLM + génération de document."},
+  {"id": "AG-035", "n": 35, "name": "Veille juridique", "cat": "legal", "role": {"fr": "Surveillance légale", "en": "Legal watch"}, "tag": {"fr": "Suit les évolutions du droit.", "en": "Tracks legal changes."}, "desc": {"fr": "Surveille les changements réglementaires de ton secteur et les résume.", "en": "Monitors regulatory changes and summarizes."}, "does": ["Surveille les évolutions du droit", "Filtre par secteur", "Résume l'impact concret"], "forwho": "Juristes, dirigeants.", "build": "Sources légales/officielles + LLM de synthèse + alertes."},
+  {"id": "AG-036", "n": 36, "name": "Gestion documentaire", "cat": "legal", "role": {"fr": "Classement & recherche", "en": "Doc management"}, "tag": {"fr": "Retrouve le bon document.", "en": "Finds the right document."}, "desc": {"fr": "Classe et retrouve tes documents juridiques instantanément.", "en": "Files and retrieves legal documents instantly."}, "does": ["Classe les documents", "Recherche en langage naturel", "Retrouve la bonne version"], "forwho": "Cabinets, services juridiques.", "build": "Indexation (RAG) + LLM de recherche + stockage."},
+  {"id": "AG-037", "n": 37, "name": "Revue de code", "cat": "tech", "role": {"fr": "Code review", "en": "Code review"}, "tag": {"fr": "Relit ton code.", "en": "Reviews your code."}, "desc": {"fr": "Analyse le code, repère bugs et failles, suggère des améliorations.", "en": "Analyzes code, flags bugs, suggests fixes."}, "does": ["Analyse les diffs / pull requests", "Repère bugs et failles", "Suggère des correctifs"], "forwho": "Équipes de développement.", "build": "Intégration Git (webhook PR) + LLM de code + commentaires automatiques."},
+  {"id": "AG-038", "n": 38, "name": "Analyste de données", "cat": "tech", "role": {"fr": "Analyse & insights", "en": "Data analyst"}, "tag": {"fr": "Tes données parlent enfin.", "en": "Your data finally talks."}, "desc": {"fr": "Explore tes données, répond à tes questions et génère des graphiques.", "en": "Explores data, answers questions, builds charts."}, "does": ["Répond à tes questions sur les données", "Génère graphiques et tableaux", "Explique les tendances"], "forwho": "Décideurs sans compétences SQL.", "build": "Connexion base/CSV + LLM text-to-SQL + visualisation."},
+  {"id": "AG-039", "n": 39, "name": "Tri d'incidents", "cat": "tech", "role": {"fr": "IT Ops", "en": "Incident triage"}, "tag": {"fr": "Gère les incidents.", "en": "Handles incidents."}, "desc": {"fr": "Détecte, classe et oriente les incidents, propose des correctifs.", "en": "Detects, classifies, routes incidents."}, "does": ["Détecte et classe les incidents", "Oriente vers la bonne équipe", "Propose un correctif / runbook"], "forwho": "IT Ops, DevOps.", "build": "Alertes monitoring + LLM + intégration outil d'incident (PagerDuty/Jira)."},
+  {"id": "AG-040", "n": 40, "name": "Tests & QA", "cat": "tech", "role": {"fr": "Assurance qualité", "en": "QA agent"}, "tag": {"fr": "Teste avant tes clients.", "en": "Tests before your users."}, "desc": {"fr": "Génère et exécute des scénarios de test, remonte les anomalies.", "en": "Generates and runs tests, reports issues."}, "does": ["Génère des cas de test", "Exécute et compare", "Remonte les régressions"], "forwho": "Équipes produit / dev.", "build": "LLM + framework de test + intégration CI."},
+  {"id": "AG-041", "n": 41, "name": "Documentation tech", "cat": "tech", "role": {"fr": "Doc automatique", "en": "Tech docs"}, "tag": {"fr": "Documente ton produit.", "en": "Documents your product."}, "desc": {"fr": "Génère et tient à jour la doc à partir du code et des specs.", "en": "Generates and maintains docs from code."}, "does": ["Génère la doc depuis le code", "Met à jour à chaque changement", "Crée des exemples"], "forwho": "Équipes dev / produit.", "build": "Accès au repo + LLM + génération Markdown / site de doc."},
+  {"id": "AG-042", "n": 42, "name": "Migration de données", "cat": "tech", "role": {"fr": "ETL & nettoyage", "en": "Data migration"}, "tag": {"fr": "Nettoie et déplace tes données.", "en": "Cleans and moves your data."}, "desc": {"fr": "Nettoie, transforme et transfère tes données entre systèmes.", "en": "Cleans, transforms and moves data."}, "does": ["Analyse les schémas source et cible", "Nettoie et transforme", "Transfère et vérifie"], "forwho": "Migrations d'outils / de bases.", "build": "Connecteurs source/cible + LLM de mapping + pipeline ETL."},
+  {"id": "AG-043", "n": 43, "name": "Agenda & RDV", "cat": "ops", "role": {"fr": "Planification", "en": "Scheduling"}, "tag": {"fr": "Gère ton agenda.", "en": "Runs your calendar."}, "desc": {"fr": "Planifie les rendez-vous, gère les conflits et envoie les rappels.", "en": "Books meetings, resolves conflicts, reminds."}, "does": ["Propose des créneaux", "Gère les conflits d'agenda", "Envoie rappels et liens"], "forwho": "Indépendants, équipes commerciales.", "build": "Accès agenda (Google/Outlook) + LLM + page de réservation."},
+  {"id": "AG-044", "n": 44, "name": "Compte-rendu réunion", "cat": "ops", "role": {"fr": "Notes & actions", "en": "Meeting notes"}, "tag": {"fr": "Prend des notes pour toi.", "en": "Takes notes for you."}, "desc": {"fr": "Résume tes réunions et en extrait les actions à faire.", "en": "Summarizes meetings, extracts actions."}, "does": ["Transcrit la réunion", "Résume les points clés", "Extrait les actions à faire"], "forwho": "Toute équipe en réunion.", "build": "Transcription + LLM + envoi du compte-rendu et des tâches."},
+  {"id": "AG-045", "n": 45, "name": "Tri d'emails", "cat": "ops", "role": {"fr": "Boîte mail", "en": "Inbox agent"}, "tag": {"fr": "Trie et priorise tes mails.", "en": "Sorts your inbox."}, "desc": {"fr": "Classe, priorise et prépare des réponses à tes emails.", "en": "Classifies, prioritizes, drafts replies."}, "does": ["Classe et priorise les mails", "Résume les longs fils", "Prépare des brouillons de réponse"], "forwho": "Dirigeants, équipes débordées.", "build": "Accès boîte mail (Gmail/Outlook API) + LLM + libellés / brouillons."},
+  {"id": "AG-046", "n": 46, "name": "Achats & appro", "cat": "ops", "role": {"fr": "Procurement", "en": "Procurement"}, "tag": {"fr": "Gère tes commandes fournisseurs.", "en": "Manages supplier orders."}, "desc": {"fr": "Suit les stocks, déclenche les réappros et compare les fournisseurs.", "en": "Tracks stock, reorders, compares suppliers."}, "does": ["Suit les niveaux de stock", "Déclenche les réapprovisionnements", "Compare les fournisseurs"], "forwho": "Commerce, production.", "build": "Connexion stock/ERP + LLM + règles de seuil + génération de commandes."},
+  {"id": "AG-047", "n": 47, "name": "Logistique", "cat": "ops", "role": {"fr": "Livraisons & routes", "en": "Logistics"}, "tag": {"fr": "Optimise tes livraisons.", "en": "Optimizes deliveries."}, "desc": {"fr": "Optimise tournées et délais selon trafic et contraintes.", "en": "Optimizes routes and timing."}, "does": ["Optimise les tournées", "Ajuste selon trafic et contraintes", "Estime délais et coûts"], "forwho": "Livraison, transport.", "build": "Données commandes + API cartes/trafic + moteur d'optimisation."},
+  {"id": "AG-048", "n": 48, "name": "Recherche & synthèse", "cat": "ops", "role": {"fr": "Veille / recherche", "en": "Research"}, "tag": {"fr": "Cherche et synthétise pour toi.", "en": "Researches and summarizes."}, "desc": {"fr": "Fouille des sources, recoupe et te livre une synthèse claire.", "en": "Digs sources and delivers a synthesis."}, "does": ["Cherche dans plusieurs sources", "Recoupe et vérifie", "Livre une synthèse sourcée"], "forwho": "Tous ceux qui doivent décider vite.", "build": "Recherche web/docs + LLM + format de synthèse."}
+];
+
+const CATEGORIES = [
+  { key:"all", fr:"Tous les agents", en:"All agents", count:48 },
+  { key:"support", fr:"Support client", en:"Customer support", count:6, sub:{fr:"relation & assistance client",en:"customer relations & support"} },
+  { key:"sales", fr:"Ventes", en:"Sales", count:6, sub:{fr:"prospection, closing, CRM",en:"prospecting, closing, CRM"} },
+  { key:"marketing", fr:"Marketing & Contenu", en:"Marketing & Content", count:6, sub:{fr:"contenu, SEO, réseaux, email",en:"content, SEO, social, email"} },
+  { key:"finance", fr:"Finance & Compta", en:"Finance & Accounting", count:6, sub:{fr:"facturation, dépenses, conformité",en:"invoicing, expenses, compliance"} },
+  { key:"rh", fr:"RH & Recrutement", en:"HR & Recruiting", count:6, sub:{fr:"recrutement, onboarding, formation",en:"hiring, onboarding, training"} },
+  { key:"legal", fr:"Juridique & Conformité", en:"Legal & Compliance", count:6, sub:{fr:"contrats, RGPD, veille",en:"contracts, GDPR, monitoring"} },
+  { key:"tech", fr:"Tech & Données", en:"Tech & Data", count:6, sub:{fr:"code, data, IT, QA",en:"code, data, IT, QA"} },
+  { key:"ops", fr:"Opérations", en:"Operations", count:6, sub:{fr:"agenda, achats, logistique",en:"calendar, procurement, logistics"} },
+];
+
+window.AGENTS = AGENTS;
+window.CATEGORIES = CATEGORIES;
+
+
+/* CORE */
+/* global React, AGENTS, CATEGORIES */
+const { useState, useEffect, useRef, useMemo } = React;
+
+// ───────────── i18n helper ─────────────
+const T = {
+  fr: {
+    explore: "Explorer les agents",
+    sell: "Vendre votre agent",
+    nav_market: "Marketplace", nav_create: "Créateurs", nav_aria: "OSIA", nav_pricing: "Tarifs",
+    deployedWeek: "Agents déployés cette semaine",
+    activeNow: "Sessions live à cet instant",
+    creators: "Créateurs vérifiés", uptime: "Disponibilité réseau",
+    blurb: <>Achetez, vendez et déployez les meilleurs <b>agents IA</b>, <b>prompts</b> et <b>workflows</b> du monde. Pas un chatbot. Pas un templ­ate. Une&nbsp;intelligence&nbsp;louée à l'heure.</>,
+    aria_title: <>Demandez à <em>OSIA.</em></>,
+    aria_sub: "AI Recommendation & Integration Assistant. Comprend votre métier en langage naturel et trouve le bon agent en moins de 8 secondes.",
+    aria_status: "OSIA · v4.2 · en ligne",
+    aria_input_ph: "Décrivez votre besoin métier…",
+    aria_send: "Envoyer",
+    sec1_label: "01 — Catégories",
+    sec1_title: <>Huit familles. <em>Quarante-huit</em> agents. <em>Zéro</em> bruit.</>,
+    sec1_meta: "48 agents · 8 familles",
+    sec2_label: "02 — Marketplace",
+    sec2_title: <>Le rayon des <em>agents</em> en stock.</>,
+    sec2_meta: "Trier · filtrer · essayer · déployer",
+    filter_label: "Filtrer",
+    sort_label: "Trier",
+    sort_pop: "Plus déployés", sort_rated: "Mieux notés", sort_price_lo: "Prix ↑", sort_price_hi: "Prix ↓", sort_new: "Nouveaux",
+    test_drive: "Test Drive",
+    perMonth: "/ mois",
+    deploys: "déploiements",
+    drawerTry: "Essayer 3× gratuitement",
+    drawerBuy: "Déployer maintenant",
+    drawerLabel: "Fiche agent",
+    integrationsLabel: "Déploiement one-click",
+    contextLabel: "Contexte", ratingLabel: "Note", deploysLabel: "Déploiements", priceLabel: "Prix",
+    td_head: "Test Drive · Sandbox temps réel",
+    td_input_label: "Demande utilisateur simulée",
+    td_foot: "Réponse simulée · 3 essais gratuits par agent",
+    manifestoLines: [
+      <>Pendant que les autres vendent des <em>chatbots</em>,</>,
+      <>nous vendons des <span className="acid-mark">agents</span>.</>,
+      <>Pas un, pas dix : <em>soixante</em>.</>,
+      <>Achetés, testés, déployés. <em>Pas réinventés</em>.</>
+    ],
+    manifestoSig: "Manifeste · OSIA · 2026",
+    footerCol1: "L'App Store des Agents IA. Une marketplace française de revente d'agents, prompts et workflows haut de gamme.",
+    footerNav: "Naviguer", footerCreate: "Créateurs", footerLegal: "Légal",
+    cta_explore: "Explorer les agents", cta_aria: "Parler à OSIA",
+    floating: "OSIA est en ligne",
+    soldByMin: "À partir de", monthly: "/ mois",
+    btn_buy: "Acheter", btn_try: "Essayer",
+  },
+  en: {
+    explore: "Explore the agents",
+    sell: "Sell your agent",
+    nav_market: "Marketplace", nav_create: "Creators", nav_aria: "OSIA", nav_pricing: "Pricing",
+    deployedWeek: "Agents deployed this week",
+    activeNow: "Live sessions right now",
+    creators: "Verified creators", uptime: "Network uptime",
+    blurb: <>Buy, sell and deploy the world's best <b>AI agents</b>, <b>prompts</b> and <b>workflows</b>. Not a chatbot. Not a template. <b>Intelligence rented by the hour.</b></>,
+    aria_title: <>Ask <em>OSIA.</em></>,
+    aria_sub: "AI Recommendation & Integration Assistant. Reads your business in plain language and finds the right agent in under 8 seconds.",
+    aria_status: "OSIA · v4.2 · online",
+    aria_input_ph: "Describe your business need…",
+    aria_send: "Send",
+    sec1_label: "01 — Categories",
+    sec1_title: <>Eight families. <em>Forty-eight</em> agents. <em>Zero</em> noise.</>,
+    sec1_meta: "48 agents · 8 families",
+    sec2_label: "02 — Marketplace",
+    sec2_title: <>The shelf of <em>agents</em> in stock.</>,
+    sec2_meta: "Sort · filter · try · deploy",
+    filter_label: "Filter",
+    sort_label: "Sort",
+    sort_pop: "Most deployed", sort_rated: "Top rated", sort_price_lo: "Price ↑", sort_price_hi: "Price ↓", sort_new: "Newest",
+    test_drive: "Test Drive",
+    perMonth: "/ month",
+    deploys: "deployments",
+    drawerTry: "Try 3× free",
+    drawerBuy: "Deploy now",
+    drawerLabel: "Agent spec",
+    integrationsLabel: "One-click deploy",
+    contextLabel: "Context", ratingLabel: "Rating", deploysLabel: "Deployments", priceLabel: "Price",
+    td_head: "Test Drive · Real-time sandbox",
+    td_input_label: "Simulated user request",
+    td_foot: "Simulated response · 3 free trials per agent",
+    manifestoLines: [
+      <>While others sell <em>chatbots</em>,</>,
+      <>we sell <span className="acid-mark">agents</span>.</>,
+      <>Not one, not ten: <em>sixty</em>.</>,
+      <>Bought, tested, deployed. <em>Not reinvented</em>.</>
+    ],
+    manifestoSig: "Manifesto · OSIA · 2026",
+    footerCol1: "The App Store of AI agents. A French marketplace reselling top-tier agents, prompts and workflows.",
+    footerNav: "Browse", footerCreate: "Creators", footerLegal: "Legal",
+    cta_explore: "Explore agents", cta_aria: "Talk to OSIA",
+    floating: "OSIA online",
+    soldByMin: "From", monthly: "/ mo",
+    btn_buy: "Buy", btn_try: "Try",
+  }
+};
+
+// ───────────── TopBar ─────────────
+function TopBar({ lang, setLang }) {
+  const t = T[lang];
+  return (
+    <header className="topbar">
+      <div className="frame inner">
+        <div className="row">
+          <span className="wordmark">
+            <span className="crash">OSIA</span><span className="dot"></span>
+            <span className="id">/// MARKETPLACE.IA</span>
+          </span>
+        </div>
+        <nav className="nav-links">
+          <a href="#marketplace" className="active">{t.nav_market}</a>
+          <a href="#categories">{t.nav_create}</a>
+          <a href="#aria">{t.nav_aria}</a>
+          <a href="#pricing">{t.nav_pricing}</a>
+        </nav>
+        <div className="row" style={{justifyContent:"flex-end"}}>
+          <div className="lang-toggle" role="group" aria-label="language">
+            <button className={lang === "fr" ? "on" : ""} onClick={() => setLang("fr")}>FR</button>
+            <button className={lang === "en" ? "on" : ""} onClick={() => setLang("en")}>EN</button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+// ───────────── Live counter ─────────────
+function useLiveCounter(start, growMin = 1, growMax = 3, ms = 1800) {
+  const [n, setN] = useState(start);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setN(v => v + Math.floor(Math.random() * (growMax - growMin + 1)) + growMin);
+    }, ms);
+    return () => clearInterval(id);
+  }, [ms, growMin, growMax]);
+  return n;
+}
+
+function fmt(n) { return n.toLocaleString("fr-FR").replace(/,/g, " "); }
+
+// ───────────── Hero ─────────────
+function Hero({ lang, onAriaFocus }) {
+  const t = T[lang];
+  const deploys = useLiveCounter(47392, 1, 4, 1500);
+  const live = useLiveCounter(312, 0, 2, 2200);
+  return (
+    <section className="hero frame">
+      <h1>
+        {lang === "fr" ? (
+          <>L'<em>App&nbsp;Store</em><br />des <span className="acid-mark">Agents</span> IA.</>
+        ) : (
+          <>The <em>App&nbsp;Store</em><br />of <span className="acid-mark">AI Agents</span>.</>
+        )}
+      </h1>
+      <div className="hero-grid">
+        <div>
+          <p className="hero-blurb">{t.blurb}</p>
+          <div className="hero-cta">
+            <button className="btn">{t.cta_explore} <span className="arr">→</span></button>
+            <button className="btn ghost" onClick={onAriaFocus}>{t.cta_aria} <span className="arr">↘</span></button>
+          </div>
+        </div>
+        
+      </div>
+      
+    </section>
+  );
+}
+
+// ───────────── OSIA scripted conversation ─────────────
+
+// ───────────── Assistant OSIA (réel, /api/chat, connaît le site) ─────────────
+function AriaPanel({ lang, ariaRef }) {
+  const t = T[lang];
+  const SYSTEM = (lang === "fr"
+    ? "Tu es OSIA, l'assistant officiel de osia-pro.com. Tu connais le site par coeur (fiche ci-dessous). Accompagne le visiteur, comprends son besoin, et oriente-le vers le bon agent ou la bonne offre OSIA. Direct, chaleureux, concret, en francais, sans blabla, sans moralisation. N'invente JAMAIS un prix ni une info ; pour un prix exact ou un devis, renvoie vers la page Tarifs ou Contact d'osia-pro.com. Si tu ne sais pas, dis-le et propose le contact."
+    : "You are OSIA, the official assistant of osia-pro.com. You know the site by heart (sheet below). Guide the visitor, point them to the right OSIA agent or offer. Direct, warm, concrete. Never invent a price or fact; for exact pricing point to Tarifs/Contact. If unsure, say so and offer contact.")
+    + "\n\n=== FICHE OSIA ===\n" + OSIA_KB;
+  const hello = lang === "fr"
+    ? "Bonjour 👋 Je suis OSIA. Dis-moi ton besoin et je t'oriente vers le bon agent ou la bonne offre."
+    : "Hi 👋 I'm OSIA. Tell me your need and I'll point you to the right agent or offer.";
+  const { useState: uS, useRef: uR, useEffect: uE } = React;
+  const [msgs, setMsgs] = uS([{ who: "aria", text: hello }]);
+  const [input, setInput] = uS(""); const [busy, setBusy] = uS(false);
+  const bodyRef = uR(null);
+  uE(() => { if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight; }, [msgs, busy]);
+  async function send(e) {
+    if (e) e.preventDefault();
+    const q = input.trim(); if (!q || busy) return;
+    setInput(""); const next = msgs.concat([{ who: "user", text: q }]);
+    setMsgs(next); setBusy(true);
+    try {
+      const payload = [{ role: "system", content: SYSTEM }].concat(next.map(m => ({ role: m.who === "user" ? "user" : "assistant", content: m.text })));
+      const r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: payload }) });
+      const d = await r.json();
+      const reply = d.content || (d.error ? ("\u26a0\ufe0f " + d.error) : (lang === "fr" ? "Pas de reponse." : "No reply."));
+      setMsgs(m => m.concat([{ who: "aria", text: reply }]));
+    } catch (err) {
+      setMsgs(m => m.concat([{ who: "aria", text: lang === "fr" ? "\u26a0\ufe0f Assistant indisponible — il fonctionne une fois le site en ligne sur osia-pro.com." : "\u26a0\ufe0f Unavailable until hosted on osia-pro.com." }]));
+    } finally { setBusy(false); }
+  }
+  return (
+    <section ref={ariaRef} className="frame" id="aria">
+      <div className="aria-shell">
+        <div className="aria-left">
+          <div>
+            <span className="badge"><span style={{width:6,height:6,background:"var(--acid)",borderRadius:"50%"}}></span> OSIA · assistant</span>
+            <h3 style={{marginTop:24}}>{t.aria_title}</h3>
+            <p className="sub">{t.aria_sub}</p>
+          </div>
+          <div style={{fontFamily:"var(--mono)",fontSize:11,letterSpacing:"0.06em",color:"var(--ink-3)",textTransform:"uppercase",marginTop:32}}>
+            {lang==="fr" ? "→ réponses en temps réel · → connaît osia-pro.com · → orienté besoin" : "→ real-time · → knows osia-pro.com"}
+          </div>
+        </div>
+        <div className="aria-right">
+          <div className="head"><span>{t.aria_status}</span><span>{lang==="fr"?"en direct":"live"}</span></div>
+          <div className="aria-msgs" ref={bodyRef}>
+            {msgs.map((m,i) => (<div key={i} className={"aria-msg " + m.who}>{m.text}</div>))}
+            {busy && <div className="aria-msg aria" style={{opacity:.6}}>…</div>}
+          </div>
+          <form className="aria-input" onSubmit={send}>
+            <input value={input} onChange={e=>setInput(e.target.value)} placeholder={t.aria_input_ph} />
+            <button type="submit">{t.aria_send}</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+window.TopBar = TopBar;
+window.Hero = Hero;
+window.AriaPanel = AriaPanel;
+window.T = T;
+window.fmt = fmt;
+window.useLiveCounter = useLiveCounter;
+
+
+/* COMPONENTS */
+/* global React, AGENTS, CATEGORIES, T, fmt, useLiveCounter */
+const { useState: uS, useEffect: uE, useRef: uR, useMemo: uM } = React;
+
+// ───────────── Category carousel ─────────────
+function CategoryCarousel({ lang, active, setActive }) {
+  const t = T[lang];
+  const trackRef = uR(null);
+
+  const scrollBy = (dx) => {
+    if (trackRef.current) trackRef.current.scrollBy({ left: dx, behavior: "smooth" });
+  };
+
+  // drag-to-scroll
+  uE(() => {
+    const el = trackRef.current; if (!el) return;
+    let down = false, startX = 0, scrollL = 0;
+    const onDown = (e) => { down = true; startX = e.pageX - el.offsetLeft; scrollL = el.scrollLeft; el.classList.add("dragging"); };
+    const onMove = (e) => { if (!down) return; e.preventDefault(); el.scrollLeft = scrollL - (e.pageX - el.offsetLeft - startX); };
+    const onUp = () => { down = false; el.classList.remove("dragging"); };
+    el.addEventListener("mousedown", onDown);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => { el.removeEventListener("mousedown", onDown); window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+  }, []);
+
+  return (
+    <section id="categories" className="section frame">
+      <div className="section-head">
+        <div className="num">{t.sec1_label}</div>
+        <h2>{t.sec1_title}</h2>
+        <div className="meta">{t.sec1_meta}</div>
+      </div>
+      <div className="carousel-wrap">
+        <div className="carousel-nav">
+          <button onClick={() => scrollBy(-360)} aria-label="prev">←</button>
+          <button onClick={() => scrollBy(360)} aria-label="next">→</button>
+        </div>
+        <div ref={trackRef} className="carousel-track">
+          {CATEGORIES.map((c, i) => (
+            <div
+              key={c.key}
+              className={"cat-card" + (active === c.key ? " active" : "")}
+              onClick={() => setActive(c.key)}
+            >
+              <div className="row" style={{justifyContent:"space-between"}}>
+                <span className="cat-num">{String(i).padStart(2,"0")} / {String(CATEGORIES.length-1).padStart(2,"0")}</span>
+                {active === c.key && <span className="cat-num" style={{color:"var(--acid)"}}>● ACTIVE</span>}
+              </div>
+              <div>
+                <div className="cat-name">{c[lang]}</div>
+                <div className="cat-sub">{c.sub ? c.sub[lang] : (lang==="fr"?"toutes catégories":"all categories")}</div>
+              </div>
+              <div className="cat-foot">
+                <span>{lang==="fr"?"agents":"agents"}</span>
+                <span className="cat-count">{String(c.count).padStart(2,"0")}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ───────────── Filter + sort ─────────────
+function FilterBar({ lang, cat, setCat, sort, setSort }) {
+  const t = T[lang];
+  return (
+    <div className="filter-bar frame">
+      <span className="label">{t.filter_label}:</span>
+      {CATEGORIES.map(c => (
+        <button key={c.key} className={"chip" + (cat === c.key ? " on" : "")} onClick={() => setCat(c.key)}>
+          {c[lang]} <span style={{opacity:.55,marginLeft:4}}>{c.count}</span>
+        </button>
+      ))}
+      <select className="sort-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+        
+        
+        
+        
+        <option value="new">{t.sort_new}</option>
+      </select>
+    </div>
+  );
+}
+
+// ───────────── Agent grid ─────────────
+function AgentGrid({ lang, cat, sort, onSelect }) {
+  const t = T[lang];
+  const agents = uM(() => {
+    let a = AGENTS.filter(x => cat === "all" || x.cat === cat);
+    if (sort === "pop") a = a.slice().sort((a,b) => b.deploys - a.deploys);
+    if (sort === "rated") a = a.slice().sort((a,b) => b.rating - a.rating);
+    if (sort === "price-lo") a = a.slice().sort((a,b) => a.price - b.price);
+    if (sort === "price-hi") a = a.slice().sort((a,b) => b.price - a.price);
+    if (sort === "new") a = a.slice().sort((a,b) => b.n - a.n);
+    return a;
+  }, [cat, sort]);
+
+  return (
+    <section id="marketplace" className="frame" style={{paddingBottom:24}}>
+      <div className="agent-grid">
+        {agents.map(a => (
+          <div key={a.id} className="agent-card" onClick={() => onSelect(a)}>
+            <div className="top">
+              <span className="id">{a.id}</span>
+              
+            </div>
+            <div>
+              <h3>{a.name}</h3>
+              <div className="role">{a.role[lang]}</div>
+            </div>
+            <p className="blurb">"{a.tag[lang]}"</p>
+            <div className="foot">
+              
+              
+            </div>
+            
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ───────────── Test Drive sandbox (mocked) ─────────────
+const TD_SAMPLES = {
+  fr: {
+    architects: { in: "Architecture pour service de paiement, 50k req/s, multi-région.", out: "› Choix : event-sourcing + CQRS\n› Couche écriture : Aurora Global, write-leader EU-West-1\n› Bus : Kafka (3 clusters, MRC)\n› Lecture : Read-replicas + Redis (TTL 60s)\n› Idempotency keys : DynamoDB, TTL 24h\n› Observabilité : OTel → Honeycomb\n› SLO : p99 < 80ms, 99.99% disponibilité\n› Coût estimé : ~38k$ / mois @ baseline" },
+    trainers:  { in: "Onboarding 12 ingénieurs juniors en 90 jours sur stack Go/K8s.", out: "› J0–14 : pair-programming, 1 PR/jour\n› J15–30 : ownership d'un micro-service de support\n› J31–60 : on-call shadow + 2 incidents simulés\n› J61–90 : ownership d'une feature client\n› Évaluations bi-mensuelles · checkpoints lecture/code\n› Mentor 1:1 hebdo, format STARS\n› Sortie : autonomie sur le périmètre + 1 RFC publiée" },
+    jurists:   { in: "Redline d'un MSA SaaS reçu d'un grand compte US.", out: "› Issue 1 (uncapped indemnity §11.3) → cap à 12 mois ARR\n› Issue 2 (data ownership §6) → ajouter clause de réversibilité\n› Issue 3 (governing law NY) → contre-proposer Delaware\n› Issue 4 (audit rights §9) → 1×/an, préavis 30j, NDA\n› Issue 5 (termination for convenience) → 60j → 90j\n› Issue 6 (SLA crédit) → ajouter clause force majeure\n› Issue 7 (sub-processors) → DPA Annex 1 obligatoire" },
+    medical:   { in: "Femme 47 ans, douleur thoracique aiguë, ECG normal, troponine élevée.", out: "› DDx prioritaires :\n  1. NSTEMI (post-test odds élevés malgré ECG normal)\n  2. Myocardite aiguë\n  3. Embolie pulmonaire (D-dimères ?)\n  4. Péricardite\n  5. Dissection aortique (TA bras D/G ?)\n› Prochaines étapes : coronarographie, échographie cardiaque\n› Score GRACE / TIMI à calculer\n› Tropo cinétique à H+3, H+6\n› ! ne pas négliger même si ECG initial normal" },
+    strategists:{in:"Pricing pour SaaS B2B vertical avec 3 paliers actuels.", out:"› Audit segment : 47% des deals sur palier mid → goulot\n› Recommandation : ajouter palier intermédiaire à 290€\n› Rebrancher palier supérieur sur usage (events × prix unitaire)\n› Test A/B 4 semaines, panel 3% trafic\n› Élasticité estimée : −0.4 mid, −0.2 top\n› Impact projeté MRR : +8% à +14% sur 6 mois\n› Risque churn mid : <2% (basé sur cohortes 2025)" },
+    researchers:{in:"Revue systématique sur efficacité GLP-1 vs SGLT2 chez diabétiques.", out:"› Bases : PubMed, Embase, Cochrane, ClinicalTrials.gov\n› Stratégie booléenne : (\"GLP-1\" OR semaglutide) AND (\"SGLT2\" OR empagliflozin)\n› Filtres : RCT, n>500, suivi >24 sem, 2018+\n› 312 résultats → 47 retenus après PRISMA\n› Synthèse : GLP-1 supérieur sur HbA1c (Δ −0.3%)\n› SGLT2 supérieur sur événements cardiaques (HR 0.86)\n› Hétérogénéité I² = 32%\n› Risque biais : modéré (3/47 industriels)" }
+  },
+  en: {
+    architects: { in: "Architecture for a payments service, 50k rps, multi-region.", out: "› Pattern: event-sourcing + CQRS\n› Write: Aurora Global, leader EU-West-1\n› Bus: Kafka (3 clusters, MRC)\n› Read: Read-replicas + Redis (TTL 60s)\n› Idempotency: DynamoDB, TTL 24h\n› Observability: OTel → Honeycomb\n› SLO: p99 < 80ms, 99.99% uptime\n› Estimated cost: ~$38k / mo @ baseline" },
+    trainers:  { in: "Onboard 12 junior engineers in 90 days on Go/K8s stack.", out: "› D0–14: pair-programming, 1 PR/day\n› D15–30: ownership of one support micro-service\n› D31–60: on-call shadow + 2 simulated incidents\n› D61–90: ownership of a customer feature\n› Bi-weekly evals · reading/code checkpoints\n› Weekly 1:1 mentor, STARS format\n› Exit: autonomy on scope + 1 RFC shipped" },
+    jurists:   { in: "Redline a SaaS MSA from a US enterprise.", out: "› Issue 1 (uncapped indemnity §11.3) → cap at 12mo ARR\n› Issue 2 (data ownership §6) → add reversibility clause\n› Issue 3 (governing law NY) → counter Delaware\n› Issue 4 (audit rights §9) → 1×/yr, 30d notice, NDA\n› Issue 5 (termination for convenience) → 60→90d\n› Issue 6 (SLA credits) → force-majeure carveout\n› Issue 7 (sub-processors) → DPA Annex 1 required" },
+    medical:   { in: "47yo F, acute chest pain, normal ECG, high troponin.", out: "› Top DDx:\n  1. NSTEMI (high post-test odds despite normal ECG)\n  2. Acute myocarditis\n  3. Pulmonary embolism (D-dimers?)\n  4. Pericarditis\n  5. Aortic dissection (BP R/L arm?)\n› Next: coronary angio, echo\n› Compute GRACE / TIMI\n› Tropo kinetics at H+3, H+6\n› ! do not dismiss on initial ECG alone" },
+    strategists:{in:"Pricing for B2B vertical SaaS with 3 current tiers.", out:"› Segment audit: 47% deals on mid tier → bottleneck\n› Recommendation: add intermediate tier at €290\n› Move top tier to usage-based (events × unit price)\n› A/B test 4 weeks, 3% traffic panel\n› Estimated elasticity: −0.4 mid, −0.2 top\n› Projected MRR impact: +8% to +14% over 6 mo\n› Mid-tier churn risk: <2% (based on 2025 cohorts)" },
+    researchers:{in:"Systematic review on GLP-1 vs SGLT2 efficacy in diabetics.", out:"› Bases: PubMed, Embase, Cochrane, ClinicalTrials.gov\n› Boolean: (\"GLP-1\" OR semaglutide) AND (\"SGLT2\" OR empagliflozin)\n› Filters: RCT, n>500, follow-up >24w, 2018+\n› 312 hits → 47 kept after PRISMA\n› Synthesis: GLP-1 superior on HbA1c (Δ −0.3%)\n› SGLT2 superior on cardiac events (HR 0.86)\n› Heterogeneity I² = 32%\n› Bias risk: moderate (3/47 industry-funded)" }
+  }
+};
+
+function TestDrive({ agent, lang }) {
+  const sample = TD_SAMPLES[lang][agent.cat] || TD_SAMPLES[lang].architects;
+  const [typed, setTyped] = uS("");
+  const [phase, setPhase] = uS("idle"); // idle, typing, done
+  uE(() => {
+    setTyped(""); setPhase("typing");
+    let i = 0;
+    const id = setInterval(() => {
+      i += 2;
+      if (i > sample.out.length) { clearInterval(id); setPhase("done"); setTyped(sample.out); return; }
+      setTyped(sample.out.slice(0, i));
+    }, 14);
+    return () => clearInterval(id);
+  }, [agent.id, lang]);
+
+  return (
+    <div className="testdrive">
+      <div className="td-head">
+        <div className="left">
+          <span className="acid">●</span>
+          <span>{T[lang].td_head}</span>
+        </div>
+        <span>{agent.id} · {agent.name}</span>
+      </div>
+      <div className="td-body">
+        <div className="td-input">{sample.in}</div>
+        <div className="td-out">{typed}{phase === "typing" && <span className="blink"></span>}</div>
+      </div>
+      <div className="td-foot">
+        <span>{T[lang].td_foot}</span>
+        <span>{lang==="fr"?"Latence simulée 1.4s":"Simulated latency 1.4s"} · 247 tokens</span>
+      </div>
+    </div>
+  );
+}
+
+// ───────────── Drawer ─────────────
+const INTEGRATIONS = ["Slack", "Discord", "Teams", "Notion", "Zapier", "n8n", "Make", "API REST", "Python", "JS", "Webhook", "Zoom"];
+
+function AgentDrawer({ agent, onClose, lang }) {
+  const t = T[lang];
+  const open = !!agent;
+  uE(() => {
+    if (!agent) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [agent]);
+  return (
+    <>
+      <div className={"drawer-scrim" + (open ? " on" : "")} onClick={onClose}></div>
+      <aside className={"drawer" + (open ? " on" : "")} aria-hidden={!open}>
+        {agent && (
+          <>
+            <div className="top">
+              <span>{t.drawerLabel} · {agent.id}</span>
+              <button onClick={onClose}>ESC ✕</button>
+            </div>
+            <div className="body">
+              <div style={{fontFamily:"var(--mono)",fontSize:11,letterSpacing:"0.06em",color:"var(--ink-3)",textTransform:"uppercase",marginBottom:8}}>
+                #{String(agent.n).padStart(3,"0")} / 048 — {CATEGORIES.find(c=>c.key===agent.cat)[lang]}
+              </div>
+              <h2>{agent.name}.</h2>
+              <div className="role">{agent.role[lang]}</div>
+              <blockquote className="quote">"{agent.tag[lang]}"</blockquote>
+              <p style={{fontSize:15,lineHeight:1.65,color:"var(--ink-2)",margin:"6px 0 18px"}}>{agent.desc[lang]}</p>
+              <div className="detail-block"><div className="detail-label">{lang==="fr"?"Ce qu'il fait":"What it does"}</div><ul className="detail-list">{(agent.does||[]).map((x,i)=>(<li key={i}>{x}</li>))}</ul></div>
+              <div className="detail-block"><div className="detail-label">{lang==="fr"?"Pour qui":"For whom"}</div><p className="detail-text">{agent.forwho}</p></div>
+              <div className="detail-build"><div className="detail-label">{lang==="fr"?"Comment le reproduire":"How to build it"}</div><p className="detail-text">{agent.build}</p></div>
+
+              
+
+              
+
+              
+
+              
+            </div>
+            
+          </>
+        )}
+      </aside>
+    </>
+  );
+}
+
+// ───────────── Manifesto ─────────────
+function Manifesto({ lang }) {
+  const t = T[lang];
+  return (
+    <section className="frame">
+      <div className="manifesto">
+        <div className="lines">
+          {t.manifestoLines.map((l, i) => <p key={i}>{l}</p>)}
+        </div>
+        <div className="signature">
+          <span>{t.manifestoSig}</span>
+          <span>{lang==="fr"?"Imprimé sur le web":"Printed on the web"}</span>
+          <span>· 2026 ©</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ───────────── Footer ─────────────
+function Footer({ lang }) {
+  const t = T[lang];
+  return (
+    <footer className="footer frame">
+      <div className="grid">
+        <div>
+          <div className="wordmark" style={{marginBottom:14}}>
+            <span className="crash">OSIA</span><span className="dot"></span>
+          </div>
+          <p style={{maxWidth:320,lineHeight:1.6}}>{t.footerCol1}</p>
+        </div>
+        <div>
+          <h4>{t.footerNav}</h4>
+          <ul>
+            <li><a href="#marketplace">Marketplace</a></li>
+            <li><a href="#categories">{lang==="fr"?"Catégories":"Categories"}</a></li>
+            <li><a href="#aria">OSIA</a></li>
+            <li><a href="#">{lang==="fr"?"Tarifs":"Pricing"}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>{t.footerCreate}</h4>
+          <ul>
+            <li><a href="#">{lang==="fr"?"Vendre un agent":"Sell a agent"}</a></li>
+            <li><a href="#">{lang==="fr"?"Programme partenaires":"Partner program"}</a></li>
+            <li><a href="#">{lang==="fr"?"Documentation":"Docs"}</a></li>
+            <li><a href="#">SDK · API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>{t.footerLegal}</h4>
+          <ul>
+            <li><a href="#">CGU</a></li>
+            <li><a href="#">RGPD</a></li>
+            <li><a href="#">{lang==="fr"?"Mentions légales":"Legal notice"}</a></li>
+            <li><a href="#">contact@osia-pro.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="bot">
+        <span>© 2026 OSIA — {lang==="fr"?"Édité depuis Paris":"Made in Paris"}</span>
+        <span>v4.2.1 · {lang==="fr"?"compilé le 09.05.2026":"built on 05.09.2026"}</span>
+      </div>
+    </footer>
+  );
+}
+
+function FloatAria({ lang, onClick }) {
+  return (
+    <button className="float-ai" onClick={onClick}>
+      <span className="dot"></span>
+      <span className="lab">{T[lang].floating} →</span>
+    </button>
+  );
+}
+
+window.CategoryCarousel = CategoryCarousel;
+window.FilterBar = FilterBar;
+window.AgentGrid = AgentGrid;
+window.AgentDrawer = AgentDrawer;
+window.Manifesto = Manifesto;
+window.Footer = Footer;
+window.FloatAria = FloatAria;
+
+
+/* APP */
+/* global React, ReactDOM, TopBar, Hero, AriaPanel, CategoryCarousel, FilterBar, AgentGrid, AgentDrawer, Manifesto, Footer, FloatAria, useTweaks, TweaksPanel, TweakSection, TweakRadio */
+const { useState: u, useEffect: e, useRef: r } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "density": "default"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [lang, setLang] = u("fr");
+  const [cat, setCat] = u("all");
+  const [sort, setSort] = u("pop");
+  const [selected, setSelected] = u(null);
+  const t = TWEAK_DEFAULTS; const setTweak = () => {};
+  const ariaRef = r(null);
+
+  e(() => {
+    document.body.dataset.density = t.density === "default" ? "" : t.density;
+  }, [t.density]);
+
+  const onAriaFocus = () => {
+    if (ariaRef.current) {
+      const top = ariaRef.current.getBoundingClientRect().top + window.pageYOffset - 60;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <>
+      <TopBar lang={lang} setLang={setLang} />
+      <Hero lang={lang} onAriaFocus={onAriaFocus} />
+      <AriaPanel lang={lang} ariaRef={ariaRef} />
+      <CategoryCarousel lang={lang} active={cat} setActive={setCat} />
+      <section className="section frame" style={{paddingTop:60}}>
+        <div className="section-head">
+          <div className="num">{window.T[lang].sec2_label}</div>
+          <h2>{window.T[lang].sec2_title}</h2>
+          <div className="meta">{window.T[lang].sec2_meta}</div>
+        </div>
+      </section>
+      <FilterBar lang={lang} cat={cat} setCat={setCat} sort={sort} setSort={setSort} />
+      <AgentGrid lang={lang} cat={cat} sort={sort} onSelect={setSelected} />
+      <Manifesto lang={lang} />
+      <AgentDrawer agent={selected} onClose={() => setSelected(null)} lang={lang} />
+      <FloatAria lang={lang} onClick={onAriaFocus} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+</script></body></html>
