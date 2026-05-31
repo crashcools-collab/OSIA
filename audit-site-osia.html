@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Express de ton site — OSIA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Sora:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070a0b;
+    --bg-2:#0d1214;
+    --panel:#10171a;
+    --line:#1d2a2d;
+    --green:#00ff88;
+    --gold:#ffd24a;
+    --red:#ff5470;
+    --txt:#e7f0ee;
+    --muted:#7e918d;
+    --display:'Bricolage Grotesque',sans-serif;
+    --body:'Sora',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:var(--body);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  /* Atmosphere : glow + grille */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(900px 600px at 80% -10%, rgba(0,255,136,.10), transparent 60%),
+      radial-gradient(700px 500px at -10% 110%, rgba(255,210,74,.07), transparent 60%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(circle at 50% 30%, black, transparent 80%);
+  }
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:32px 22px 80px}
+
+  /* Topbar */
+  .topbar{display:flex;align-items:center;gap:11px;margin-bottom:46px}
+  .logo-mark{
+    width:30px;height:30px;border-radius:8px;
+    background:linear-gradient(135deg,var(--green),#00c46a);
+    display:grid;place-items:center;color:#04130c;font-family:var(--display);
+    font-weight:800;font-size:18px;box-shadow:0 0 22px rgba(0,255,136,.35)
+  }
+  .logo-txt{font-family:var(--display);font-weight:800;letter-spacing:.5px;font-size:18px}
+  .logo-txt span{color:var(--green)}
+  .badge{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:1.5px;
+    color:var(--green);border:1px solid var(--line);padding:6px 11px;border-radius:30px;
+    text-transform:uppercase}
+
+  /* Vues */
+  .view{display:none;animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+  .view.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:2.5px;color:var(--gold);
+    text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,7vw,56px);
+    line-height:1.02;letter-spacing:-1.5px;margin-bottom:18px}
+  h1 .hl{color:var(--green)}
+  .lead{font-size:16.5px;color:var(--muted);max-width:520px;line-height:1.6;margin-bottom:34px}
+
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:38px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--txt);background:var(--panel);
+    border:1px solid var(--line);padding:9px 14px;border-radius:9px}
+  .chip b{color:var(--green)}
+
+  .btn{
+    font-family:var(--display);font-weight:800;font-size:16px;cursor:pointer;
+    background:var(--green);color:#04130c;border:none;border-radius:12px;
+    padding:16px 30px;display:inline-flex;align-items:center;gap:10px;
+    transition:transform .15s ease,box-shadow .25s ease;
+    box-shadow:0 0 0 rgba(0,255,136,0)
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(0,255,136,.28)}
+  .btn .arr{transition:transform .2s ease}
+  .btn:hover .arr{transform:translateX(4px)}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--green);box-shadow:none}
+  .btn.gold{background:var(--gold);color:#1a1400}
+  .btn.gold:hover{box-shadow:0 10px 34px rgba(255,210,74,.25)}
+
+  /* Quiz */
+  .progress{height:5px;background:var(--line);border-radius:30px;margin-bottom:30px;overflow:hidden}
+  .progress > i{display:block;height:100%;width:0;border-radius:30px;
+    background:linear-gradient(90deg,var(--gold),var(--green));transition:width .4s ease}
+  .q-count{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:14px}
+  .q-count b{color:var(--green)}
+  .q-cat{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--gold);
+    text-transform:uppercase;margin-bottom:10px}
+  .q-text{font-family:var(--display);font-weight:600;font-size:clamp(22px,4.5vw,30px);
+    line-height:1.2;margin-bottom:30px;letter-spacing:-.5px}
+  .options{display:grid;gap:12px}
+  .opt{
+    text-align:left;cursor:pointer;background:var(--panel);border:1px solid var(--line);
+    border-radius:13px;padding:17px 19px;color:var(--txt);font-size:16px;font-family:var(--body);
+    display:flex;align-items:center;gap:14px;transition:all .15s ease
+  }
+  .opt:hover{border-color:var(--green);transform:translateX(4px);background:var(--bg-2)}
+  .opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);flex:none;transition:all .15s}
+  .opt:hover .dot{border-color:var(--green);box-shadow:0 0 0 4px rgba(0,255,136,.12)}
+  .opt .k{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+
+  /* Résultat */
+  .gauge-wrap{display:flex;flex-direction:column;align-items:center;margin:6px 0 30px}
+  .gauge{position:relative;width:230px;height:230px}
+  .gauge svg{transform:rotate(-90deg)}
+  .gauge .track{fill:none;stroke:var(--line);stroke-width:16}
+  .gauge .fill{fill:none;stroke-width:16;stroke-linecap:round;
+    transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1),stroke .6s}
+  .gauge .center{position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center}
+  .gauge .score{font-family:var(--display);font-weight:800;font-size:62px;line-height:1}
+  .gauge .out-of{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:4px}
+  .verdict{text-align:center;font-family:var(--display);font-weight:800;font-size:24px;margin-bottom:6px}
+  .verdict-sub{text-align:center;color:var(--muted);font-size:15px;max-width:460px;margin:0 auto 34px;line-height:1.6}
+
+  .sec-title{font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--muted);margin:34px 0 16px;display:flex;align-items:center;gap:10px}
+  .sec-title::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .reco{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:12px;padding:16px 18px;margin-bottom:11px;display:flex;gap:14px;align-items:flex-start}
+  .reco .impact{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:#1a1400;
+    background:var(--gold);padding:4px 8px;border-radius:6px;flex:none;margin-top:2px}
+  .reco h4{font-family:var(--display);font-weight:600;font-size:16px;margin-bottom:5px}
+  .reco p{font-size:14px;color:var(--muted);line-height:1.55}
+  .strong{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--green);
+    border-radius:12px;padding:14px 18px;margin-bottom:11px}
+  .strong h4{font-family:var(--display);font-weight:600;font-size:15px;display:flex;align-items:center;gap:9px}
+  .strong .check{color:var(--green);font-weight:800}
+
+  /* Capture / CTA */
+  .cta-card{margin-top:42px;background:linear-gradient(160deg,var(--bg-2),var(--panel));
+    border:1px solid var(--line);border-radius:18px;padding:30px 26px;position:relative;overflow:hidden}
+  .cta-card::before{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;
+    background:radial-gradient(circle,rgba(0,255,136,.18),transparent 70%)}
+  .cta-card h3{font-family:var(--display);font-weight:800;font-size:23px;margin-bottom:8px;position:relative}
+  .cta-card p{color:var(--muted);font-size:14.5px;line-height:1.6;margin-bottom:22px;position:relative;max-width:480px}
+  .form-row{display:grid;gap:12px;position:relative}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .field input{background:var(--bg);border:1px solid var(--line);border-radius:11px;
+    padding:14px 15px;color:var(--txt);font-family:var(--body);font-size:15px;outline:none;transition:border .15s}
+  .field input:focus{border-color:var(--green)}
+  .hp{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+  .form-msg{font-family:var(--mono);font-size:13px;margin-top:6px;min-height:18px}
+  .form-msg.ok{color:var(--green)}
+  .form-msg.err{color:var(--red)}
+
+  .offer{margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:16px;
+    padding-top:22px;border-top:1px dashed var(--line);position:relative}
+  .offer .txt{flex:1;min-width:200px}
+  .offer .txt b{color:var(--gold)}
+  .offer .txt small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+
+  .restart{display:block;margin:26px auto 0;background:none;border:none;color:var(--muted);
+    font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;text-decoration:underline}
+  .restart:hover{color:var(--green)}
+
+  footer{text-align:center;margin-top:40px;font-family:var(--mono);font-size:11px;
+    color:var(--muted);letter-spacing:1px}
+  footer b{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="logo-mark">O</div>
+    <div class="logo-txt">OS<span>IA</span></div>
+    <div class="badge">Audit gratuit</div>
+  </div>
+
+  <!-- VUE 1 : INTRO -->
+  <section class="view active" id="view-intro">
+    <div class="eyebrow">Diagnostic en 2 minutes</div>
+    <h1>Ton site web<br>vaut combien<br>sur <span class="hl">100</span> ?</h1>
+    <p class="lead">Réponds à 10 questions simples. Tu obtiens un score clair, tes points faibles, et un plan d'action prioritaire. Gratuit, sans inscription pour voir ton résultat.</p>
+    <div class="meta-row">
+      <div class="chip"><b>10</b> questions</div>
+      <div class="chip"><b>~2</b> minutes</div>
+      <div class="chip">Score <b>/100</b> instantané</div>
+    </div>
+    <button class="btn" onclick="startQuiz()">Démarrer l'audit <span class="arr">→</span></button>
+  </section>
+
+  <!-- VUE 2 : QUIZ -->
+  <section class="view" id="view-quiz">
+    <div class="progress"><i id="bar"></i></div>
+    <div class="q-count">Question <b id="qNum">1</b> / 10</div>
+    <div class="q-cat" id="qCat"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="qOptions"></div>
+  </section>
+
+  <!-- VUE 3 : RÉSULTAT -->
+  <section class="view" id="view-result">
+    <div class="eyebrow">Ton résultat</div>
+    <div class="gauge-wrap">
+      <div class="gauge">
+        <svg width="230" height="230" viewBox="0 0 230 230">
+          <circle class="track" cx="115" cy="115" r="100"></circle>
+          <circle class="fill" id="gaugeFill" cx="115" cy="115" r="100"></circle>
+        </svg>
+        <div class="center">
+          <div class="score" id="scoreNum">0</div>
+          <div class="out-of">/ 100</div>
+        </div>
+      </div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <div class="verdict-sub" id="verdictSub"></div>
+
+    <div id="recoBlock"></div>
+    <div id="strongBlock"></div>
+
+    <!-- Capture + offre -->
+    <div class="cta-card">
+      <h3>Reçois ton plan d'action détaillé 📋</h3>
+      <p>On t'envoie par email le détail de chaque point à corriger, dans l'ordre de priorité, avec les solutions concrètes. Gratuit.</p>
+      <div class="form-row">
+        <div class="field">
+          <label for="leadName">Prénom</label>
+          <input type="text" id="leadName" placeholder="Ton prénom" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="leadEmail">Email</label>
+          <input type="email" id="leadEmail" placeholder="ton@email.com" autocomplete="email">
+        </div>
+        <!-- honeypot anti-bot -->
+        <input class="hp" type="text" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" onclick="sendLead()" id="leadBtn">Recevoir mon plan d'action <span class="arr">→</span></button>
+        <div class="form-msg" id="formMsg"></div>
+      </div>
+
+      <div class="offer">
+        <div class="txt">
+          <b>Pas le temps de t'en occuper ?</b>
+          <small>OSIA te livre un site pro, rapide et optimisé en 48h. Clé en main.</small>
+        </div>
+        <a class="btn gold" href="contact.html">Voir l'offre OSIA</a>
+      </div>
+    </div>
+
+    <button class="restart" onclick="restart()">↺ Refaire l'audit</button>
+  </section>
+
+  <footer>Outil gratuit propulsé par <b>OSIA</b> · osia-pro.com</footer>
+</div>
+
+<script>
+/* ============================================================
+   AUDIT EXPRESS OSIA — 100% client-side, zéro coût
+   ============================================================ */
+const QUESTIONS = [
+  { cat:"Mobile", weight:14,
+    q:"Ton site s'affiche-t-il parfaitement sur téléphone ?",
+    reco:["Site illisible sur mobile","Plus de 60% du trafic vient du téléphone. Un site non adapté fait fuir la majorité de tes visiteurs avant même qu'ils lisent."],
+    strong:"Site optimisé mobile" },
+  { cat:"Vitesse", weight:13,
+    q:"Tes pages se chargent-elles en moins de 3 secondes ?",
+    reco:["Chargement trop lent","Au-delà de 3 secondes, tu perds la moitié des visiteurs. Compresse tes images et choisis un hébergement rapide."],
+    strong:"Bon temps de chargement" },
+  { cat:"Conversion", weight:13,
+    q:"As-tu un bouton d'action clair (Devis, Contact, Acheter) visible dès l'arrivée ?",
+    reco:["Pas d'appel à l'action visible","Sans bouton clair, le visiteur repart sans rien faire. Place un 'Demander un devis' bien visible en haut de page."],
+    strong:"Appel à l'action présent" },
+  { cat:"SEO local", weight:11,
+    q:"Apparais-tu sur Google en cherchant 'ton métier + ta ville' ?",
+    reco:["Invisible sur Google local","Si tes clients ne te trouvent pas en cherchant ton activité, tu n'existes pas pour eux. Travaille ta fiche Google + le SEO local."],
+    strong:"Visible en recherche locale" },
+  { cat:"SEO", weight:9,
+    q:"Tes pages ont-elles des titres et descriptions optimisés (balises SEO) ?",
+    reco:["Balises SEO manquantes","Des titres et descriptions soignés = plus de clics depuis Google. Chaque page doit avoir sa balise title et meta description."],
+    strong:"Balises SEO en place" },
+  { cat:"Confiance", weight:9,
+    q:"As-tu des avis clients ou témoignages visibles sur ton site ?",
+    reco:["Aucune preuve sociale","Les avis rassurent et déclenchent le contact. Affiche 3 à 5 témoignages clients, idéalement avec nom et photo."],
+    strong:"Témoignages clients affichés" },
+  { cat:"Suivi", weight:8,
+    q:"Mesures-tu tes visiteurs (Google Analytics ou équivalent) ?",
+    reco:["Aucune mesure d'audience","Sans suivi, tu pilotes à l'aveugle. Installe un outil de mesure pour savoir ce qui marche et ce qui bloque."],
+    strong:"Audience mesurée" },
+  { cat:"Sécurité", weight:8,
+    q:"Ton site est-il en HTTPS (un cadenas dans la barre d'adresse) ?",
+    reco:["Site non sécurisé (HTTPS)","Sans HTTPS, Google te pénalise et les visiteurs voient 'site non sécurisé'. À corriger en priorité, c'est rapide."],
+    strong:"Connexion sécurisée (HTTPS)" },
+  { cat:"Légal", weight:8,
+    q:"As-tu des mentions légales et une politique de confidentialité ?",
+    reco:["Pages légales absentes","Mentions légales + confidentialité sont obligatoires (RGPD). Leur absence = risque légal et perte de confiance."],
+    strong:"Pages légales conformes" },
+  { cat:"Fraîcheur", weight:7,
+    q:"Ton site a-t-il été mis à jour depuis moins de 6 mois ?",
+    reco:["Site qui semble abandonné","Un site daté donne une mauvaise image et perd des positions sur Google. Un rafraîchissement régulier rassure et booste le référencement."],
+    strong:"Site à jour" },
+];
+
+let idx = 0;
+const answers = new Array(QUESTIONS.length).fill(null);
+const OPTS = [
+  { label:"Oui, c'est bon", k:"+", val:1 },
+  { label:"Plus ou moins / pas sûr", k:"~", val:0.5 },
+  { label:"Non", k:"–", val:0 },
+];
+
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startQuiz(){ idx=0; renderQuestion(); show('view-quiz'); }
+
+function renderQuestion(){
+  const Q = QUESTIONS[idx];
+  document.getElementById('bar').style.width = ((idx)/QUESTIONS.length*100)+'%';
+  document.getElementById('qNum').textContent = idx+1;
+  document.getElementById('qCat').textContent = Q.cat;
+  document.getElementById('qText').textContent = Q.q;
+  const box = document.getElementById('qOptions');
+  box.innerHTML = '';
+  OPTS.forEach(o=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = `<span class="dot"></span><span>${o.label}</span><span class="k">${o.k}</span>`;
+    b.onclick = ()=>answer(o.val);
+    box.appendChild(b);
+  });
+}
+
+function answer(val){
+  answers[idx] = val;
+  if(idx < QUESTIONS.length-1){ idx++; renderQuestion(); }
+  else { document.getElementById('bar').style.width='100%'; computeResult(); }
+}
+
+function computeResult(){
+  let score = 0;
+  QUESTIONS.forEach((Q,i)=> score += Q.weight * (answers[i] ?? 0));
+  score = Math.round(score);
+
+  // jauge
+  const r=100, C=2*Math.PI*r;
+  const fill = document.getElementById('gaugeFill');
+  fill.style.strokeDasharray = C;
+  fill.style.strokeDashoffset = C;
+  let color = score>=75 ? getCSS('--green') : score>=50 ? getCSS('--gold') : getCSS('--red');
+  fill.style.stroke = color;
+  document.getElementById('scoreNum').style.color = color;
+  document.getElementById('verdict').style.color = color;
+
+  // verdict
+  let v,vs;
+  if(score>=75){ v="Solide. 💪"; vs="Ton site a de bonnes bases. Quelques ajustements et il deviendra une vraie machine à clients."; }
+  else if(score>=50){ v="Du potentiel, mais ça fuit."; vs="Ton site n'est pas mauvais, mais il laisse passer des clients à cause de points faibles évitables."; }
+  else { v="Ton site te coûte des clients."; vs="Plusieurs problèmes majeurs freinent tes visiteurs. La bonne nouvelle : tout est corrigeable."; }
+  document.getElementById('verdict').textContent = v;
+  document.getElementById('verdictSub').textContent = vs;
+
+  // recommandations (points faibles), triées par impact
+  const weak = QUESTIONS
+    .map((Q,i)=>({Q,a:answers[i]}))
+    .filter(o=>o.a < 1)
+    .sort((a,b)=>b.Q.weight - a.Q.weight);
+  const recoBox = document.getElementById('recoBlock');
+  recoBox.innerHTML = '';
+  if(weak.length){
+    recoBox.innerHTML = '<div class="sec-title">À corriger en priorité</div>';
+    weak.forEach(o=>{
+      const lvl = o.Q.weight>=11 ? 'CRITIQUE' : o.Q.weight>=8 ? 'IMPORTANT' : 'À FAIRE';
+      const d = document.createElement('div');
+      d.className='reco';
+      d.innerHTML = `<span class="impact">${lvl}</span><div><h4>${o.Q.reco[0]}</h4><p>${o.Q.reco[1]}</p></div>`;
+      recoBox.appendChild(d);
+    });
+  }
+
+  // points forts
+  const strong = QUESTIONS.map((Q,i)=>({Q,a:answers[i]})).filter(o=>o.a===1);
+  const strongBox = document.getElementById('strongBlock');
+  strongBox.innerHTML = '';
+  if(strong.length){
+    strongBox.innerHTML = '<div class="sec-title">Tes points forts</div>';
+    strong.forEach(o=>{
+      const d=document.createElement('div');
+      d.className='strong';
+      d.innerHTML = `<h4><span class="check">✓</span> ${o.Q.strong}</h4>`;
+      strongBox.appendChild(d);
+    });
+  }
+
+  show('view-result');
+  setTimeout(()=>{ fill.style.strokeDashoffset = C*(1 - score/100); animateNumber(score); }, 250);
+  window.__auditScore = score;
+  window.__auditWeak = weak.map(o=>o.Q.reco[0]);
+}
+
+function animateNumber(target){
+  const el=document.getElementById('scoreNum'); let cur=0;
+  const step=Math.max(1,Math.round(target/40));
+  const t=setInterval(()=>{ cur+=step; if(cur>=target){cur=target;clearInterval(t);} el.textContent=cur; },28);
+}
+
+function getCSS(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* Capture lead -> pipeline OSIA */
+async function sendLead(){
+  const name=document.getElementById('leadName').value.trim();
+  const email=document.getElementById('leadEmail').value.trim();
+  const company=document.getElementById('company').value.trim(); // honeypot
+  const msg=document.getElementById('formMsg');
+  const btn=document.getElementById('leadBtn');
+
+  if(name.length<2){ msg.className='form-msg err'; msg.textContent='Indique ton prénom.'; return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg.className='form-msg err'; msg.textContent='Email invalide.'; return; }
+
+  btn.disabled=true; btn.style.opacity=.6;
+  msg.className='form-msg'; msg.textContent='Envoi en cours…';
+
+  const score=window.__auditScore ?? 0;
+  const weak=(window.__auditWeak||[]).join(' · ') || 'aucun';
+  const payload={
+    name, email, company,
+    message:`AUDIT GRATUIT — Score: ${score}/100. Points faibles: ${weak}`,
+    pack:"", format:"", source:"audit-gratuit"
+  };
+
+  try{
+    await fetch('https://api.osia-pro.com/api/lead',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  }catch(e){ /* hors-ligne / endpoint éteint : on confirme quand même côté visiteur */ }
+
+  msg.className='form-msg ok';
+  msg.textContent='✓ C\'est noté ! Ton plan d\'action arrive par email.';
+  btn.textContent='Envoyé ✓';
+}
+
+function restart(){ idx=0; answers.fill(null); document.getElementById('leadBtn').disabled=false;
+  document.getElementById('leadBtn').style.opacity=1; document.getElementById('formMsg').textContent='';
+  show('view-intro'); }
+</script>
+</body>
+</html>

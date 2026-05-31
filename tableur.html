@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSIA TABLEUR — Maître Tableur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e0d; --panel:#0f1513; --panel2:#131a18; --line:#1f2a26;
+    --green:#00ff88; --gold:#ffd24a; --txt:#d7e2dc; --mut:#6f7e78;
+    --sel:#10261c; --selb:#00ff88; --danger:#ff5d5d;
+    --mono:'JetBrains Mono',monospace; --disp:'Sora',sans-serif; --body:'Outfit',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--txt);font-family:var(--body);overflow:hidden;
+    background-image:radial-gradient(circle at 15% -10%,rgba(0,255,136,.06),transparent 40%),radial-gradient(circle at 110% 110%,rgba(255,210,74,.05),transparent 45%);}
+  .app{display:flex;flex-direction:column;height:100vh}
+
+  /* ---- TOP BAR ---- */
+  header{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .logo{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:.5px}
+  .logo b{color:var(--green)} .logo i{color:var(--gold);font-style:normal}
+  .tag{font-size:11px;color:var(--mut);font-family:var(--mono)}
+  header .sp{flex:1}
+  .btn{font-family:var(--body);font-size:13px;font-weight:500;color:var(--txt);background:var(--panel2);
+    border:1px solid var(--line);padding:7px 12px;border-radius:8px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .btn:hover{border-color:var(--green);color:var(--green)}
+  .btn.gold:hover{border-color:var(--gold);color:var(--gold)}
+  select.btn{appearance:none}
+
+  /* ---- TOOLBAR ---- */
+  .toolbar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--line);background:var(--panel2);flex-wrap:wrap}
+  .cellref{font-family:var(--mono);font-weight:700;color:var(--gold);background:var(--bg);border:1px solid var(--line);
+    border-radius:6px;padding:6px 10px;min-width:54px;text-align:center}
+  .fxbar{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:0 10px}
+  .fxbar .fx{color:var(--green);font-family:var(--mono);font-weight:700}
+  #formulaInput{flex:1;background:none;border:none;color:var(--txt);font-family:var(--mono);font-size:14px;padding:9px 0;outline:none}
+
+  /* ---- MAIN ---- */
+  .main{flex:1;display:flex;min-height:0}
+  .sheetwrap{flex:1;overflow:auto;position:relative}
+  table{border-collapse:collapse;font-family:var(--mono);font-size:13px;table-layout:fixed}
+  th,td{border:1px solid var(--line);height:30px;min-width:96px;max-width:96px;width:96px;
+    text-align:right;padding:0 8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  th{background:var(--panel);color:var(--mut);font-weight:600;text-align:center;position:sticky;top:0;z-index:3;font-family:var(--body)}
+  th.corner{left:0;z-index:4;min-width:46px;width:46px;max-width:46px}
+  td.rowhead,th.rowhead{position:sticky;left:0;background:var(--panel);color:var(--mut);text-align:center;min-width:46px;width:46px;max-width:46px;font-weight:600;z-index:2;cursor:default}
+  td{cursor:cell;background:var(--bg);transition:background .08s}
+  td:hover{background:#0d1411}
+  td.sel{background:var(--sel);outline:2px solid var(--selb);outline-offset:-2px;color:#fff;z-index:1}
+  td.inrange{background:rgba(0,255,136,.07)}
+  td[contenteditable]{outline:2px solid var(--gold);background:#15110a;color:#fff;text-align:left}
+  td.num{color:#bfe9d3} td.err{color:var(--danger);font-weight:700}
+
+  /* ---- TEACHER PANEL ---- */
+  .teacher{width:380px;min-width:380px;border-left:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column}
+  .thead{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--gold));
+    display:grid;place-items:center;font-size:20px;flex-shrink:0}
+  .thead .n{font-family:var(--disp);font-weight:700;font-size:15px}
+  .thead .s{font-size:11px;color:var(--mut)}
+  .status{margin-left:auto;font-size:10px;font-family:var(--mono);padding:3px 7px;border-radius:20px;border:1px solid var(--line)}
+  .status.ok{color:var(--green);border-color:var(--green)} .status.off{color:var(--danger);border-color:var(--danger)}
+  .chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:90%;padding:10px 13px;border-radius:12px;font-size:13.5px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+  .msg.bot{background:var(--panel2);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:3px}
+  .msg.me{background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.3);align-self:flex-end;border-bottom-right-radius:3px}
+  .msg code{background:#000;color:var(--gold);font-family:var(--mono);padding:1px 5px;border-radius:4px;font-size:12px}
+  .msg .insert{margin-top:8px;display:inline-block;font-family:var(--mono);font-size:11px;color:var(--green);
+    border:1px solid var(--green);padding:4px 8px;border-radius:6px;cursor:pointer}
+  .msg .insert:hover{background:var(--green);color:#000}
+  .quick{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px;border-top:1px solid var(--line)}
+  .chip{font-size:11px;color:var(--mut);border:1px solid var(--line);padding:5px 9px;border-radius:20px;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--gold);color:var(--gold)}
+  .composer{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line)}
+  #askInput{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--txt);
+    font-family:var(--body);font-size:13px;padding:10px;resize:none;outline:none;max-height:90px}
+  #askInput:focus{border-color:var(--green)}
+  .send{background:var(--green);color:#000;border:none;border-radius:8px;padding:0 16px;font-weight:700;cursor:pointer}
+  .send:disabled{opacity:.4;cursor:not-allowed}
+
+  /* ---- MODALS ---- */
+  .ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;place-items:center;z-index:50;backdrop-filter:blur(3px)}
+  .ov.on{display:grid}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;width:440px;max-width:92vw}
+  .modal h3{font-family:var(--disp);margin-bottom:4px;font-size:18px}
+  .modal h3 b{color:var(--green)}
+  .modal p{color:var(--mut);font-size:12px;margin-bottom:16px;line-height:1.5}
+  .modal label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px}
+  .modal input,.modal select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;
+    color:var(--txt);padding:10px;font-family:var(--mono);font-size:13px;outline:none}
+  .modal input:focus,.modal select:focus{border-color:var(--green)}
+  .modal .row{display:flex;gap:18px;justify-content:flex-end;margin-top:20px}
+  canvas{background:#000;border-radius:8px;width:100%}
+  .hint{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.4}
+  .hint b{color:var(--gold)}
+  .prow{display:grid;grid-template-columns:22px 84px 1fr 60px;gap:8px;align-items:center;margin-bottom:7px}
+  .prow input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
+  .prow .pn{font-size:12px;color:var(--txt)}
+  .prow .pn small{display:block;color:var(--mut);font-size:9px;font-family:var(--mono)}
+  .prow input[type=password],.prow input[type=text]{padding:7px 8px;font-size:11px}
+  .prow input.prio{text-align:center;padding:7px 4px}
+  .prow.off{opacity:.4}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <a class="logo" href="https://osia-pro.com" target="_blank" style="text-decoration:none"><b>OSIA</b> <i>TABLEUR</i></a>
+    <div class="tag">v1.0 · moteur de formules + prof IA · <a href="https://osia-pro.com" target="_blank" style="color:var(--mut)">par OSIA</a></div>
+    <div class="sp"></div>
+    <a class="btn" href="OSIA_Tableur_Manuel.pdf" target="_blank" style="text-decoration:none">📘 Guide</a>
+    <a class="btn gold" href="contact.html" target="_blank" style="text-decoration:none" title="Télécharge le tableur + le manuel PDF, à toi pour toujours">⬇ Télécharger (9€)</a>
+    <select class="btn gold" id="tplSelect">
+      <option value="">📋 Modèles…</option>
+      <option value="budget">Budget mensuel</option>
+      <option value="facture">Facture OSIA</option>
+      <option value="clients">Suivi prospects/clients</option>
+      <option value="ventes">Tableau de bord ventes</option>
+    </select>
+    <button class="btn" id="chartBtn">📊 Graphique</button>
+    <button class="btn" id="csvBtn">⬇ CSV</button>
+    <button class="btn" id="impBtn">⬆ Import</button>
+    <button class="btn gold" id="settingsBtn">⚙ API</button>
+    <button class="btn" id="clearBtn">🗑</button>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn" id="undoBtn" title="Annuler (Ctrl+Z)">↶</button>
+    <button class="btn" id="redoBtn" title="Refaire (Ctrl+Y)">↷</button>
+    <div class="cellref" id="cellRef">A1</div>
+    <div class="fxbar"><span class="fx">fx</span>
+      <input id="formulaInput" placeholder="Saisir une valeur ou une formule (=SOMME(A1:A10))" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="sheetwrap"><table id="grid"></table></div>
+
+    <aside class="teacher">
+      <div class="thead">
+        <div class="avatar">🧙</div>
+        <div>
+          <div class="n">Maître Tableur</div>
+          <div class="s">30 ans d'XP · Excel · Sheets · Calc</div>
+        </div>
+        <div class="status off" id="apiStatus">API OFF</div>
+      </div>
+      <div class="chat" id="chat"></div>
+      <div class="quick" id="quickChips"></div>
+      <div class="composer">
+        <textarea id="askInput" rows="1" placeholder="Pose ta question ou décris ce que tu veux faire…"></textarea>
+        <button class="send" id="sendBtn">➤</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- API MODAL -->
+<div class="ov" id="settingsOv">
+  <div class="modal" style="width:520px">
+    <h3>Router <b>Multi-LLM</b> du Prof</h3>
+    <p>Active plusieurs fournisseurs et définis l'ordre de priorité (1 = essayé en premier). Si une API échoue ou est en quota, le prof bascule automatiquement sur la suivante. Tout est stocké en local.</p>
+    <div id="provRows"></div>
+    <div class="hint">💡 Stratégie conseillée : <b>DeepSeek</b> (prod, priorité 1) → <b>NVIDIA</b> (fallback) → <b>Groq</b>. Pour <b>OpenRouter</b> mets un modèle <b>:free</b>. CORS en local ? coche <b>Gateway OSIA</b> et mets son URL.</div>
+    <div class="row">
+      <button class="btn" id="settingsCancel">Fermer</button>
+      <button class="btn gold" id="settingsSave">Enregistrer le router</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHART MODAL -->
+<div class="ov" id="chartOv">
+  <div class="modal" style="width:560px">
+    <h3>📊 <b>Graphique</b> de la sélection</h3>
+    <p>Sélectionne une plage avant d'ouvrir (1ère colonne = libellés, 2ème = valeurs). Sinon je prends A et B.</p>
+    <canvas id="chartCanvas" width="520" height="300"></canvas>
+    <div class="row"><button class="btn" id="chartClose">Fermer</button></div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept=".csv" style="display:none">
+
+<script>
+/* ============================================================
+   OSIA TABLEUR — moteur de formules + prof IA
+   ============================================================ */
+const COLS = 26, ROWS = 60;
+const colName = i => String.fromCharCode(65 + i);
+let data = {};            // {A1:{raw:"...", }}
+let selected = "A1";
+let rangeStart = null, rangeEnd = null;
+let editing = null;
+
+/* ---------- PERSISTENCE ---------- */
+function save(){ try{ localStorage.setItem("osia_tableur", JSON.stringify(data)); }catch(e){} }
+function load(){ try{ const d=localStorage.getItem("osia_tableur"); if(d) data=JSON.parse(d); }catch(e){} }
+
+/* ---------- HISTORY (undo/redo) ---------- */
+let undoStack=[], redoStack=[];
+const snap=()=>JSON.stringify(data);
+function pushUndo(){ undoStack.push(snap()); if(undoStack.length>80)undoStack.shift(); redoStack=[]; }
+function undo(){ if(!undoStack.length)return; redoStack.push(snap()); data=JSON.parse(undoStack.pop()); save(); render(); selectCell(selected); }
+function redo(){ if(!redoStack.length)return; undoStack.push(snap()); data=JSON.parse(redoStack.pop()); save(); render(); selectCell(selected); }
+
+/* ---------- GRID BUILD ---------- */
+function buildGrid(){
+  const t = document.getElementById("grid");
+  let html = "<thead><tr><th class='corner rowhead'></th>";
+  for(let c=0;c<COLS;c++) html += `<th>${colName(c)}</th>`;
+  html += "</tr></thead><tbody>";
+  for(let r=1;r<=ROWS;r++){
+    html += `<tr><td class='rowhead'>${r}</td>`;
+    for(let c=0;c<COLS;c++){ const ref=colName(c)+r; html += `<td data-ref='${ref}'></td>`; }
+    html += "</tr>";
+  }
+  html += "</tbody>";
+  t.innerHTML = html;
+}
+
+/* ---------- FORMULA ENGINE ---------- */
+const FN_ALIAS = {
+  SOMME:"SUM", MOYENNE:"AVERAGE", NB:"COUNT", NBVAL:"COUNTA", SI:"IF",
+  ARRONDI:"ROUND", RACINE:"SQRT", PUISSANCE:"POWER", PRODUIT:"PRODUCT",
+  CONCATENER:"CONCAT", MEDIANE:"MEDIAN", MAX:"MAX", MIN:"MIN", ABS:"ABS"
+};
+function colIdx(l){ return l.charCodeAt(0)-65; }
+
+function expandRange(a,b){
+  const ma=a.match(/([A-Z])(\d+)/), mb=b.match(/([A-Z])(\d+)/);
+  if(!ma||!mb) return [];
+  let c1=colIdx(ma[1]),r1=+ma[2],c2=colIdx(mb[1]),r2=+mb[2];
+  if(c1>c2)[c1,c2]=[c2,c1]; if(r1>r2)[r1,r2]=[r2,r1];
+  const out=[];
+  for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++) out.push(colName(c)+r);
+  return out;
+}
+
+function tokenize(s){
+  const toks=[]; let i=0;
+  while(i<s.length){
+    const ch=s[i];
+    if(ch===' '){i++;continue;}
+    if(/[0-9.]/.test(ch)){ let n="";while(i<s.length&&/[0-9.]/.test(s[i]))n+=s[i++]; toks.push({t:"num",v:parseFloat(n)}); continue; }
+    if(ch==='"'){ i++;let str="";while(i<s.length&&s[i]!=='"')str+=s[i++]; i++; toks.push({t:"str",v:str}); continue; }
+    if(/[A-Za-z]/.test(ch)){
+      let id="";while(i<s.length&&/[A-Za-z0-9]/.test(s[i]))id+=s[i++];
+      // cell ref or range?
+      if(/^[A-Z]\d+$/i.test(id)){
+        let ref=id.toUpperCase();
+        if(s[i]===':'){ i++;let id2="";while(i<s.length&&/[A-Za-z0-9]/.test(s[i]))id2+=s[i++];
+          toks.push({t:"range",v:[ref,id2.toUpperCase()]}); continue; }
+        toks.push({t:"ref",v:ref}); continue;
+      }
+      toks.push({t:"fn",v:id.toUpperCase()}); continue;
+    }
+    if("+-*/^(),".includes(ch)){ toks.push({t:"op",v:ch}); i++; continue; }
+    i++;
+  }
+  return toks;
+}
+
+function parse(toks){
+  let p=0;
+  const peek=()=>toks[p], next=()=>toks[p++];
+  function expr(){ let n=term(); while(peek()&&peek().t==="op"&&"+-".includes(peek().v)){const o=next().v;n={t:"bin",o,l:n,r:term()};} return n; }
+  function term(){ let n=pow(); while(peek()&&peek().t==="op"&&"*/".includes(peek().v)){const o=next().v;n={t:"bin",o,l:n,r:pow()};} return n; }
+  function pow(){ let n=unary(); while(peek()&&peek().t==="op"&&peek().v==="^"){next();n={t:"bin",o:"^",l:n,r:unary()};} return n; }
+  function unary(){ if(peek()&&peek().t==="op"&&peek().v==="-"){next();return {t:"neg",x:unary()};} return prim(); }
+  function prim(){
+    const tk=peek(); if(!tk) return {t:"num",v:0};
+    if(tk.t==="num"){next();return tk;}
+    if(tk.t==="str"){next();return tk;}
+    if(tk.t==="ref"){next();return tk;}
+    if(tk.t==="range"){next();return tk;}
+    if(tk.t==="op"&&tk.v==="("){next();const e=expr();if(peek()&&peek().v===")")next();return e;}
+    if(tk.t==="fn"){ const name=next().v; const args=[]; if(peek()&&peek().v==="("){next();
+      if(!(peek()&&peek().v===")")){ args.push(expr()); while(peek()&&peek().v===","){next();args.push(expr());} }
+      if(peek()&&peek().v===")")next(); } return {t:"call",name,args}; }
+    next(); return {t:"num",v:0};
+  }
+  return expr();
+}
+
+function evalNode(node, stack){
+  switch(node.t){
+    case "num": return node.v;
+    case "str": return node.v;
+    case "neg": return -toNum(evalNode(node.x,stack));
+    case "ref": return cellValue(node.v,stack);
+    case "range": return {__range: expandRange(node.v[0],node.v[1]).map(r=>cellValue(r,stack))};
+    case "bin": {
+      const l=toNum(evalNode(node.l,stack)), r=toNum(evalNode(node.r,stack));
+      switch(node.o){case"+":return l+r;case"-":return l-r;case"*":return l*r;
+        case"/":return r===0?{__err:"#DIV/0"}:l/r;case"^":return Math.pow(l,r);}
+    }
+    case "call": return callFn(node.name,node.args,stack);
+  }
+}
+function flat(args,stack){ const out=[]; for(const a of args){const v=evalNode(a,stack);
+  if(v&&v.__range) out.push(...v.__range); else out.push(v);} return out; }
+function nums(args,stack){ return flat(args,stack).map(toNum).filter(v=>!isNaN(v)); }
+
+function callFn(name,args,stack){
+  const fn=FN_ALIAS[name]||name;
+  switch(fn){
+    case"SUM":return nums(args,stack).reduce((a,b)=>a+b,0);
+    case"AVERAGE":{const n=nums(args,stack);return n.length?n.reduce((a,b)=>a+b,0)/n.length:0;}
+    case"MIN":return Math.min(...nums(args,stack));
+    case"MAX":return Math.max(...nums(args,stack));
+    case"COUNT":return nums(args,stack).length;
+    case"COUNTA":return flat(args,stack).filter(v=>v!==""&&v!=null).length;
+    case"PRODUCT":return nums(args,stack).reduce((a,b)=>a*b,1);
+    case"ROUND":{const v=toNum(evalNode(args[0],stack)),d=args[1]?toNum(evalNode(args[1],stack)):0;const f=Math.pow(10,d);return Math.round(v*f)/f;}
+    case"ABS":return Math.abs(toNum(evalNode(args[0],stack)));
+    case"SQRT":return Math.sqrt(toNum(evalNode(args[0],stack)));
+    case"POWER":return Math.pow(toNum(evalNode(args[0],stack)),toNum(evalNode(args[1],stack)));
+    case"MEDIAN":{const n=nums(args,stack).sort((a,b)=>a-b);const m=Math.floor(n.length/2);return n.length?(n.length%2?n[m]:(n[m-1]+n[m])/2):0;}
+    case"CONCAT":return flat(args,stack).join("");
+    case"IF":{const c=evalNode(args[0],stack);return toNum(c)?evalNode(args[1],stack):(args[2]?evalNode(args[2],stack):"");}
+    default:return {__err:"#NOM?"};
+  }
+}
+function toNum(v){ if(v&&v.__err)return NaN; if(typeof v==="number")return v; if(v==="")return 0; const n=parseFloat(v); return isNaN(n)?NaN:n; }
+
+function cellValue(ref,stack){
+  if(stack.has(ref)) return {__err:"#CYCLE"};
+  const cell=data[ref]; if(!cell||cell.raw===""||cell.raw==null) return "";
+  const raw=cell.raw;
+  if(typeof raw==="string"&&raw[0]==="="){
+    stack.add(ref);
+    let res;
+    try{ res=evalNode(parse(tokenize(raw.slice(1))),stack); }catch(e){ res={__err:"#ERR"}; }
+    stack.delete(ref);
+    return res;
+  }
+  const n=parseFloat(raw); return (raw!==""&&!isNaN(n)&&String(n)===String(raw).trim())?n:raw;
+}
+
+function displayValue(ref){
+  const v=cellValue(ref,new Set());
+  if(v&&v.__err) return {txt:v.__err,err:true};
+  if(v&&v.__range) return {txt:"#PLAGE",err:true};
+  if(typeof v==="number"){ const r=Math.round(v*1e6)/1e6; return {txt:String(r),num:true}; }
+  return {txt:v==null?"":String(v)};
+}
+
+/* ---------- RENDER ---------- */
+function render(){
+  document.querySelectorAll("td[data-ref]").forEach(td=>{
+    if(td===editing) return;
+    const ref=td.dataset.ref, d=displayValue(ref);
+    td.textContent=d.txt;
+    td.classList.toggle("num",!!d.num);
+    td.classList.toggle("err",!!d.err);
+  });
+  highlight();
+}
+function highlight(){
+  document.querySelectorAll("td.sel,td.inrange").forEach(td=>td.classList.remove("sel","inrange"));
+  if(rangeStart&&rangeEnd){
+    expandRange(rangeStart,rangeEnd).forEach(r=>{const td=cell(r);if(td)td.classList.add("inrange");});
+  }
+  const s=cell(selected); if(s)s.classList.add("sel");
+}
+const cell=ref=>document.querySelector(`td[data-ref='${ref}']`);
+
+/* ---------- SELECTION & EDIT ---------- */
+function selectCell(ref){
+  selected=ref; rangeStart=rangeEnd=null;
+  document.getElementById("cellRef").textContent=ref;
+  const raw=data[ref]?data[ref].raw:"";
+  document.getElementById("formulaInput").value=raw||"";
+  highlight();
+}
+function startEdit(ref,initial){
+  const td=cell(ref); if(!td)return;
+  editing=td;
+  td.setAttribute("contenteditable","true");
+  td.textContent = initial!=null ? initial : (data[ref]?data[ref].raw:"")||"";
+  td.focus();
+  const r=document.createRange();r.selectNodeContents(td);r.collapse(false);
+  const sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);
+}
+function commitEdit(move){
+  if(!editing)return;
+  const ref=editing.dataset.ref, val=editing.textContent.trim();
+  pushUndo();
+  data[ref]={raw:val};
+  editing.removeAttribute("contenteditable");
+  editing=null; save(); render();
+  if(move){ const m=ref.match(/([A-Z])(\d+)/); const nr=Math.min(ROWS,+m[2]+1); selectCell(m[1]+nr); }
+}
+function setCell(ref,val){ pushUndo(); data[ref]={raw:val}; save(); render(); }
+
+/* ---------- EVENTS ---------- */
+document.addEventListener("keydown",e=>{
+  const k=(e.key||"").toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&k==="z"&&!e.shiftKey){ if(editing||document.activeElement.id==="askInput")return; e.preventDefault(); undo(); }
+  else if((e.ctrlKey||e.metaKey)&&(k==="y"||(k==="z"&&e.shiftKey))){ if(editing||document.activeElement.id==="askInput")return; e.preventDefault(); redo(); }
+},true);
+document.addEventListener("click",e=>{
+  const td=e.target.closest("td[data-ref]");
+  if(td){ if(editing&&editing!==td)commitEdit(false); selectCell(td.dataset.ref); }
+});
+document.addEventListener("dblclick",e=>{ const td=e.target.closest("td[data-ref]"); if(td)startEdit(td.dataset.ref); });
+
+document.addEventListener("keydown",e=>{
+  if(document.activeElement.id==="formulaInput"||document.activeElement.id==="askInput")return;
+  if(editing){
+    if(e.key==="Enter"){e.preventDefault();commitEdit(true);}
+    else if(e.key==="Escape"){editing.removeAttribute("contenteditable");editing=null;render();}
+    else if(e.key==="Tab"){e.preventDefault();commitEdit(false);const m=selected.match(/([A-Z])(\d+)/);selectCell(colName(Math.min(COLS-1,colIdx(m[1])+1))+m[2]);}
+    return;
+  }
+  const m=selected.match(/([A-Z])(\d+)/); let c=colIdx(m[1]),r=+m[2];
+  if(e.key==="ArrowUp"){e.preventDefault();r=Math.max(1,r-1);}
+  else if(e.key==="ArrowDown"||e.key==="Enter"){e.preventDefault();r=Math.min(ROWS,r+1);}
+  else if(e.key==="ArrowLeft"){e.preventDefault();c=Math.max(0,c-1);}
+  else if(e.key==="ArrowRight"||e.key==="Tab"){e.preventDefault();c=Math.min(COLS-1,c+1);}
+  else if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();pushUndo();delete data[selected];save();render();return;}
+  else if(e.key==="F2"){e.preventDefault();startEdit(selected);return;}
+  else if(e.key.length===1&&!e.ctrlKey&&!e.metaKey){startEdit(selected,e.key);return;}
+  else return;
+  selectCell(colName(c)+r);
+});
+
+document.getElementById("formulaInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){ setCell(selected,e.target.value); const m=selected.match(/([A-Z])(\d+)/);selectCell(m[1]+Math.min(ROWS,+m[2]+1)); }
+});
+
+/* ---------- AI PROF — ROUTER MULTI-LLM ---------- */
+const PROVIDERS={
+  deepseek:{label:"DeepSeek",sub:"deepseek-chat",url:"https://api.deepseek.com/v1/chat/completions",model:"deepseek-chat",type:"openai"},
+  nvidia:{label:"NVIDIA NIM",sub:"llama-3.3-70b",url:"https://integrate.api.nvidia.com/v1/chat/completions",model:"meta/llama-3.3-70b-instruct",type:"openai"},
+  groq:{label:"Groq",sub:"llama-3.3-70b",url:"https://api.groq.com/openai/v1/chat/completions",model:"llama-3.3-70b-versatile",type:"openai"},
+  gemini:{label:"Gemini",sub:"2.5-flash · 1M ctx",url:"https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",model:"gemini-2.5-flash",type:"openai"},
+  mistral:{label:"Mistral",sub:"large-latest",url:"https://api.mistral.ai/v1/chat/completions",model:"mistral-large-latest",type:"openai"},
+  cerebras:{label:"Cerebras",sub:"llama-3.3-70b",url:"https://api.cerebras.ai/v1/chat/completions",model:"llama-3.3-70b",type:"openai"},
+  openrouter:{label:"OpenRouter",sub:"mets un :free",url:"https://openrouter.ai/api/v1/chat/completions",model:"meta-llama/llama-3.3-70b-instruct:free",type:"openai"},
+  anthropic:{label:"Anthropic",sub:"claude-sonnet-4",url:"https://api.anthropic.com/v1/messages",model:"claude-sonnet-4-20250514",type:"anthropic"},
+  gateway:{label:"Gateway OSIA",sub:"OpenAI-compat",url:"",model:"",type:"openai"}
+};
+const PROV_ORDER=["deepseek","nvidia","groq","gemini","mistral","cerebras","openrouter","anthropic","gateway"];
+/* cfg = { providers:{ id:{on,key,prio,url,model} } } */
+function cfg(){ return JSON.parse(localStorage.getItem("osia_tableur_api")||"{}"); }
+function chain(){
+  const c=cfg().providers||{};
+  return PROV_ORDER.filter(id=>c[id]&&c[id].on&&(c[id].key||id==="gateway"))
+    .sort((a,b)=>(c[a].prio||9)-(c[b].prio||9));
+}
+function refreshStatus(){
+  const ch=chain(), el=document.getElementById("apiStatus");
+  if(ch.length){el.textContent="ROUTER "+ch.length+" ⚡";el.className="status ok";el.title=ch.map((id,i)=>(i+1)+". "+PROVIDERS[id].label).join("  →  ");}
+  else{el.textContent="API OFF";el.className="status off";el.title="";}
+}
+const SYSTEM=`Tu es "Maître Tableur", expert tableurs avec 30 ans d'expérience (Excel, Google Sheets, LibreOffice Calc).
+Tu enseignes à un entrepreneur. Style: direct, structuré, exemples concrets, étapes claires, ZÉRO blabla, pas de moralisation.
+Tu travailles dans un tableur custom. Fonctions dispo (alias FR acceptés): SOMME/SUM, MOYENNE/AVERAGE, MIN, MAX, NB/COUNT, NBVAL/COUNTA, SI/IF, ARRONDI/ROUND, ABS, RACINE/SQRT, PUISSANCE/POWER, PRODUIT/PRODUCT, MEDIANE/MEDIAN, CONCATENER/CONCAT. Plages: A1:A10.
+Quand tu donnes une formule prête à coller, mets-la sur sa propre ligne préfixée EXACTEMENT par "FORMULE:" suivie de la formule complète commençant par "=". Ex: FORMULE: =SOMME(B2:B10)
+Réponds en français, court et pédagogique.`;
+
+async function callProvider(id,userMsg){
+  const c=(cfg().providers||{})[id]||{}, P=PROVIDERS[id];
+  const url=c.url||P.url, model=c.model||P.model, key=c.key||"";
+  if(!url) throw new Error("URL manquante ("+P.label+")");
+  let res;
+  if(P.type==="anthropic"){
+    res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model,max_tokens:1000,system:SYSTEM,messages:[{role:"user",content:userMsg}]})});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const d=await res.json(); const r=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    if(!r) throw new Error(d.error?.message||"réponse vide"); return r;
+  }else{
+    const h={"Content-Type":"application/json"}; if(key)h["Authorization"]="Bearer "+key;
+    res=await fetch(url,{method:"POST",headers:h,
+      body:JSON.stringify({model,max_tokens:1000,messages:[{role:"system",content:SYSTEM},{role:"user",content:userMsg}]})});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const d=await res.json(); const r=d.choices?.[0]?.message?.content;
+    if(!r) throw new Error(d.error?.message||"réponse vide"); return r;
+  }
+}
+async function askProf(text,context){
+  const ch=chain();
+  if(!ch.length){ addMsg("bot","⚠️ Router vide. Clique sur ⚙ API, active au moins 1 fournisseur et colle sa clé."); return; }
+  const userMsg=context?`${text}\n\n[Contexte feuille]\n${context}`:text;
+  setSending(true);
+  const typing=addMsg("bot","…");
+  const errs=[];
+  for(let i=0;i<ch.length;i++){
+    const id=ch[i];
+    typing.innerHTML="⚡ "+PROVIDERS[id].label+(i>0?" (fallback "+i+")":"")+" …";
+    try{
+      const reply=await callProvider(id,userMsg);
+      typing.remove(); renderBotReply(reply, ch.length>1?PROVIDERS[id].label:null);
+      setSending(false); return;
+    }catch(err){ errs.push(PROVIDERS[id].label+": "+err.message); }
+  }
+  typing.remove();
+  addMsg("bot","❌ Tous les fournisseurs ont échoué.\n"+errs.join("\n")+"\n(CORS en local ? Active Gateway OSIA dans ⚙ API.)");
+  setSending(false);
+}
+function renderBotReply(reply,source){
+  const fm=reply.match(/FORMULE:\s*(=[^\n]+)/i);
+  const node=addMsg("bot",reply.replace(/FORMULE:\s*/i,"").trim());
+  if(source){ const tag=document.createElement("div");tag.style.cssText="font-size:9px;color:var(--mut);font-family:var(--mono);margin-top:6px";tag.textContent="⚡ via "+source; node.appendChild(tag); }
+  if(fm){ const f=fm[1].trim(); const b=document.createElement("span");b.className="insert";b.textContent="↳ Insérer "+f+" dans "+selected;
+    b.onclick=()=>{setCell(selected,f);document.getElementById("formulaInput").value=f;}; node.appendChild(document.createElement("br")); node.appendChild(b); }
+}
+function addMsg(who,txt){
+  const c=document.getElementById("chat");
+  const m=document.createElement("div");m.className="msg "+who;
+  m.innerHTML=txt.replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\n/g,"<br>");
+  c.appendChild(m);c.scrollTop=c.scrollHeight;return m;
+}
+function setSending(b){ document.getElementById("sendBtn").disabled=b; }
+function sheetContext(){
+  const used=Object.keys(data).filter(k=>data[k].raw!=="").slice(0,40);
+  return used.map(k=>`${k}=${data[k].raw}`).join(", ")||"(feuille vide)";
+}
+function send(){
+  const inp=document.getElementById("askInput"), t=inp.value.trim(); if(!t)return;
+  addMsg("me",t); inp.value=""; askProf(t,sheetContext());
+}
+document.getElementById("sendBtn").onclick=send;
+document.getElementById("askInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}});
+
+/* quick chips */
+const CHIPS=["Comment additionner une colonne ?","Explique cette formule","Donne-moi un exercice","Comment faire une moyenne conditionnelle ?","Convertir mon devis en formule"];
+const qc=document.getElementById("quickChips");
+CHIPS.forEach(t=>{const c=document.createElement("span");c.className="chip";c.textContent=t;
+  c.onclick=()=>{addMsg("me",t);askProf(t,sheetContext());};qc.appendChild(c);});
+
+/* ---------- SETTINGS (ROUTER) ---------- */
+const sOv=document.getElementById("settingsOv");
+function buildProvRows(){
+  const c=cfg().providers||{}, box=document.getElementById("provRows"); box.innerHTML="";
+  PROV_ORDER.forEach((id,i)=>{
+    const P=PROVIDERS[id], cur=c[id]||{};
+    const row=document.createElement("div"); row.className="prow"+(cur.on?"":" off"); row.dataset.id=id;
+    const isGw=id==="gateway";
+    row.innerHTML=`<input type="checkbox" class="pon" ${cur.on?"checked":""}>
+      <div class="pn">${P.label}<small>${P.sub}</small></div>
+      ${isGw
+        ? `<input type="text" class="purl" placeholder="URL Gateway (…/v1/chat/completions)" value="${cur.url||""}">`
+        : `<input type="password" class="pkey" placeholder="clé ${P.label}" value="${cur.key||""}">`}
+      <input type="number" class="prio" min="1" max="9" value="${cur.prio||(i+1)}">`;
+    row.querySelector(".pon").onchange=e=>row.classList.toggle("off",!e.target.checked);
+    box.appendChild(row);
+  });
+}
+document.getElementById("settingsBtn").onclick=()=>{buildProvRows();sOv.classList.add("on");};
+document.getElementById("settingsCancel").onclick=()=>sOv.classList.remove("on");
+document.getElementById("settingsSave").onclick=()=>{
+  const providers={};
+  document.querySelectorAll("#provRows .prow").forEach(row=>{
+    const id=row.dataset.id;
+    providers[id]={
+      on:row.querySelector(".pon").checked,
+      key:(row.querySelector(".pkey")?.value||"").trim(),
+      url:(row.querySelector(".purl")?.value||"").trim(),
+      prio:+row.querySelector(".prio").value||9
+    };
+  });
+  localStorage.setItem("osia_tableur_api",JSON.stringify({providers}));
+  sOv.classList.remove("on"); refreshStatus();
+  const ch=chain();
+  addMsg("bot", ch.length? "✅ Router actif : "+ch.map((id,i)=>(i+1)+"."+PROVIDERS[id].label).join(" → ")+". Si le 1er tombe, je bascule tout seul." : "⚠️ Aucun fournisseur actif valide. Coche-en un et ajoute sa clé.");
+};
+
+/* ---------- TEMPLATES ---------- */
+const TEMPLATES={
+  budget:{A1:"Poste",B1:"Prévu",C1:"Réel",D1:"Écart",A2:"Revenus",B2:"3000",C2:"3200",D2:"=C2-B2",
+    A3:"Loyer",B3:"800",C3:"800",D3:"=C3-B3",A4:"Courses",B4:"400",C4:"450",D4:"=C4-B4",
+    A5:"Loisirs",B5:"200",C5:"180",D5:"=C5-B5",A7:"TOTAL",B7:"=SOMME(B2:B5)",C7:"=SOMME(C2:C5)",D7:"=SOMME(D2:D5)"},
+  facture:{A1:"FACTURE OSIA",A3:"Désignation",B3:"Qté",C3:"PU €",D3:"Total",
+    A4:"Site Essentiel",B4:"1",C4:"297",D4:"=B4*C4",A5:"Page suppl.",B5:"2",C5:"50",D5:"=B5*C5",
+    A7:"Sous-total",D7:"=SOMME(D4:D5)",A8:"TVA 0% (micro)",D8:"0",A9:"TOTAL TTC",D9:"=D7+D8"},
+  clients:{A1:"Prospect",B1:"Statut",C1:"Offre",D1:"Montant €",E1:"Proba %",F1:"Pondéré",
+    A2:"Client A",B2:"Négo",C2:"Pro",D2:"697",E2:"60",F2:"=D2*E2/100",
+    A3:"Client B",B3:"Devis",C3:"Premium",D3:"1497",E3:"30",F3:"=D3*E3/100",
+    A4:"Client C",B4:"Gagné",C4:"Essentiel",D4:"297",E4:"100",F4:"=D4*E4/100",
+    A6:"Pipeline pondéré",F6:"=SOMME(F2:F4)"},
+  ventes:{A1:"Mois",B1:"Ventes €",C1:"Objectif",D1:"Atteinte %",
+    A2:"Jan",B2:"1200",C2:"2000",D2:"=ARRONDI(B2/C2*100;0)",A3:"Fév",B3:"2100",C3:"2000",D3:"=ARRONDI(B3/C3*100;0)",
+    A4:"Mar",B4:"3400",C4:"2500",D4:"=ARRONDI(B4/C4*100;0)",
+    A6:"Total",B6:"=SOMME(B2:B4)",A7:"Moyenne",B7:"=MOYENNE(B2:B4)",A8:"Meilleur mois",B8:"=MAX(B2:B4)"}
+};
+document.getElementById("tplSelect").onchange=e=>{
+  const tpl=TEMPLATES[e.target.value]; if(!tpl)return;
+  if(!confirm("Charger ce modèle ? (efface la feuille actuelle)")){e.target.value="";return;}
+  pushUndo();
+  data={}; for(const k in tpl) data[k]={raw:tpl[k]}; save(); render(); selectCell("A1"); e.target.value="";
+  addMsg("bot","📋 Modèle chargé. Demande-moi d'expliquer n'importe quelle cellule !");
+};
+
+/* ---------- CSV ---------- */
+document.getElementById("csvBtn").onclick=()=>{
+  let maxR=0,maxC=0; Object.keys(data).forEach(k=>{const m=k.match(/([A-Z])(\d+)/);maxC=Math.max(maxC,colIdx(m[1]));maxR=Math.max(maxR,+m[2]);});
+  let csv=""; for(let r=1;r<=maxR;r++){const row=[];for(let c=0;c<=maxC;c++){const d=displayValue(colName(c)+r);row.push('"'+d.txt.replace(/"/g,'""')+'"');}csv+=row.join(",")+"\n";}
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="osia_tableur.csv";a.click();
+};
+document.getElementById("impBtn").onclick=()=>document.getElementById("fileInput").click();
+document.getElementById("fileInput").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=ev=>{pushUndo();data={};ev.target.result.split(/\r?\n/).forEach((line,ri)=>{if(!line.trim())return;
+    line.split(",").forEach((v,ci)=>{v=v.replace(/^"|"$/g,"").replace(/""/g,'"');if(v!=="")data[colName(ci)+(ri+1)]={raw:v};});});
+    save();render();selectCell("A1");};rd.readAsText(f);};
+
+/* ---------- CHART ---------- */
+document.getElementById("chartBtn").onclick=()=>{drawChart();document.getElementById("chartOv").classList.add("on");};
+document.getElementById("chartClose").onclick=()=>document.getElementById("chartOv").classList.remove("on");
+function drawChart(){
+  const cv=document.getElementById("chartCanvas"),ctx=cv.getContext("2d");
+  ctx.clearRect(0,0,cv.width,cv.height);
+  let labels=[],vals=[];
+  for(let r=1;r<=ROWS;r++){const l=displayValue("A"+r).txt,v=displayValue("B"+r);if(l===""&&v.txt==="")continue;if(!v.num)continue;labels.push(l||("L"+r));vals.push(parseFloat(v.txt));}
+  if(!vals.length){ctx.fillStyle="#6f7e78";ctx.font="14px monospace";ctx.fillText("Aucune donnée numérique en colonne B",20,40);return;}
+  const max=Math.max(...vals),pad=40,bw=(cv.width-pad*2)/vals.length*0.7,gap=(cv.width-pad*2)/vals.length*0.3;
+  vals.forEach((v,i)=>{const h=(v/max)*(cv.height-pad*2);const x=pad+i*(bw+gap),y=cv.height-pad-h;
+    const g=ctx.createLinearGradient(0,y,0,cv.height-pad);g.addColorStop(0,"#00ff88");g.addColorStop(1,"#ffd24a");
+    ctx.fillStyle=g;ctx.fillRect(x,y,bw,h);ctx.fillStyle="#d7e2dc";ctx.font="10px monospace";ctx.textAlign="center";
+    ctx.fillText(v,x+bw/2,y-5);ctx.fillStyle="#6f7e78";ctx.fillText(labels[i].slice(0,8),x+bw/2,cv.height-pad+14);});
+}
+
+/* ---------- CLEAR ---------- */
+document.getElementById("clearBtn").onclick=()=>{if(confirm("Tout effacer ?")){pushUndo();data={};save();render();selectCell("A1");}};
+
+/* ---------- INIT ---------- */
+document.getElementById("undoBtn").onclick=undo;
+document.getElementById("redoBtn").onclick=redo;
+load(); buildGrid(); render(); selectCell("A1"); refreshStatus();
+addMsg("bot","Salut 👋 Je suis Maître Tableur, ton prof de tableur. Charge un modèle (📋 en haut), ou demande-moi par exemple : « comment additionner B2 à B10 ? » — je te donne la formule + un bouton pour l'insérer direct.\n\n💡 Le tableur fonctionne tout seul (formules, modèles, graphique, CSV). Pour activer le prof IA, ouvre ⚙ API et colle ta clé — ou attends la version connectée OSIA. Ctrl+Z pour annuler.");
+</script>
+</body>
+</html>
