@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audit gratuit de ton site · OSIA</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    html, body { overflow: auto; }
+    .osia-main { align-items: stretch; justify-content: flex-start; padding-top: 26px; padding-bottom: 40px; }
+    .tool-page { max-width: 920px; width: 100%; margin: 0 auto; }
+    .tool-head { text-align: center; margin-bottom: 24px; }
+    .tool-head .tag {
+      display: inline-block; padding: 6px 14px; font-size: 11px; letter-spacing: 3px;
+      color: var(--neon-lime); border: 1px solid var(--neon-lime); border-radius: 100px;
+      margin-bottom: 16px; text-transform: uppercase;
+    }
+    .tool-head h1 {
+      font-family: var(--font-display); font-weight: 900; font-size: 40px; line-height: 1.05;
+      letter-spacing: -1px; margin-bottom: 14px;
+    }
+    .tool-head h1 .accent {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px rgba(0,240,255,.4));
+    }
+    .tool-head p { color: var(--text-dim); max-width: 600px; margin: 0 auto 22px; font-size: 15px; }
+    .tool-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .tool-frame {
+      width: 100%; height: 80vh; min-height: 600px; margin: 26px 0;
+      border: 1px solid var(--border-glow); border-radius: 10px;
+      box-shadow: 0 0 40px rgba(0,240,255,.12); overflow: hidden; background: #070a0b;
+    }
+    .tool-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .feat { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 14px; }
+    .feat .f { border: 1px solid var(--border-glow); border-radius: 8px; background: var(--bg-card); padding: 16px 18px; }
+    .feat .f h4 { font-family: var(--font-mono); color: var(--neon-cyan); font-size: 13px; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+    .feat .f p { color: var(--text-dim); font-size: 13px; }
+    @media (max-width: 900px) {
+      .tool-head h1 { font-size: 30px; }
+      .tool-frame { height: 74vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-submenu">
+        <a class="active" href="outil-audit.html">Outils</a>
+        <ul class="submenu">
+          <li><a href="outil-audit.html">Audit gratuit</a></li>
+          <li><a href="outil-tableur.html">Tableur gratuit</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="sites-basiques.html">Sites</a>
+        <ul class="submenu">
+          <li><a href="sites-basiques.html">Basiques</a></li>
+          <li><a href="sites-avances.html">Avancés</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="forge-workflow.html">Forges</a>
+        <ul class="submenu">
+          <li><a href="forge-workflow.html">Workflow</a></li>
+          <li><a href="forge-prompt.html">Prompt</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="agent-simple.html">Agents IA</a>
+        <ul class="submenu">
+          <li><a href="agent-simple.html">Simple</a></li>
+          <li><a href="agent-superieur.html">Supérieur</a></li>
+        </ul>
+      </li>
+      <li><a href="cerveaux.html">Cerveau</a></li>
+      <li><a href="os.html">OS</a></li>
+      <li><a href="pack-complet.html">Pack &#x1F525;</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="temoignages.html">Témoignages</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="osia-main">
+    <div class="tool-page">
+
+      <div class="tool-head">
+        <span class="tag">// OUTIL GRATUIT · DIAGNOSTIC</span>
+        <h1>Ton site vaut combien sur <span class="accent">100</span> ?</h1>
+        <p>
+          10 questions, 2 minutes. Tu obtiens un score clair, tes points faibles et un plan d'action prioritaire. Gratuit, sans inscription pour voir ton résultat.
+        </p>
+        <div class="tool-cta">
+          <a class="btn btn-primary" href="tarifs.html">Voir comment OSIA corrige ça →</a>
+        </div>
+      </div>
+
+      <!-- L'OUTIL EMBARQUÉ -->
+      <div class="tool-frame">
+        <iframe src="audit-site-osia.html" title="Audit Express OSIA" loading="lazy"></iframe>
+      </div>
+
+      <div class="feat">
+        <div class="f"><h4>Score /100</h4><p>Une note claire et un verdict honnête sur ton site.</p></div>
+        <div class="f"><h4>Points faibles</h4><p>Classés par impact : ce qui te coûte des clients d'abord.</p></div>
+        <div class="f"><h4>Plan d'action</h4><p>Les corrections concrètes, dans le bon ordre.</p></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="osia-foot">
+    <div class="page-indicator">OUTIL GRATUIT · <span class="current">AUDIT</span></div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="outil-tableur.html" class="next">Le tableur gratuit →</a>
+    </div>
+  </footer>
+
+</body>
+</html>

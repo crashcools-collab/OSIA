@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tableur IA gratuit · OSIA</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    /* --- Overrides pour page avec outil intégré (scroll autorisé) --- */
+    html, body { overflow: auto; }
+    .osia-main { align-items: stretch; justify-content: flex-start; padding-top: 26px; padding-bottom: 40px; }
+    .tool-page { max-width: 1080px; width: 100%; margin: 0 auto; }
+    .tool-head { text-align: center; margin-bottom: 24px; }
+    .tool-head .tag {
+      display: inline-block; padding: 6px 14px; font-size: 11px; letter-spacing: 3px;
+      color: var(--neon-lime); border: 1px solid var(--neon-lime); border-radius: 100px;
+      margin-bottom: 16px; text-transform: uppercase;
+    }
+    .tool-head h1 {
+      font-family: var(--font-display); font-weight: 900; font-size: 40px; line-height: 1.05;
+      letter-spacing: -1px; margin-bottom: 14px;
+    }
+    .tool-head h1 .accent {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px rgba(0,240,255,.4));
+    }
+    .tool-head p { color: var(--text-dim); max-width: 620px; margin: 0 auto 22px; font-size: 15px; }
+    .tool-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .price-note { font-size: 12px; color: var(--text-dim); margin-top: 14px; letter-spacing: 1px; }
+    .price-note b { color: var(--neon-lime); }
+    .tool-frame {
+      width: 100%; height: 78vh; min-height: 560px; margin: 26px 0;
+      border: 1px solid var(--border-glow); border-radius: 10px;
+      box-shadow: 0 0 40px rgba(0,240,255,.12); overflow: hidden; background: #0a0e0d;
+    }
+    .tool-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .feat { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 14px; margin-bottom: 8px; }
+    .feat .f { border: 1px solid var(--border-glow); border-radius: 8px; background: var(--bg-card); padding: 16px 18px; }
+    .feat .f h4 { font-family: var(--font-mono); color: var(--neon-cyan); font-size: 13px; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+    .feat .f p { color: var(--text-dim); font-size: 13px; }
+    @media (max-width: 900px) {
+      .tool-head h1 { font-size: 30px; }
+      .tool-frame { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-submenu">
+        <a class="active" href="outil-audit.html">Outils</a>
+        <ul class="submenu">
+          <li><a href="outil-audit.html">Audit gratuit</a></li>
+          <li><a href="outil-tableur.html">Tableur gratuit</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="sites-basiques.html">Sites</a>
+        <ul class="submenu">
+          <li><a href="sites-basiques.html">Basiques</a></li>
+          <li><a href="sites-avances.html">Avancés</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="forge-workflow.html">Forges</a>
+        <ul class="submenu">
+          <li><a href="forge-workflow.html">Workflow</a></li>
+          <li><a href="forge-prompt.html">Prompt</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="agent-simple.html">Agents IA</a>
+        <ul class="submenu">
+          <li><a href="agent-simple.html">Simple</a></li>
+          <li><a href="agent-superieur.html">Supérieur</a></li>
+        </ul>
+      </li>
+      <li><a href="cerveaux.html">Cerveau</a></li>
+      <li><a href="os.html">OS</a></li>
+      <li><a href="pack-complet.html">Pack &#x1F525;</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="temoignages.html">Témoignages</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="osia-main">
+    <div class="tool-page">
+
+      <div class="tool-head">
+        <span class="tag">// OUTIL GRATUIT · 100% IA</span>
+        <h1>Le tableur avec <span class="accent">prof IA intégré</span></h1>
+        <p>
+          Un tableur simple (formules, modèles budget / facture / suivi clients, graphiques) accompagné d'un professeur IA qui explique et crée tes formules à ta place. Gratuit à utiliser ci-dessous — aucune installation.
+        </p>
+        <div class="tool-cta">
+          <a class="btn btn-primary" href="contact.html">⬇ Télécharger (9€) + manuel</a>
+          <a class="btn btn-ghost" href="OSIA_Tableur_Manuel.pdf" target="_blank">📘 Le guide</a>
+        </div>
+        <div class="price-note"><b>Gratuit</b> à utiliser en ligne · Le téléchargement = à toi pour toujours, hors-ligne, + le manuel PDF</div>
+      </div>
+
+      <!-- L'OUTIL EMBARQUÉ -->
+      <div class="tool-frame">
+        <iframe src="tableur.html" title="OSIA Tableur" loading="lazy"></iframe>
+      </div>
+
+      <div class="feat">
+        <div class="f"><h4>Formules FR</h4><p>SOMME, MOYENNE, SI, ARRONDI… en français comme en anglais.</p></div>
+        <div class="f"><h4>Modèles prêts</h4><p>Budget, facture, suivi prospects, tableau de bord ventes.</p></div>
+        <div class="f"><h4>Prof IA</h4><p>Pose une question, il crée la formule et l'insère d'un clic.</p></div>
+        <div class="f"><h4>Export CSV</h4><p>Import / export, ouvrable directement dans Excel.</p></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="osia-foot">
+    <div class="page-indicator">OUTIL GRATUIT · <span class="current">TABLEUR</span></div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="tarifs.html" class="next">Voir les offres →</a>
+    </div>
+  </footer>
+
+</body>
+</html>
