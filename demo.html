@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSIA — Créez votre site en direct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============== CONFIG VISUELLE OSIA (UI du builder) ============== */
+:root{
+  --bg:#0a0a0c; --panel:#111217; --panel-2:#15171e; --line:#23262f;
+  --txt:#e8eaf0; --muted:#8b8f9c; --green:#00ff88; --gold:#ffd24a; --red:#ff5c6c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:"Chakra Petch",sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
+.mono{font-family:"JetBrains Mono",monospace}
+
+/* TOPBAR */
+.topbar{height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.5px}
+.brand .dot{color:var(--green)}
+.brand small{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:1px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.tab-toggle{display:none;gap:4px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:3px}
+.tab-toggle button{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
+.tab-toggle button.on{background:var(--green);color:#000}
+
+.btn{font-family:"Chakra Petch",sans-serif;font-weight:600;border:none;border-radius:9px;cursor:pointer;transition:.15s;font-size:13px}
+.btn-cta{background:linear-gradient(135deg,var(--green),#00cc6e);color:#000;padding:10px 18px}
+.btn-cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line);padding:9px 14px}
+.btn-ghost:hover{border-color:var(--green)}
+
+/* LAYOUT */
+.shell{display:flex;height:calc(100vh - 58px)}
+.panel{width:380px;min-width:380px;border-right:1px solid var(--line);overflow-y:auto;padding:18px 18px 60px}
+.stage{flex:1;background:#06060a;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px}
+
+/* CONTROLS */
+.group{margin-bottom:22px}
+.group>.glabel{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.group>.glabel::before{content:"";width:18px;height:2px;background:var(--green)}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.field input,.field textarea{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-family:inherit;font-size:13.5px;padding:9px 11px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--green)}
+.field .with-ai{display:flex;gap:6px}
+.field .with-ai input,.field .with-ai textarea{flex:1}
+.ai-btn{background:rgba(255,210,74,.12);border:1px solid rgba(255,210,74,.35);color:var(--gold);border-radius:8px;padding:0 11px;cursor:pointer;font-size:14px;white-space:nowrap;align-self:stretch;display:flex;align-items:center}
+.ai-btn:hover{background:rgba(255,210,74,.22)}
+.ai-btn:disabled{opacity:.5;cursor:wait}
+
+/* sector chips */
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:11px 10px;cursor:pointer;text-align:center;font-size:12.5px;font-weight:500;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.chip .ico{font-size:20px}
+.chip:hover{border-color:var(--muted)}
+.chip.on{border-color:var(--green);background:rgba(0,255,136,.08);color:var(--green)}
+
+/* color presets */
+.palettes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pal{width:38px;height:38px;border-radius:9px;cursor:pointer;border:2px solid transparent;position:relative;overflow:hidden}
+.pal.on{border-color:#fff}
+.pal i{position:absolute;inset:0}
+.color-row{display:flex;gap:10px}
+.color-pick{flex:1}
+.color-pick label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px}
+.color-pick input[type=color]{width:100%;height:34px;border:1px solid var(--line);border-radius:7px;background:var(--panel);cursor:pointer;padding:2px}
+
+/* segmented */
+.seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px;gap:3px}
+.seg button{flex:1;background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:500;padding:7px;border-radius:6px;cursor:pointer}
+.seg button.on{background:var(--green);color:#000}
+
+/* section toggles */
+.toggles{display:flex;flex-direction:column;gap:7px}
+.toggle{display:flex;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13px}
+.switch{width:38px;height:21px;background:#2a2d36;border-radius:20px;position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+.switch.on{background:var(--green)}
+.switch i{position:absolute;top:2px;left:2px;width:17px;height:17px;background:#fff;border-radius:50%;transition:.2s}
+.switch.on i{left:19px}
+
+/* STAGE / PREVIEW FRAME */
+.device-bar{display:flex;gap:6px;margin-bottom:14px}
+.device-bar button{background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11px;padding:7px 14px;border-radius:7px;cursor:pointer}
+.device-bar button.on{border-color:var(--green);color:var(--green)}
+.frame-wrap{width:100%;display:flex;justify-content:center;flex:1}
+.frame{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);width:100%;max-width:1100px;transition:max-width .3s;height:fit-content}
+.frame.mobile{max-width:390px}
+
+/* ============== SITE PREVIEW (scopé sous #site) ============== */
+#site{--p:#00c46a;--a:#ffd24a;--ink:#16181d;--soft:#5b6270;--bg1:#ffffff;--bg2:#f5f7fa;--rad:14px;--ff:'Poppins',sans-serif;
+  font-family:var(--ff);color:var(--ink);background:var(--bg1)}
+#site.dark{--ink:#eef1f6;--soft:#aab1bf;--bg1:#0f1115;--bg2:#171a20}
+#site *{box-sizing:border-box}
+#site .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 30px;background:var(--bg1);border-bottom:1px solid rgba(128,128,128,.12);position:sticky;top:0;z-index:5}
+#site .nav .logo{font-weight:800;font-size:19px;color:var(--ink)}
+#site .nav .logo b{color:var(--p)}
+#site .nav .links{display:flex;gap:20px;font-size:13.5px;color:var(--soft);font-weight:500}
+#site .nav .cta{background:var(--p);color:#fff;padding:9px 16px;border-radius:var(--rad);font-size:13px;font-weight:600}
+#site .hero{padding:64px 30px;text-align:center;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
+#site .hero .kick{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p);background:color-mix(in srgb,var(--p) 12%,transparent);padding:6px 14px;border-radius:30px;margin-bottom:18px}
+#site .hero h1{font-size:46px;line-height:1.08;font-weight:800;max-width:760px;margin:0 auto 16px;letter-spacing:-1px}
+#site .hero p{font-size:17px;color:var(--soft);max-width:560px;margin:0 auto 26px;line-height:1.6}
+#site .hero .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#site .b1{background:var(--p);color:#fff;padding:14px 26px;border-radius:var(--rad);font-weight:700;font-size:15px}
+#site .b2{background:transparent;color:var(--ink);border:1.5px solid color-mix(in srgb,var(--ink) 25%,transparent);padding:14px 26px;border-radius:var(--rad);font-weight:600;font-size:15px}
+#site .sec{padding:56px 30px}
+#site .sec.alt{background:var(--bg2)}
+#site .sec h2{font-size:32px;font-weight:800;text-align:center;margin-bottom:8px;letter-spacing:-.5px}
+#site .sec .lead{text-align:center;color:var(--soft);max-width:520px;margin:0 auto 36px;font-size:15px}
+#site .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1000px;margin:0 auto}
+#site .card{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:26px 22px;text-align:center}
+#site .card .ci{width:54px;height:54px;border-radius:14px;background:color-mix(in srgb,var(--p) 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px}
+#site .card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+#site .card p{font-size:14px;color:var(--soft);line-height:1.55}
+#site .about{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:1000px;margin:0 auto}
+#site .about .ph{aspect-ratio:4/3;border-radius:var(--rad);background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px;opacity:.9}
+#site .about h2{text-align:left;margin-bottom:14px}
+#site .about p{color:var(--soft);font-size:15px;line-height:1.7}
+#site .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1000px;margin:0 auto}
+#site .gal .ph{aspect-ratio:1;border-radius:var(--rad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500}
+#site .quotes{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:880px;margin:0 auto}
+#site .quote{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:24px}
+#site .quote p{font-size:15px;line-height:1.6;font-style:italic;margin-bottom:14px}
+#site .quote .who{display:flex;align-items:center;gap:11px}
+#site .quote .av{width:40px;height:40px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+#site .quote .who b{font-size:14px}
+#site .quote .who span{font-size:12px;color:var(--soft);display:block}
+#site .hours{max-width:520px;margin:0 auto;background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);overflow:hidden}
+#site .hours .hr{display:flex;justify-content:space-between;padding:13px 22px;border-bottom:1px solid rgba(128,128,128,.1);font-size:14.5px}
+#site .hours .hr:last-child{border:none}
+#site .hours .hr span:first-child{font-weight:600}
+#site .hours .hr span:last-child{color:var(--soft)}
+#site .contact{max-width:760px;margin:0 auto;text-align:center}
+#site .contact .info{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+#site .contact .info div{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:18px 24px;font-size:14px;min-width:200px}
+#site .contact .info b{display:block;color:var(--p);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+#site .foot{padding:26px 30px;text-align:center;background:var(--bg2);font-size:13px;color:var(--soft);border-top:1px solid rgba(128,128,128,.1)}
+/* preview responsive when frame is mobile-width */
+.frame.mobile #site .nav .links{display:none}
+.frame.mobile #site .hero h1{font-size:30px}
+.frame.mobile #site .cards,.frame.mobile #site .gal{grid-template-columns:1fr}
+.frame.mobile #site .about,.frame.mobile #site .quotes,.frame.mobile #site .contact .info{grid-template-columns:1fr}
+
+/* MODAL COMMANDE */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+.overlay.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;padding:28px}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:6px}
+.modal .sub{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+.recap{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:18px}
+.recap .row{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line)}
+.recap .row:last-child{border:none}
+.recap .row span:first-child{color:var(--muted)}
+.recap .row span:last-child{font-weight:600;text-align:right;max-width:60%}
+.modal .actions{display:flex;gap:10px;flex-wrap:wrap}
+.modal .actions .btn{flex:1;min-width:140px;text-align:center;padding:12px}
+.modal .close{float:right;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;margin-top:-6px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#000;font-weight:600;padding:12px 22px;border-radius:10px;font-size:14px;transition:.3s;z-index:60}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* RESPONSIVE BUILDER */
+@media(max-width:900px){
+  .shell{display:block;height:calc(100vh - 58px)}
+  .panel,.stage{width:100%;min-width:0;height:100%;border-right:none}
+  .panel{display:none} .stage{display:none}
+  .panel.show,.stage.show{display:block}
+  .stage.show{display:flex}
+  .tab-toggle{display:flex}
+  .topbar .btn-cta{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">⬢ OSIA<span class="dot">.</span><small>MODE DÉMO — APERÇU LIVE</small></div>
+  <div class="topbar-actions">
+    <div class="tab-toggle">
+      <button id="tabEdit" class="on" onclick="showTab('edit')">Commandes</button>
+      <button id="tabView" onclick="showTab('view')">Aperçu</button>
+    </div>
+    <button class="btn btn-cta" onclick="openOrder()">Commander ce site →</button>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- ============ PANNEAU DE COMMANDES ============ -->
+  <aside class="panel show" id="panel">
+
+    <div class="group">
+      <div class="glabel">1 · Votre secteur</div>
+      <div class="chips" id="sectors"></div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">2 · Votre entreprise</div>
+      <div class="field"><label>Nom de l'entreprise</label><input id="f_name" oninput="setBiz('name',this.value)"></div>
+      <div class="field"><label>Slogan / accroche</label>
+        <div class="with-ai"><input id="f_slogan" oninput="setBiz('slogan',this.value)">
+        <button class="ai-btn" title="Générer avec l'IA" onclick="aiGen('slogan',this)">✨</button></div></div>
+      <div class="field"><label>Description (section accueil)</label>
+        <div class="with-ai"><textarea id="f_desc" rows="2" oninput="setBiz('desc',this.value)"></textarea>
+        <button class="ai-btn" title="Générer avec l'IA" onclick="aiGen('desc',this)">✨</button></div></div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">3 · Coordonnées</div>
+      <div class="field"><label>Téléphone</label><input id="f_phone" oninput="setBiz('phone',this.value)"></div>
+      <div class="field"><label>Email</label><input id="f_email" oninput="setBiz('email',this.value)"></div>
+      <div class="field"><label>Adresse</label><input id="f_address" oninput="setBiz('address',this.value)"></div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">4 · Style & couleurs</div>
+      <div class="palettes" id="palettes"></div>
+      <div class="color-row">
+        <div class="color-pick"><label>Couleur principale</label><input type="color" id="c_primary" value="#00c46a" oninput="setStyle('primary',this.value)"></div>
+        <div class="color-pick"><label>Accent</label><input type="color" id="c_accent" value="#ffd24a" oninput="setStyle('accent',this.value)"></div>
+      </div>
+      <div class="field" style="margin-top:11px"><label>Police</label>
+        <div class="seg" id="fonts">
+          <button class="on" onclick="setStyle('font','Poppins, sans-serif',this)">Moderne</button>
+          <button onclick="setStyle('font','Playfair Display, serif',this)">Élégante</button>
+          <button onclick="setStyle('font','Montserrat, sans-serif',this)">Sobre</button>
+        </div></div>
+      <div class="field"><label>Ambiance</label>
+        <div class="seg" id="modes">
+          <button class="on" onclick="setStyle('dark',false,this)">Clair</button>
+          <button onclick="setStyle('dark',true,this)">Sombre</button>
+        </div></div>
+      <div class="field"><label>Coins</label>
+        <div class="seg" id="radii">
+          <button class="on" onclick="setStyle('rad','14px',this)">Arrondis</button>
+          <button onclick="setStyle('rad','4px',this)">Légers</button>
+          <button onclick="setStyle('rad','0px',this)">Carrés</button>
+        </div></div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">5 · Sections du site</div>
+      <div class="toggles" id="toggles"></div>
+    </div>
+  </aside>
+
+  <!-- ============ SCÈNE / APERÇU ============ -->
+  <main class="stage" id="stage">
+    <div class="device-bar">
+      <button id="dDesk" class="on" onclick="setDevice('desktop')">🖥 Ordinateur</button>
+      <button id="dMob" onclick="setDevice('mobile')">📱 Mobile</button>
+    </div>
+    <div class="frame-wrap">
+      <div class="frame" id="frame"><div id="site"></div></div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL COMMANDE -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close" onclick="closeOrder()">×</button>
+    <h2>Commander ce site</h2>
+    <p class="sub">Voici le récapitulatif de votre configuration. Validez et OSIA vous livre votre site clé en main.</p>
+    <div class="recap" id="recap"></div>
+    <div class="actions">
+      <button class="btn btn-cta" onclick="sendOrder()">Envoyer ma commande</button>
+      <button class="btn btn-ghost" onclick="copyConfig()">Copier la config</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   CONFIG IA — branche ici TON moteur (compatible OpenAI : Mistral,
+   DeepSeek, Groq, NVIDIA, ou ta passerelle api.osia-pro.com).
+   Laisse vide => le bouton ✨ utilise un texte pro de secours (démo).
+   ===================================================================== */
+const OSIA_AI = {
+  endpoint : "",                       // ex: "https://api.mistral.ai/v1"  ou  "https://api.osia-pro.com"
+  apiKey   : "",                       // ta clé
+  model    : "mistral-small-latest"
+};
+/* Où arrive la commande (lead) : direct dans le pipeline OSIA2, repli mailto. */
+const OSIA_ORDER_EMAIL = "crashcool.iaos@gmail.com";
+const OSIA_WEBHOOK = "https://api.osia-pro.com/api/webhook/lead";
+
+/* ===================== PRESETS PAR SECTEUR ===================== */
+const SECTORS = {
+  restaurant:{ico:"🍽",label:"Restaurant",name:"Le Bistrot d'Augustin",slogan:"Cuisine de saison, produits du terroir ariégeois",
+    desc:"Une table conviviale au cœur de Tarascon, où chaque plat raconte le pays. Réservez votre table en ligne.",
+    primary:"#b8453a",accent:"#e8a13c",services:[["🥘","Cuisine maison","Des plats préparés chaque jour avec des produits frais et locaux."],["📅","Réservation en ligne","Réservez votre table en quelques clics, à toute heure."],["🎉","Événements privés","Anniversaires, repas d'entreprise : nous privatisons la salle."]]},
+  artisan:{ico:"🔧",label:"Artisan / BTP",name:"Dupont Rénovation",slogan:"Votre artisan de confiance en Ariège depuis 15 ans",
+    desc:"Maçonnerie, rénovation, isolation. Un devis clair et gratuit sous 48h, des chantiers tenus dans les délais.",
+    primary:"#2a6db5",accent:"#f0a500",services:[["📐","Devis gratuit","Recevez une estimation détaillée et gratuite sous 48h."],["🏗","Rénovation complète","De la maçonnerie aux finitions, un seul interlocuteur."],["✅","Travail garanti","Garantie décennale et suivi de chantier rigoureux."]]},
+  coach:{ico:"🎯",label:"Coach / Conseil",name:"Clara Méthode",slogan:"Reprenez le contrôle de votre activité",
+    desc:"Coaching individuel et collectif pour dirigeants et indépendants. Des résultats concrets, pas de blabla.",
+    primary:"#6d4ed8",accent:"#22c4a8",services:[["🧭","Bilan initial","Un diagnostic offert pour cerner vos vrais objectifs."],["📈","Accompagnement","Un suivi sur-mesure, en présentiel ou en visio."],["📚","Ressources","Outils, modèles et méthodes prêts à l'emploi."]]},
+  commerce:{ico:"🛍",label:"Commerce local",name:"La Boutique du Centre",slogan:"Le bon produit, le bon conseil, près de chez vous",
+    desc:"Une sélection soignée et un accueil chaleureux au centre de Foix. Découvrez nos nouveautés en ligne.",
+    primary:"#c2455e",accent:"#f3b13a",services:[["🎁","Sélection unique","Des produits choisis avec soin, introuvables ailleurs."],["💬","Conseil personnalisé","Une équipe à votre écoute pour vous guider."],["📦","Click & Collect","Commandez en ligne, retirez en boutique."]]},
+  beaute:{ico:"💇",label:"Beauté / Bien-être",name:"Studio Élixir",slogan:"Votre parenthèse beauté en plein cœur de l'Ariège",
+    desc:"Coiffure, soins et bien-être dans un cadre apaisant. Prenez rendez-vous en ligne 24h/24.",
+    primary:"#b5728f",accent:"#d9b06a",services:[["✂️","Coiffure","Coupe, couleur, conseil : sublimez votre style."],["💆","Soins du visage","Des protocoles sur-mesure pour une peau éclatante."],["🗓","RDV en ligne","Réservez votre créneau en quelques secondes."]]},
+  autre:{ico:"✨",label:"Autre",name:"Votre Entreprise",slogan:"Une accroche claire qui donne envie",
+    desc:"Décrivez ici en deux phrases ce que vous faites et pourquoi on devrait vous choisir.",
+    primary:"#00c46a",accent:"#ffd24a",services:[["⭐","Votre service 1","Décrivez ce que vous proposez de mieux."],["⭐","Votre service 2","Mettez en avant un deuxième atout fort."],["⭐","Votre service 3","Et un troisième pour compléter l'offre."]]}
+};
+const PALETTES=[["#00c46a","#ffd24a"],["#2a6db5","#f0a500"],["#b8453a","#e8a13c"],["#6d4ed8","#22c4a8"],["#c2455e","#f3b13a"],["#16181d","#d4af37"]];
+const FALLBACK={
+  slogan:["L'excellence à portée de main, près de chez vous","Votre satisfaction, notre métier depuis toujours","Du savoir-faire local, un résultat qui se voit","La qualité sans compromis, le service en plus"],
+  desc:["Nous mettons notre savoir-faire au service de vos projets, avec une exigence de qualité à chaque étape. Contactez-nous dès aujourd'hui.","Une équipe à votre écoute, des solutions sur-mesure et un accompagnement de proximité. Faites le premier pas, on s'occupe du reste.","Depuis des années, nous accompagnons nos clients avec passion et rigueur. Découvrez ce qui fait notre différence."]
+};
+
+/* ===================== ÉTAT ===================== */
+let state={sector:"restaurant",
+  biz:{name:"",slogan:"",desc:"",phone:"06 12 34 56 78",email:"contact@exemple.fr",address:"Tarascon-sur-Ariège, 09400"},
+  style:{primary:"#b8453a",accent:"#e8a13c",font:"Poppins, sans-serif",dark:false,rad:"14px"},
+  sections:{services:true,about:true,gallery:true,testimonials:true,hours:false,contact:true}};
+
+const SECTION_LABELS={services:"Nos services",about:"À propos",gallery:"Galerie photos",testimonials:"Avis clients",hours:"Horaires",contact:"Contact"};
+
+/* ===================== INIT UI ===================== */
+function initSectors(){
+  document.getElementById('sectors').innerHTML=Object.entries(SECTORS).map(([k,v])=>
+    `<div class="chip ${k==state.sector?'on':''}" data-s="${k}" onclick="pickSector('${k}')"><span class="ico">${v.ico}</span>${v.label}</div>`).join('');
+}
+function initPalettes(){
+  document.getElementById('palettes').innerHTML=PALETTES.map((p,i)=>
+    `<div class="pal" onclick="pickPalette(${i})"><i style="background:linear-gradient(135deg,${p[0]} 50%,${p[1]} 50%)"></i></div>`).join('');
+}
+function initToggles(){
+  document.getElementById('toggles').innerHTML=Object.keys(state.sections).map(k=>
+    `<div class="toggle"><span>${SECTION_LABELS[k]}</span><div class="switch ${state.sections[k]?'on':''}" onclick="toggleSection('${k}',this)"><i></i></div></div>`).join('');
+}
+
+/* ===================== HANDLERS ===================== */
+function pickSector(k){
+  state.sector=k;const s=SECTORS[k];
+  state.biz.name=s.name;state.biz.slogan=s.slogan;state.biz.desc=s.desc;
+  state.style.primary=s.primary;state.style.accent=s.accent;
+  document.getElementById('f_name').value=s.name;
+  document.getElementById('f_slogan').value=s.slogan;
+  document.getElementById('f_desc').value=s.desc;
+  document.getElementById('c_primary').value=s.primary;
+  document.getElementById('c_accent').value=s.accent;
+  document.querySelectorAll('#sectors .chip').forEach(c=>c.classList.toggle('on',c.dataset.s===k));
+  render();
+}
+function setBiz(k,v){state.biz[k]=v;render();}
+function setStyle(k,v,el){state.style[k]=v;if(el){el.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));el.classList.add('on');}render();}
+function pickPalette(i){const[p,a]=PALETTES[i];state.style.primary=p;state.style.accent=a;
+  document.getElementById('c_primary').value=p;document.getElementById('c_accent').value=a;
+  document.querySelectorAll('#palettes .pal').forEach((el,idx)=>el.classList.toggle('on',idx===i));render();}
+function toggleSection(k,el){state.sections[k]=!state.sections[k];el.classList.toggle('on',state.sections[k]);render();}
+function setDevice(d){state.device=d;
+  document.getElementById('frame').classList.toggle('mobile',d==='mobile');
+  document.getElementById('dDesk').classList.toggle('on',d==='desktop');
+  document.getElementById('dMob').classList.toggle('on',d==='mobile');}
+function showTab(t){
+  document.getElementById('panel').classList.toggle('show',t==='edit');
+  document.getElementById('stage').classList.toggle('show',t==='view');
+  document.getElementById('tabEdit').classList.toggle('on',t==='edit');
+  document.getElementById('tabView').classList.toggle('on',t==='view');}
+
+/* ===================== GÉNÉRATION IA ===================== */
+async function aiGen(field,btn){
+  const s=SECTORS[state.sector];
+  btn.disabled=true;const old=btn.textContent;btn.textContent="…";
+  let text="";
+  if(OSIA_AI.endpoint && OSIA_AI.apiKey){
+    const prompt = field==='slogan'
+      ? `Génère UN slogan court (max 10 mots), percutant, en français, pour une entreprise du secteur "${s.label}" nommée "${state.biz.name||s.name}". Réponds uniquement par le slogan, sans guillemets ni ponctuation finale.`
+      : `Rédige une accroche de 2 phrases (max 40 mots), chaleureuse et professionnelle, en français, pour la page d'accueil d'une entreprise du secteur "${s.label}" nommée "${state.biz.name||s.name}". Réponds uniquement par le texte.`;
+    try{
+      const r=await fetch(OSIA_AI.endpoint.replace(/\/$/,'')+"/chat/completions",{
+        method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+OSIA_AI.apiKey},
+        body:JSON.stringify({model:OSIA_AI.model,messages:[{role:"user",content:prompt}],temperature:0.8,max_tokens:120})});
+      const d=await r.json();text=(d.choices?.[0]?.message?.content||"").trim().replace(/^["«»]|["«»]$/g,'');
+    }catch(e){text="";}
+  }
+  if(!text){const arr=FALLBACK[field];text=arr[Math.floor(Math.random()*arr.length)];}
+  if(field==='slogan'){state.biz.slogan=text;document.getElementById('f_slogan').value=text;}
+  else{state.biz.desc=text;document.getElementById('f_desc').value=text;}
+  render();btn.disabled=false;btn.textContent=old;
+}
+
+/* ===================== RENDU DU SITE ===================== */
+function render(){
+  const b=state.biz,st=state.style,sec=state.sections,s=SECTORS[state.sector];
+  const site=document.getElementById('site');
+  site.className=st.dark?'dark':'';
+  site.style.setProperty('--p',st.primary);site.style.setProperty('--a',st.accent);
+  site.style.setProperty('--rad',st.rad);site.style.setProperty('--ff',st.font);
+  const name=b.name||s.name, initials=(name.trim()[0]||"O").toUpperCase();
+  const navlinks=Object.keys(sec).filter(k=>sec[k]&&k!=='contact').map(k=>`<a>${SECTION_LABELS[k]}</a>`).join('');
+  let h=`<div class="nav"><div class="logo">${name.split(' ')[0]}<b>${name.split(' ').slice(1).join(' ')?' '+name.split(' ').slice(1).join(' '):'.'}</b></div>
+    <div class="links">${navlinks}</div><div class="cta">Contact</div></div>`;
+  h+=`<div class="hero"><span class="kick">${s.label}</span><h1>${name}</h1>
+    <p>${b.slogan||s.slogan}</p><p style="font-size:15px;margin-top:-8px">${b.desc||s.desc}</p>
+    <div class="btns"><a class="b1">Demander un devis</a><a class="b2">En savoir plus</a></div></div>`;
+  if(sec.services) h+=`<div class="sec"><h2>Nos services</h2><p class="lead">Ce que nous faisons le mieux pour vous.</p>
+    <div class="cards">${s.services.map(c=>`<div class="card"><div class="ci">${c[0]}</div><h3>${c[1]}</h3><p>${c[2]}</p></div>`).join('')}</div></div>`;
+  if(sec.about) h+=`<div class="sec alt"><div class="about"><div class="ph">Votre photo / équipe</div>
+    <div><h2>À propos</h2><p>${b.desc||s.desc} Nous mettons un point d'honneur à offrir un service de proximité, attentif et durable. Faites confiance à un partenaire local qui connaît vraiment vos besoins.</p></div></div></div>`;
+  if(sec.gallery){const cols=['var(--p)','var(--a)','#6c7a89','var(--a)','var(--p)','#8a93a0'];
+    h+=`<div class="sec"><h2>Galerie</h2><p class="lead">Un aperçu de notre univers.</p>
+    <div class="gal">${cols.map((c,i)=>`<div class="ph" style="background:linear-gradient(135deg,${c},color-mix(in srgb,${c} 60%,#000))">Photo ${i+1}</div>`).join('')}</div></div>`;}
+  if(sec.testimonials){const q=[["Un travail impeccable et un vrai sens du détail. Je recommande sans hésiter.","Marie L.","Cliente"],["Réactif, professionnel et à l'écoute. Exactement ce que je cherchais.","Thomas R.","Client"]];
+    h+=`<div class="sec alt"><h2>Avis clients</h2><p class="lead">Ils nous ont fait confiance.</p>
+    <div class="quotes">${q.map(x=>`<div class="quote"><p>« ${x[0]} »</p><div class="who"><div class="av">${x[1][0]}</div><div><b>${x[1]}</b><span>${x[2]}</span></div></div></div>`).join('')}</div></div>`;}
+  if(sec.hours){const days=[["Lundi – Vendredi","9h00 – 19h00"],["Samedi","9h00 – 12h30"],["Dimanche","Fermé"]];
+    h+=`<div class="sec"><h2>Horaires</h2><p class="lead">Quand nous trouver.</p>
+    <div class="hours">${days.map(d=>`<div class="hr"><span>${d[0]}</span><span>${d[1]}</span></div>`).join('')}</div></div>`;}
+  if(sec.contact) h+=`<div class="sec alt"><div class="contact"><h2>Contactez-nous</h2><p class="lead">Un projet, une question ? Réponse rapide garantie.</p>
+    <div class="info"><div><b>Téléphone</b>${b.phone}</div><div><b>Email</b>${b.email}</div><div><b>Adresse</b>${b.address}</div></div></div></div>`;
+  h+=`<div class="foot">© ${new Date().getFullYear()} ${name} — Site réalisé par OSIA · osia-pro.com</div>`;
+  site.innerHTML=h;
+}
+
+/* ===================== COMMANDE / LEAD ===================== */
+function buildConfig(){
+  const active=Object.keys(state.sections).filter(k=>state.sections[k]).map(k=>SECTION_LABELS[k]);
+  return{secteur:SECTORS[state.sector].label,entreprise:state.biz.name||SECTORS[state.sector].name,
+    slogan:state.biz.slogan||SECTORS[state.sector].slogan,telephone:state.biz.phone,email:state.biz.email,
+    adresse:state.biz.address,couleur_principale:state.style.primary,accent:state.style.accent,
+    police:state.style.font.split(',')[0],ambiance:state.style.dark?'Sombre':'Clair',sections:active};
+}
+function openOrder(){
+  const c=buildConfig();
+  document.getElementById('recap').innerHTML=`
+    <div class="row"><span>Secteur</span><span>${c.secteur}</span></div>
+    <div class="row"><span>Entreprise</span><span>${c.entreprise}</span></div>
+    <div class="row"><span>Slogan</span><span>${c.slogan}</span></div>
+    <div class="row"><span>Sections</span><span>${c.sections.join(', ')}</span></div>
+    <div class="row"><span>Style</span><span>${c.police} · ${c.ambiance}</span></div>
+    <div class="row"><span>Couleurs</span><span style="display:inline-flex;gap:6px;align-items:center;justify-content:flex-end">
+      <i style="width:16px;height:16px;border-radius:4px;background:${c.couleur_principale};display:inline-block"></i>
+      <i style="width:16px;height:16px;border-radius:4px;background:${c.accent};display:inline-block"></i></span></div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeOrder(){document.getElementById('overlay').classList.remove('open');}
+function briefText(c){return [
+  `Demande via le démo-configurateur osia-pro.com.`,
+  `Entreprise : ${c.entreprise} (${c.secteur})`,
+  `Slogan : ${c.slogan}`,
+  `Style : ${c.police} · ${c.ambiance} · couleurs ${c.couleur_principale} / ${c.accent}`,
+  `Sections : ${(c.sections||[]).join(', ')}`,
+  `Coordonnées : ${c.telephone||'—'} / ${c.email||'—'} / ${c.adresse||'—'}`
+].join('\n');}
+async function sendOrder(){
+  const c=buildConfig();
+  const payload={name:c.entreprise,email:c.email,phone:c.telephone,message:briefText(c),source:'demo-builder'};
+  // envoi au backend OSIA2 si l'email est réel (pas le placeholder de démo)
+  if(payload.email && payload.email.includes('@') && !payload.email.includes('exemple.fr')){
+    try{
+      const r=await fetch(OSIA_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      if(r.ok){toast("Commande envoyée à OSIA ✓");closeOrder();return;}
+    }catch(e){}
+  }
+  // repli mailto (serveur injoignable, ou email de démo non renseigné)
+  const body=`Bonjour, je souhaite commander un site via le configurateur OSIA.%0D%0A%0D%0A`+encodeURIComponent(briefText(c));
+  window.location.href=`mailto:${OSIA_ORDER_EMAIL}?subject=${encodeURIComponent('[OSIA][COMMANDE] '+c.entreprise)}&body=${body}`;
+  toast("Votre commande est prête à être envoyée ✓");
+}
+function copyConfig(){navigator.clipboard.writeText(JSON.stringify(buildConfig(),null,2));toast("Configuration copiée ✓");}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* ===================== BOOT ===================== */
+initSectors();initPalettes();initToggles();
+document.getElementById('f_phone').value=state.biz.phone;
+document.getElementById('f_email').value=state.biz.email;
+document.getElementById('f_address').value=state.biz.address;
+pickSector('restaurant');
+document.querySelector('#palettes .pal:nth-child(3)').classList.add('on');
+</script>
+</body>
+</html>
