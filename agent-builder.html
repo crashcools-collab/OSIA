@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSIA — Créez votre agent IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a13;--panel:#12121e;--panel-2:#181828;--line:#2a2a3c;--txt:#e9eaf2;--muted:#8a8ea6;--pink:#ff2e7e;--pink-soft:rgba(255,46,126,.12);--violet:#8b5cf6;--ok:#2ad17e;--green:#00ff88}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:"Chakra Petch",sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(700px 400px at 10% -5%,rgba(255,46,126,.10),transparent),radial-gradient(600px 400px at 100% 0%,rgba(139,92,246,.08),transparent),repeating-linear-gradient(45deg,transparent,transparent 39px,rgba(139,92,246,.022) 39px,rgba(139,92,246,.022) 40px)}
+.mono{font-family:"JetBrains Mono",monospace}
+.topbar{position:relative;z-index:3;height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px;background:rgba(10,10,19,.7);backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.5px}
+.brand .dot{color:var(--pink)}
+.brand small{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:1px}
+.tab-toggle{display:none;gap:4px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:3px}
+.tab-toggle button{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
+.tab-toggle button.on{background:var(--pink);color:#fff}
+.btn{font-family:"Chakra Petch",sans-serif;font-weight:600;border:none;border-radius:9px;cursor:pointer;transition:.15s;font-size:13px}
+.btn-cta{background:linear-gradient(135deg,var(--pink),#ff5c9d);color:#fff;padding:11px 18px;box-shadow:0 6px 20px rgba(255,46,126,.3)}
+.btn-cta:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn-ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line);padding:10px 14px}
+.shell{position:relative;z-index:2;display:flex;height:calc(100vh - 60px)}
+.panel{width:440px;min-width:440px;border-right:1px solid var(--line);overflow-y:auto;padding:20px 20px 70px}
+.stage{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px;justify-content:center}
+.hsec{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:1.5px;color:var(--pink);text-transform:uppercase;margin:24px 0 4px;font-weight:700}
+.hsec:first-child{margin-top:0}
+.hsub{color:var(--muted);font-size:13px;margin-bottom:12px}
+.divider{height:1px;background:repeating-linear-gradient(90deg,var(--line),var(--line) 5px,transparent 5px,transparent 10px);margin:22px 0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:13px}
+.field label{display:block;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field label .req{color:var(--pink)}.field label .opt{color:#5b5f74;text-transform:none;letter-spacing:0}
+.field input,.field textarea,.field select{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit;font-size:14px;padding:11px 12px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ff2e7e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.counter{text-align:right;font-family:"JetBrains Mono",monospace;font-size:11px;color:#5b5f74;margin-top:4px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.opt-card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;transition:.15s;position:relative}
+.opt-card:hover{border-color:var(--muted)}
+.opt-card.on{border-color:var(--pink);background:var(--pink-soft)}
+.opt-card .t{font-weight:600;font-size:14px;margin-bottom:3px}
+.opt-card .s{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.4px;color:var(--muted);line-height:1.4}
+.opt-card .pr{position:absolute;top:11px;right:13px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--pink);font-weight:700}
+.chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;font-size:12px;font-weight:500;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.chip .ico{font-size:18px}.chip:hover{border-color:var(--muted)}
+.chip.on{border-color:var(--pink);background:var(--pink-soft);color:var(--pink)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{display:flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:10px 11px;cursor:pointer;font-size:13px;transition:.15s}
+.check:hover{border-color:var(--muted)}.check.on{border-color:var(--pink)}
+.box{width:19px;height:19px;border-radius:5px;border:1.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.check.on .box{background:var(--pink);border-color:var(--pink)}
+#superTools{display:none}#superTools.show{display:block}
+/* ===== APERÇU CHAT ===== */
+.phone{width:100%;max-width:430px;background:#0e1422;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6);display:flex;flex-direction:column;height:78vh}
+.chat-head{padding:16px 18px;background:linear-gradient(135deg,#141b2e,#0e1422);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.chat-av{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--violet));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.chat-head .nm{font-weight:700;font-size:15px}.chat-head .st{font-size:11px;color:var(--green);font-family:"JetBrains Mono",monospace}
+.chat-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:radial-gradient(500px 300px at 50% 0,rgba(139,92,246,.05),transparent)}
+.msg{max-width:82%;padding:11px 14px;border-radius:14px;font-size:13.5px;line-height:1.5;font-family:"Inter",sans-serif}
+.msg.u{align-self:flex-end;background:var(--pink);color:#fff;border-bottom-right-radius:4px}
+.msg.a{align-self:flex-start;background:#1a2336;border:1px solid var(--line);border-bottom-left-radius:4px}
+.chat-foot{padding:12px 14px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center}
+.chat-foot .inp{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:10px 14px;color:var(--muted);font-size:13px}
+.chat-foot .snd{width:38px;height:38px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.badge-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.badge-tools span{font-family:"JetBrains Mono",monospace;font-size:10px;background:rgba(139,92,246,.15);color:#b9a3f5;border:1px solid rgba(139,92,246,.3);border-radius:20px;padding:3px 9px}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(5,5,11,.78);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:540px;width:100%;max-height:88vh;overflow-y:auto;padding:28px}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:6px}.modal .sub{color:var(--muted);font-size:13.5px;margin-bottom:18px}
+.recap{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:18px}
+.recap .r{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line);gap:14px}
+.recap .r:last-child{border:none}.recap .r span:first-child{color:var(--muted);white-space:nowrap}.recap .r span:last-child{font-weight:600;text-align:right}
+.modal .actions{display:flex;gap:10px;flex-wrap:wrap}.modal .actions .btn{flex:1;min-width:140px;text-align:center;padding:12px}
+.modal .close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;margin-top:-6px}
+.err{color:var(--pink);font-size:13px;margin-bottom:12px;display:none}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pink);color:#fff;font-weight:600;padding:12px 22px;border-radius:10px;font-size:14px;transition:.3s;z-index:60}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:960px){.shell{display:block;height:calc(100vh - 60px)}.panel,.stage{width:100%;min-width:0;height:100%;border-right:none}.panel{display:none}.stage{display:none}.panel.show,.stage.show{display:block}.stage.show{display:flex}.tab-toggle{display:flex}.topbar .btn-cta{display:none}}
+@media(max-width:480px){.row2,.cards,.checks{grid-template-columns:1fr}.chips{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">⬢ OSIA<span class="dot">.</span><small>CRÉEZ VOTRE AGENT IA — APERÇU LIVE</small></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="tab-toggle"><button id="tabEdit" class="on" onclick="showTab('edit')">Config</button><button id="tabView" onclick="showTab('view')">Aperçu</button></div>
+    <button class="btn btn-cta" onclick="openOrder()">Envoyer mon brief →</button>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="panel show" id="panel">
+
+    <div class="hsec">// Coordonnées</div>
+    <div class="row2">
+      <div class="field"><label>Nom <span class="req">*</span></label><input id="c_nom" placeholder="Cédric Robert"></div>
+      <div class="field"><label>Email <span class="req">*</span></label><input id="c_mail" placeholder="contact@exemple.fr"></div>
+    </div>
+    <div class="field"><label>Téléphone <span class="opt">(optionnel)</span></label><input id="c_tel" placeholder="06 12 34 56 78"></div>
+
+    <div class="divider"></div>
+
+    <div class="hsec">🤖 Type d'agent</div>
+    <div class="cards" id="types"></div>
+
+    <div class="hsec">📍 Domaine</div>
+    <div class="hsub">Choisis un exemple — l'aperçu s'adapte.</div>
+    <div class="chips" id="domaines"></div>
+
+    <div class="field" style="margin-top:14px"><label>Nom de l'agent</label><input id="a_nom" oninput="setA('nom',this.value)" placeholder="NOVA, Léa, Assistant Resto…"></div>
+    <div class="field"><label>Mission / rôle de l'agent <span class="req">*</span></label>
+      <textarea id="a_mission" rows="4" maxlength="1500" oninput="setA('mission',this.value);count()" placeholder="Ex : réponds aux questions des clients sur le menu, les horaires et les réservations du restaurant."></textarea>
+      <div class="counter"><span id="cnt">0</span> / 1500</div></div>
+
+    <div class="hsec">🎭 Ton</div>
+    <div class="field"><label>Personnalité de l'agent</label>
+      <select id="a_ton" onchange="setA('ton',this.value)">
+        <option value="pro">Professionnel & clair</option>
+        <option value="chaleureux">Chaleureux & accueillant</option>
+        <option value="direct">Direct & efficace</option>
+        <option value="expert">Expert & pédagogue</option>
+      </select></div>
+
+    <div id="superTools">
+      <div class="hsec">🛠 Capacités (agent supérieur)</div>
+      <div class="hsub">Mémoire de conversation + outils.</div>
+      <div class="checks" id="tools"></div>
+    </div>
+  </aside>
+
+  <main class="stage" id="stage">
+    <div class="phone">
+      <div class="chat-head">
+        <div class="chat-av" id="pAv">🤖</div>
+        <div><div class="nm" id="pName">Votre agent</div><div class="st">● en ligne</div></div>
+      </div>
+      <div class="chat-body" id="pBody"></div>
+      <div class="chat-foot"><div class="inp">Posez votre question…</div><div class="snd">➤</div></div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close" onclick="closeOrder()">×</button>
+    <h2>Envoyer mon brief</h2>
+    <p class="sub">Récapitulatif de ton agent. Valide et OSIA le construit puis te le livre clé en main.</p>
+    <div class="err" id="err">Renseigne au moins ton nom, ton email et la mission de l'agent.</div>
+    <div class="recap" id="recap"></div>
+    <div class="actions">
+      <button class="btn btn-cta" onclick="sendOrder()">Envoyer ma demande</button>
+      <button class="btn btn-ghost" onclick="copyBrief()">Copier le brief</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* Brief envoyé DIRECT dans le pipeline OSIA2 (gateway). Repli mailto si injoignable. */
+const OSIA_WEBHOOK = "https://api.osia-pro.com/api/webhook/lead";
+const OSIA_ORDER_EMAIL = "crashcool.iaos@gmail.com";
+
+const TYPES = {
+  simple:   {t:"Agent Simple",  s:"1 tâche précise · sans mémoire · rapide", pr:"597 €", pack:"agent-simple", icon:"⚡"},
+  superieur:{t:"Agent Supérieur",s:"Chatbot · mémoire · outils", pr:"1497 €", pack:"agent-superieur", icon:"🧠"}
+};
+const DOMAINES = {
+  resto:  {ico:"🍽",label:"Restaurant", nom:"Assistant Resto", mission:"Réponds aux clients sur le menu, les horaires et les réservations.", q:"Vous avez une table pour 2 ce soir ?", a:"Avec plaisir ! Oui, il nous reste des créneaux à 19h30 et 21h. Combien de personnes et à quel nom je réserve ?"},
+  sav:    {ico:"🛟",label:"SAV / Support", nom:"Support Pro", mission:"Aide les clients à résoudre les problèmes courants et oriente vers le bon service.", q:"Ma commande n'est pas arrivée.", a:"Je suis désolé pour ce retard. Pouvez-vous me donner votre numéro de commande ? Je vérifie son statut et reviens vers vous immédiatement."},
+  rh:     {ico:"👔",label:"RH / Interne", nom:"Assistant RH", mission:"Réponds aux questions des salariés (congés, paie, procédures internes).", q:"Combien de jours de congés me reste-t-il ?", a:"Pour consulter ton solde exact, indique-moi ton nom : je récupère l'info et je t'explique comment poser ta demande."},
+  immo:   {ico:"🏠",label:"Immobilier", nom:"Conseiller Immo", mission:"Renseigne les prospects sur les biens disponibles et qualifie leur projet.", q:"Vous avez des T3 à Foix ?", a:"Oui, nous avons actuellement 3 appartements T3 sur Foix. Quel est votre budget et souhaitez-vous plutôt location ou achat ?"},
+  ecom:   {ico:"🛍",label:"E-commerce", nom:"Conseiller Boutique", mission:"Conseille les visiteurs sur les produits et aide à finaliser la commande.", q:"Quel modèle pour débuter ?", a:"Pour débuter, je te recommande notre modèle Essentiel : simple, fiable et au meilleur prix. Tu veux que je te montre ses caractéristiques ?"},
+  autre:  {ico:"✨",label:"Autre", nom:"Votre Agent IA", mission:"Décris en 2 lignes ce que ton agent doit faire et pour qui.", q:"Bonjour, vous pouvez m'aider ?", a:"Bonjour ! Bien sûr. Dites-moi ce dont vous avez besoin, je suis là pour ça."}
+};
+const TOOLS = {web:"🔎 Recherche web", files:"📄 Lecture de fichiers", memory:"💾 Mémoire longue", calc:"🧮 Calculs / données"};
+const TONS = {pro:"professionnel et clair", chaleureux:"chaleureux et accueillant", direct:"direct et efficace", expert:"expert et pédagogue"};
+
+let state={contact:{nom:"",mail:"",tel:""},type:"simple",domaine:"resto",
+  a:{nom:"Assistant Resto",mission:DOMAINES.resto.mission,ton:"pro"},
+  tools:{web:false,files:false,memory:true,calc:false}};
+
+function initTypes(){document.getElementById('types').innerHTML=Object.entries(TYPES).map(([k,v])=>`<div class="opt-card ${k==state.type?'on':''}" data-k="${k}" onclick="pickType('${k}')"><span class="pr">${v.pr}</span><div class="t">${v.icon} ${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
+function initDomaines(){document.getElementById('domaines').innerHTML=Object.entries(DOMAINES).map(([k,v])=>`<div class="chip ${k==state.domaine?'on':''}" data-k="${k}" onclick="pickDomaine('${k}')"><span class="ico">${v.ico}</span>${v.label}</div>`).join('');}
+function initTools(){document.getElementById('tools').innerHTML=Object.entries(TOOLS).map(([k,v])=>`<div class="check ${state.tools[k]?'on':''}" onclick="toggleTool('${k}',this)"><div class="box">✓</div>${v}</div>`).join('');}
+
+function pickType(k){state.type=k;document.querySelectorAll('#types .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.k===k));document.getElementById('superTools').classList.toggle('show',k==='superieur');render();}
+function pickDomaine(k){state.domaine=k;const d=DOMAINES[k];state.a.nom=d.nom;state.a.mission=d.mission;document.getElementById('a_nom').value=d.nom;document.getElementById('a_mission').value=d.mission;count();document.querySelectorAll('#domaines .chip').forEach(c=>c.classList.toggle('on',c.dataset.k===k));render();}
+function setA(k,v){state.a[k]=v;render();}
+function toggleTool(k,el){state.tools[k]=!state.tools[k];el.classList.toggle('on',state.tools[k]);render();}
+function showTab(t){document.getElementById('panel').classList.toggle('show',t==='edit');document.getElementById('stage').classList.toggle('show',t==='view');document.getElementById('tabEdit').classList.toggle('on',t==='edit');document.getElementById('tabView').classList.toggle('on',t==='view');}
+function count(){const v=document.getElementById('a_mission').value;document.getElementById('cnt').textContent=v.length;}
+
+function render(){
+  const d=DOMAINES[state.domaine],nom=state.a.nom||d.nom;
+  document.getElementById('pName').textContent=nom;
+  document.getElementById('pAv').textContent=state.type==='superieur'?'🧠':'⚡';
+  let intro;const ton=TONS[state.a.ton];
+  if(state.a.ton==='chaleureux')intro=`Bonjour et bienvenue ! 😊 Je suis ${nom}, ravi de vous aider.`;
+  else if(state.a.ton==='direct')intro=`${nom}. Dites-moi ce qu'il vous faut.`;
+  else if(state.a.ton==='expert')intro=`Bonjour, ${nom} à votre service. Posez votre question, je vous explique en détail.`;
+  else intro=`Bonjour, je suis ${nom}. Comment puis-je vous aider ?`;
+  const toolsOn=Object.keys(state.tools).filter(k=>state.tools[k]);
+  const toolsHtml=(state.type==='superieur'&&toolsOn.length)?`<div class="badge-tools">${toolsOn.map(k=>`<span>${TOOLS[k]}</span>`).join('')}</div>`:'';
+  document.getElementById('pBody').innerHTML=`
+    <div class="msg a">${intro}${toolsHtml}</div>
+    <div class="msg u">${d.q}</div>
+    <div class="msg a">${d.a}</div>
+    ${state.type==='superieur'?'<div class="msg u">Et tu te souviens de notre échange précédent ?</div><div class="msg a">Oui — je garde le fil de la conversation et je réponds en fonction. 👍</div>':''}`;
+}
+
+function buildBrief(){
+  state.contact.nom=document.getElementById('c_nom').value;state.contact.mail=document.getElementById('c_mail').value;state.contact.tel=document.getElementById('c_tel').value;
+  const t=TYPES[state.type],toolsOn=Object.keys(state.tools).filter(k=>state.tools[k]).map(k=>TOOLS[k]);
+  return{nom:state.contact.nom,email:state.contact.mail,tel:state.contact.tel,
+    type:t.t,pack:t.pack,prix:t.pr,agent:state.a.nom,domaine:DOMAINES[state.domaine].label,
+    mission:state.a.mission,ton:TONS[state.a.ton],outils:state.type==='superieur'?(toolsOn.length?toolsOn.join(', '):'aucun'):'—'};
+}
+function briefText(c){return [
+  `Demande via le configurateur d'agent IA osia-pro.com.`,
+  `Type : ${c.type} (${c.prix})`,
+  `Nom de l'agent : ${c.agent}`,
+  `Domaine : ${c.domaine}`,
+  `Mission : ${c.mission}`,
+  `Ton : ${c.ton}`,
+  `Capacités/outils : ${c.outils}`
+].join('\n');}
+
+function openOrder(){const c=buildBrief();
+  document.getElementById('recap').innerHTML=`
+    <div class="r"><span>Nom</span><span>${c.nom||'—'}</span></div>
+    <div class="r"><span>Email</span><span>${c.email||'—'}</span></div>
+    <div class="r"><span>Type</span><span>${c.type} · ${c.prix}</span></div>
+    <div class="r"><span>Agent</span><span>${c.agent}</span></div>
+    <div class="r"><span>Domaine</span><span>${c.domaine}</span></div>
+    <div class="r"><span>Ton</span><span>${c.ton}</span></div>
+    <div class="r"><span>Outils</span><span>${c.outils}</span></div>`;
+  document.getElementById('err').style.display='none';document.getElementById('overlay').classList.add('open');}
+function closeOrder(){document.getElementById('overlay').classList.remove('open');}
+
+async function sendOrder(){const c=buildBrief();
+  if(!c.nom||!c.email||!c.mission){document.getElementById('err').style.display='block';return;}
+  const payload={name:c.nom,email:c.email,phone:c.tel,pack:c.pack,message:briefText(c),source:'configurateur-agent'};
+  try{
+    const r=await fetch(OSIA_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    if(r.ok){toast("Brief envoyé à OSIA ✓");closeOrder();return;}
+    throw new Error("HTTP "+r.status);
+  }catch(e){
+    const body=`Bonjour, voici mon brief d'agent IA (serveur OSIA injoignable).%0D%0A%0D%0A`+encodeURIComponent(briefText(c))+`%0D%0A%0D%0ANom : ${c.nom} · Email : ${c.email} · Tél : ${c.tel||'—'}`;
+    window.location.href=`mailto:${OSIA_ORDER_EMAIL}?subject=${encodeURIComponent('[OSIA][COMMANDE AGENT] '+c.agent)}&body=${body}`;
+    toast("Serveur injoignable — envoi par email");
+  }}
+function copyBrief(){const c=buildBrief();navigator.clipboard.writeText(briefText(c));toast("Brief copié ✓");}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+
+initTypes();initDomaines();initTools();
+document.getElementById('a_nom').value=state.a.nom;document.getElementById('a_mission').value=state.a.mission;count();render();
+</script>
+</body>
+</html>
