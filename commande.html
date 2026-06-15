@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSIA — Créez votre site & envoyez votre brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   CHARTE osia-pro.com (UI du builder) — accent magenta/rose
+   ========================================================= */
+:root{
+  --bg:#0a0a13; --panel:#12121e; --panel-2:#181828; --line:#2a2a3c;
+  --txt:#e9eaf2; --muted:#8a8ea6; --pink:#ff2e7e; --pink-soft:rgba(255,46,126,.12);
+  --violet:#8b5cf6; --ok:#2ad17e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:"Chakra Petch",sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(700px 400px at 10% -5%,rgba(255,46,126,.10),transparent),radial-gradient(600px 400px at 100% 0%,rgba(139,92,246,.08),transparent),
+  repeating-linear-gradient(45deg,transparent,transparent 39px,rgba(139,92,246,.022) 39px,rgba(139,92,246,.022) 40px)}
+.mono{font-family:"JetBrains Mono",monospace}
+
+/* TOPBAR */
+.topbar{position:relative;z-index:3;height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px;background:rgba(10,10,19,.7);backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.5px}
+.brand .dot{color:var(--pink)}
+.brand small{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:1px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.tab-toggle{display:none;gap:4px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:3px}
+.tab-toggle button{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
+.tab-toggle button.on{background:var(--pink);color:#fff}
+.btn{font-family:"Chakra Petch",sans-serif;font-weight:600;border:none;border-radius:9px;cursor:pointer;transition:.15s;font-size:13px}
+.btn-cta{background:linear-gradient(135deg,var(--pink),#ff5c9d);color:#fff;padding:11px 18px;box-shadow:0 6px 20px rgba(255,46,126,.3)}
+.btn-cta:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn-ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line);padding:10px 14px}
+.btn-ghost:hover{border-color:var(--pink)}
+
+/* LAYOUT */
+.shell{position:relative;z-index:2;display:flex;height:calc(100vh - 60px)}
+.panel{width:440px;min-width:440px;border-right:1px solid var(--line);overflow-y:auto;padding:20px 20px 70px}
+.stage{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px}
+
+/* SECTION HEADERS (style // commentaire) */
+.hsec{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:1.5px;color:var(--pink);text-transform:uppercase;margin:26px 0 4px;font-weight:700}
+.hsec:first-child{margin-top:0}
+.hsub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.divider{height:1px;background:repeating-linear-gradient(90deg,var(--line),var(--line) 5px,transparent 5px,transparent 10px);margin:24px 0}
+
+/* FIELDS */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:13px}
+.field label{display:block;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field label .req{color:var(--pink)}
+.field label .opt{color:#5b5f74;text-transform:none;letter-spacing:0}
+.field input,.field textarea,.field select{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit;font-size:14px;padding:11px 12px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#565a70}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ff2e7e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.counter{text-align:right;font-family:"JetBrains Mono",monospace;font-size:11px;color:#5b5f74;margin-top:4px}
+.pagecount{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+.pagecount b{color:var(--txt)}
+.with-ai{display:flex;gap:6px}.with-ai input,.with-ai textarea{flex:1}
+.ai-btn{background:var(--pink-soft);border:1px solid rgba(255,46,126,.35);color:var(--pink);border-radius:9px;padding:0 12px;cursor:pointer;font-size:15px;white-space:nowrap;display:flex;align-items:center}
+.ai-btn:hover{background:rgba(255,46,126,.22)}.ai-btn:disabled{opacity:.5;cursor:wait}
+
+/* CHIPS (secteur) */
+.chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 8px;cursor:pointer;text-align:center;font-size:12px;font-weight:500;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.chip .ico{font-size:19px}.chip:hover{border-color:var(--muted)}
+.chip.on{border-color:var(--pink);background:var(--pink-soft);color:var(--pink)}
+
+/* CARDS (style visuel + palette) */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cards.stack{grid-template-columns:1fr}
+.opt-card .t .tag{float:right;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:20px;background:var(--pink-soft);color:var(--pink);text-transform:uppercase;font-weight:700}
+.subfield{margin-top:10px}
+.opt-card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;transition:.15s}
+.opt-card:hover{border-color:var(--muted)}
+.opt-card.on{border-color:var(--pink);background:var(--pink-soft)}
+.opt-card .t{font-weight:600;font-size:14px;margin-bottom:3px}
+.opt-card .s{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;line-height:1.4}
+.swatches{display:flex;gap:5px;margin-bottom:9px}
+.swatches i{width:30px;height:24px;border-radius:5px;display:block}
+.rainbow{background:linear-gradient(90deg,#ff2d2d,#ffae00,#3fd13f,#22d3ee,#8b5cf6)}
+
+/* CHECKBOXES (sections) */
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:11px 12px;cursor:pointer;font-size:13.5px;transition:.15s}
+.check:hover{border-color:var(--muted)}
+.check.on{border-color:var(--pink)}
+.box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:.15s}
+.check.on .box{background:var(--pink);border-color:var(--pink)}
+.check .ci{font-size:15px}
+
+/* color pickers (palette = AUTRE) */
+.customcol{display:none;gap:10px;margin-top:10px}
+.customcol.show{display:flex}
+.cp{flex:1}.cp label{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase}
+.cp input[type=color]{width:100%;height:36px;border:1px solid var(--line);border-radius:7px;background:var(--panel);cursor:pointer;padding:2px}
+
+/* STAGE / PREVIEW */
+.device-bar{display:flex;gap:6px;margin-bottom:14px}
+.device-bar button{background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11px;padding:7px 14px;border-radius:7px;cursor:pointer}
+.device-bar button.on{border-color:var(--pink);color:var(--pink)}
+.frame-wrap{width:100%;display:flex;justify-content:center;flex:1}
+.frame{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.65);width:100%;max-width:1100px;transition:max-width .3s;height:fit-content}
+.frame.mobile{max-width:390px}
+
+/* ===== SITE PREVIEW (scopé #site) ===== */
+#site{--p:#ff2e7e;--a:#8b5cf6;--ink:#16181d;--soft:#5b6270;--bg1:#fff;--bg2:#f5f7fa;--rad:16px;--ff:'Poppins',sans-serif;font-family:var(--ff);color:var(--ink);background:var(--bg1)}
+#site.dark{--ink:#eef1f6;--soft:#aab1bf;--bg1:#0f1115;--bg2:#171a20}
+#site *{box-sizing:border-box}
+#site .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 30px;background:var(--bg1);border-bottom:1px solid rgba(128,128,128,.12);position:sticky;top:0;z-index:5}
+#site .logo{font-weight:800;font-size:19px;color:var(--ink)}#site .logo b{color:var(--p)}
+#site .nav .links{display:flex;gap:18px;font-size:13px;color:var(--soft);font-weight:500}
+#site .nav .cta{background:var(--p);color:#fff;padding:9px 16px;border-radius:var(--rad);font-size:13px;font-weight:600}
+#site .hero{padding:62px 30px;text-align:center;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
+#site .kick{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p);background:color-mix(in srgb,var(--p) 12%,transparent);padding:6px 14px;border-radius:30px;margin-bottom:18px}
+#site .hero h1{font-size:46px;line-height:1.08;font-weight:800;max-width:760px;margin:0 auto 14px;letter-spacing:-1px}
+#site .hero .slo{font-size:18px;color:var(--soft);max-width:580px;margin:0 auto 10px;line-height:1.5;font-weight:500}
+#site .hero .ds{font-size:15px;color:var(--soft);max-width:560px;margin:0 auto 26px;line-height:1.6}
+#site .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#site .b1{background:var(--p);color:#fff;padding:14px 26px;border-radius:var(--rad);font-weight:700;font-size:15px}
+#site .b2{background:transparent;color:var(--ink);border:1.5px solid color-mix(in srgb,var(--ink) 25%,transparent);padding:14px 26px;border-radius:var(--rad);font-weight:600;font-size:15px}
+#site .sec{padding:54px 30px}#site .sec.alt{background:var(--bg2)}
+#site .sec h2{font-size:31px;font-weight:800;text-align:center;margin-bottom:8px;letter-spacing:-.5px}
+#site .lead{text-align:center;color:var(--soft);max-width:520px;margin:0 auto 34px;font-size:15px}
+#site .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1000px;margin:0 auto}
+#site .c{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:26px 22px;text-align:center}
+#site .c .ci{width:54px;height:54px;border-radius:14px;background:color-mix(in srgb,var(--p) 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px}
+#site .c h3{font-size:18px;font-weight:700;margin-bottom:8px}#site .c p{font-size:14px;color:var(--soft);line-height:1.55}
+#site .about{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:1000px;margin:0 auto}
+#site .about .ph{aspect-ratio:4/3;border-radius:var(--rad);background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px;opacity:.92}
+#site .about h2{text-align:left;margin-bottom:14px}#site .about p{color:var(--soft);font-size:15px;line-height:1.7}
+#site .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1000px;margin:0 auto}
+#site .gal .ph{aspect-ratio:1;border-radius:var(--rad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500}
+#site .resa{max-width:640px;margin:0 auto;text-align:center;background:linear-gradient(135deg,color-mix(in srgb,var(--p) 14%,transparent),color-mix(in srgb,var(--a) 12%,transparent));border-radius:var(--rad);padding:40px 30px}
+#site .resa .pick{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+#site .resa .pick span{background:var(--bg1);border:1px solid rgba(128,128,128,.18);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600}
+#site .shop{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1000px;margin:0 auto}
+#site .prod{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);overflow:hidden}
+#site .prod .pimg{aspect-ratio:1;background:linear-gradient(135deg,var(--p),var(--a));opacity:.85}
+#site .prod .pb{padding:13px 14px}#site .prod h4{font-size:14px;font-weight:600;margin-bottom:4px}
+#site .prod .pr{color:var(--p);font-weight:700;font-size:15px}
+#site .quotes{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:880px;margin:0 auto}
+#site .q{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:24px}
+#site .q p{font-size:15px;line-height:1.6;font-style:italic;margin-bottom:14px}
+#site .who{display:flex;align-items:center;gap:11px}#site .av{width:40px;height:40px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+#site .who b{font-size:14px}#site .who span{font-size:12px;color:var(--soft);display:block}
+#site .hours{max-width:520px;margin:0 auto;background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);overflow:hidden}
+#site .hr{display:flex;justify-content:space-between;padding:13px 22px;border-bottom:1px solid rgba(128,128,128,.1);font-size:14.5px}
+#site .hr:last-child{border:none}#site .hr span:first-child{font-weight:600}#site .hr span:last-child{color:var(--soft)}
+#site .contact{max-width:760px;margin:0 auto;text-align:center}
+#site .info{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+#site .info div{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:18px 24px;font-size:14px;min-width:200px}
+#site .info b{display:block;color:var(--p);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+#site .foot{padding:26px 30px;text-align:center;background:var(--bg2);font-size:13px;color:var(--soft);border-top:1px solid rgba(128,128,128,.1)}
+#site .nav .links a{cursor:pointer;transition:color .15s}
+#site .nav .links a:hover{color:var(--p)}
+#site .nav .links a.navon{color:var(--p);font-weight:700}
+#site .nav .cta{cursor:pointer}
+#site .pagehead{padding:48px 30px 6px;text-align:center;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
+#site .pagehead h1{font-size:38px;font-weight:800;letter-spacing:-.5px;margin-top:10px}
+.frame.mobile #site .nav .links{display:none}
+.frame.mobile #site .hero h1{font-size:30px}
+.frame.mobile #site .cards3,.frame.mobile #site .gal,.frame.mobile #site .shop,.frame.mobile #site .about,.frame.mobile #site .quotes,.frame.mobile #site .info{grid-template-columns:1fr}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(5,5,11,.78);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:540px;width:100%;max-height:88vh;overflow-y:auto;padding:28px}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:6px}.modal .sub{color:var(--muted);font-size:13.5px;margin-bottom:18px}
+.recap{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:18px}
+.recap .r{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line);gap:14px}
+.recap .r:last-child{border:none}.recap .r span:first-child{color:var(--muted);white-space:nowrap}.recap .r span:last-child{font-weight:600;text-align:right}
+.modal .actions{display:flex;gap:10px;flex-wrap:wrap}.modal .actions .btn{flex:1;min-width:140px;text-align:center;padding:12px}
+.modal .close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;margin-top:-6px}
+.err{color:var(--pink);font-size:13px;margin-bottom:12px;display:none}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pink);color:#fff;font-weight:600;padding:12px 22px;border-radius:10px;font-size:14px;transition:.3s;z-index:60}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:960px){
+  .shell{display:block;height:calc(100vh - 60px)}
+  .panel,.stage{width:100%;min-width:0;height:100%;border-right:none}
+  .panel{display:none}.stage{display:none}
+  .panel.show,.stage.show{display:block}.stage.show{display:flex}
+  .tab-toggle{display:flex}.topbar .btn-cta{display:none}
+}
+@media(max-width:480px){.row2,.cards,.checks,.chips{grid-template-columns:1fr}.chips{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">⬢ OSIA<span class="dot">.</span><small>CRÉEZ VOTRE SITE — APERÇU LIVE</small></div>
+  <div class="topbar-actions">
+    <div class="tab-toggle">
+      <button id="tabEdit" class="on" onclick="showTab('edit')">Brief</button>
+      <button id="tabView" onclick="showTab('view')">Aperçu</button>
+    </div>
+    <button class="btn btn-cta" onclick="openOrder()">Envoyer mon brief →</button>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- ================= PANNEAU BRIEF ================= -->
+  <aside class="panel show" id="panel">
+
+    <div class="hsec">// Coordonnées & pack</div>
+    <div class="row2">
+      <div class="field"><label>Nom <span class="req">*</span></label><input id="f_cnom" placeholder="Cédric Robert"></div>
+      <div class="field"><label>Email <span class="req">*</span></label><input id="f_cmail" placeholder="contact@exemple.fr"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Téléphone <span class="opt">(optionnel)</span></label><input id="f_ctel" placeholder="06 12 34 56 78"></div>
+      <div class="field"><label>Pack qui m'intéresse</label>
+        <select id="f_pack">
+          <option>Site Essentiel — 297 €</option>
+          <option>Site Pro — 697 €</option>
+          <option>Site Premium — 1 497 €</option>
+          <option>Je ne sais pas encore — conseille-moi</option>
+        </select></div>
+    </div>
+    <div class="field"><label>Brief / message <span class="opt">(optionnel)</span></label>
+      <textarea id="f_msg" rows="3" maxlength="2000" oninput="count()" placeholder="Dis-moi en 2 lignes : c'est pour quoi, c'est quand, et tout ce que tu juges utile."></textarea>
+      <div class="counter"><span id="cnt">0</span> / 2000</div></div>
+
+    <div class="divider"></div>
+
+    <div class="hsec">// Brief détaillé</div>
+    <div class="hsub">Tout est optionnel — mais plus tu remplis, mieux je te livre. Et l'aperçu à droite réagit à tes choix.</div>
+
+    <div class="field" style="margin-top:6px"><label>Ton secteur</label>
+      <div class="chips" id="sectors"></div></div>
+
+    <div class="field"><label>Nom de l'entreprise</label><input id="f_name" oninput="setBiz('name',this.value)"></div>
+    <div class="field"><label>Slogan / accroche</label>
+      <div class="with-ai"><input id="f_slogan" oninput="setBiz('slogan',this.value)"><button class="ai-btn" title="Générer avec l'IA" onclick="aiGen('slogan',this)">✨</button></div></div>
+    <div class="field"><label>Description (accueil)</label>
+      <div class="with-ai"><textarea id="f_desc" rows="2" oninput="setBiz('desc',this.value)"></textarea><button class="ai-btn" title="Générer avec l'IA" onclick="aiGen('desc',this)">✨</button></div></div>
+    <div class="row2">
+      <div class="field"><label>Tél. affiché</label><input id="f_phone" oninput="setBiz('phone',this.value)"></div>
+      <div class="field"><label>Email affiché</label><input id="f_email" oninput="setBiz('email',this.value)"></div>
+    </div>
+    <div class="field"><label>Adresse affichée</label><input id="f_address" oninput="setBiz('address',this.value)"></div>
+
+    <div class="hsec">✨ Style visuel souhaité</div>
+    <div class="cards" id="styles"></div>
+
+    <div class="hsec">🎨 Palette de couleurs préférée</div>
+    <div class="cards" id="palettes"></div>
+    <div class="customcol" id="customcol">
+      <div class="cp"><label>Principale</label><input type="color" id="c_primary" value="#ff2e7e" oninput="setCustom()"></div>
+      <div class="cp"><label>Accent</label><input type="color" id="c_accent" value="#8b5cf6" oninput="setCustom()"></div>
+    </div>
+
+    <div class="hsec">📋 Sections souhaitées</div>
+    <div class="hsub">Coche ce qui s'applique.</div>
+    <div class="checks" id="checks"></div>
+
+    <div class="hsec">📄 Structure & pages</div>
+    <div class="hsub">Une longue page, ou un vrai site multi-pages avec menu ?</div>
+    <div class="cards stack" id="structures"></div>
+    <div class="pagecount" id="pagecount"></div>
+
+    <div class="hsec">🚀 Hébergement & mise en ligne</div>
+    <div class="hsub">Qui s'occupe de mettre le site en ligne ?</div>
+    <div class="cards stack" id="hostings"></div>
+    <div class="subfield" id="domainField" style="display:none">
+      <div class="field"><label>Nom de domaine souhaité <span class="opt">(optionnel)</span></label><input id="f_domain" placeholder="mon-entreprise.fr" oninput="state.domain=this.value"></div>
+    </div>
+  </aside>
+
+  <!-- ================= APERÇU ================= -->
+  <main class="stage" id="stage">
+    <div class="device-bar">
+      <button id="dDesk" class="on" onclick="setDevice('desktop')">🖥 Ordinateur</button>
+      <button id="dMob" onclick="setDevice('mobile')">📱 Mobile</button>
+    </div>
+    <div class="frame-wrap"><div class="frame" id="frame"><div id="site"></div></div></div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close" onclick="closeOrder()">×</button>
+    <h2>Envoyer mon brief</h2>
+    <p class="sub">Récapitulatif complet de ta demande. Valide et OSIA revient vers toi avec ton site.</p>
+    <div class="err" id="err">Renseigne au moins ton nom et ton email.</div>
+    <div class="recap" id="recap"></div>
+    <div class="actions">
+      <button class="btn btn-cta" onclick="sendOrder()">Envoyer ma demande</button>
+      <button class="btn btn-ghost" onclick="copyConfig()">Copier le brief</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CONFIG IA — moteur compatible OpenAI (Mistral/DeepSeek/Groq
+   ou ta passerelle api.osia-pro.com). Vide => texte de secours.
+   ⚠ En public, fais passer l'appel par TA gateway (clé non exposée).
+   ========================================================= */
+const OSIA_AI = { endpoint:"", apiKey:"", model:"mistral-small-latest" };
+const OSIA_ORDER_EMAIL = "crashcool.iaos@gmail.com";
+/* Brief/commande envoyé DIRECT dans le pipeline OSIA2 (gateway).
+   Repli automatique sur mailto si la gateway est injoignable. */
+const OSIA_WEBHOOK = "https://api.osia-pro.com/api/webhook/lead";
+
+/* ===== Données ===== */
+const SECTORS={
+  restaurant:{ico:"🍽",label:"Restaurant",name:"Le Bistrot d'Augustin",slogan:"Cuisine de saison, produits du terroir ariégeois",desc:"Une table conviviale au cœur de Tarascon, où chaque plat raconte le pays.",p:"#b8453a",a:"#e8a13c",sections:["services","reservation","gallery","about","hours","contact"]},
+  artisan:{ico:"🔧",label:"Artisan/BTP",name:"Dupont Rénovation",slogan:"Votre artisan de confiance en Ariège depuis 15 ans",desc:"Maçonnerie, rénovation, isolation. Devis clair et gratuit sous 48h.",p:"#2563eb",a:"#f0a500",sections:["services","gallery","about","testimonials","contact"]},
+  coach:{ico:"🎯",label:"Coach/Conseil",name:"Clara Méthode",slogan:"Reprenez le contrôle de votre activité",desc:"Coaching individuel et collectif pour dirigeants et indépendants.",p:"#6d4ed8",a:"#22c4a8",sections:["services","about","testimonials","contact"]},
+  commerce:{ico:"🛍",label:"Commerce",name:"La Boutique du Centre",slogan:"Le bon produit, le bon conseil, près de chez vous",desc:"Une sélection soignée et un accueil chaleureux au centre de Foix.",p:"#c2455e",a:"#f3b13a",sections:["boutique","services","about","contact"]},
+  beaute:{ico:"💇",label:"Beauté",name:"Studio Élixir",slogan:"Votre parenthèse beauté en plein cœur de l'Ariège",desc:"Coiffure, soins et bien-être dans un cadre apaisant.",p:"#b5728f",a:"#d9b06a",sections:["services","reservation","gallery","contact"]},
+  ecommerce:{ico:"📦",label:"E-commerce",name:"Boutique en ligne",slogan:"Tous vos produits préférés, livrés chez vous",desc:"Une boutique simple, rapide et sécurisée.",p:"#0ea5a3",a:"#f59e0b",sections:["boutique","services","testimonials","contact"]},
+  asso:{ico:"🤝",label:"Association",name:"Association Solidaire",slogan:"Agir ensemble, près de chez nous",desc:"Rejoignez-nous et soutenez nos actions sur le territoire.",p:"#2f9e5f",a:"#3fc77e",sections:["about","gallery","services","contact"]},
+  pro:{ico:"💼",label:"Profession lib.",name:"Cabinet Martin",slogan:"Un accompagnement à la hauteur de vos enjeux",desc:"Expertise, écoute et confidentialité au service de vos projets.",p:"#1e3a8a",a:"#3b82f6",sections:["services","about","contact"]},
+  autre:{ico:"✨",label:"Autre",name:"Votre Entreprise",slogan:"Une accroche claire qui donne envie",desc:"Décrivez en deux phrases ce que vous faites et pourquoi vous choisir.",p:"#ff2e7e",a:"#8b5cf6",sections:["services","about","gallery","contact"]}
+};
+const STYLES={
+  minimaliste:{t:"Minimaliste",s:"Épuré, beaucoup de blanc",ff:"'Inter', sans-serif",dark:false,rad:"6px"},
+  moderne:{t:"Moderne",s:"Tendance, dynamique",ff:"'Poppins', sans-serif",dark:false,rad:"16px"},
+  luxe:{t:"Luxe",s:"Élégant, premium",ff:"'Playfair Display', serif",dark:true,rad:"4px"},
+  fun:{t:"Fun",s:"Coloré, friendly",ff:"'Poppins', sans-serif",dark:false,rad:"26px"},
+  pro:{t:"Pro",s:"Sérieux, corporate",ff:"'Montserrat', sans-serif",dark:false,rad:"8px"},
+  sombre:{t:"Sombre",s:"Dark, gaming/tech",ff:"'Montserrat', sans-serif",dark:true,rad:"10px"}
+};
+const PALETTES={
+  bleu:{t:"Bleu / Blanc (corporate)",sw:["#1d4ed8","#ffffff","#0f172a"],p:"#1d4ed8",a:"#3b82f6",dark:false},
+  vert:{t:"Vert nature",sw:["#1f7a4d","#7fd1a0","#eafaf0"],p:"#1f9e5f",a:"#3fc77e",dark:false},
+  orange:{t:"Orange chaleureux",sw:["#e8821e","#f0b429","#0c2a4a"],p:"#e8821e",a:"#f0b429",dark:false},
+  rose:{t:"Rose / Violet",sw:["#ec4899","#f9a8d4","#a855f7"],p:"#ec4899",a:"#a855f7",dark:false},
+  or:{t:"Noir / Or (luxe)",sw:["#0f0f0f","#d4af37","#ffffff"],p:"#d4af37",a:"#caa028",dark:true},
+  cyber:{t:"Cyberpunk (néons)",sw:["#0a0a0a","#ff2d95","#22d3ee"],p:"#ff2d95",a:"#22d3ee",dark:true},
+  pastel:{t:"Pastel doux",sw:["#f9a8d4","#fbcfe8","#a7f3d0"],p:"#f472b6",a:"#34d399",dark:false},
+  autre:{t:"Autre (je précise)",sw:["rainbow"],p:"#ff2e7e",a:"#8b5cf6",dark:false,custom:true}
+};
+const SECTION_LABELS={services:"Services",reservation:"Réservation",boutique:"Boutique",gallery:"Galerie",about:"À propos",testimonials:"Avis clients",hours:"Horaires",contact:"Contact"};
+const SECTION_ICONS={services:"🧩",reservation:"📅",boutique:"🛒",gallery:"🖼",about:"📖",testimonials:"⭐",hours:"🕒",contact:"✉️"};
+const HOSTINGS={
+  osia:{t:"Hébergé par OSIA",s:"Mise en ligne (Vercel), nom de domaine & maintenance — on s'occupe de tout.",tag:"abonnement",domain:true},
+  self:{t:"Je l'héberge moi-même",s:"Tu reçois le site en ZIP, tu le mets en ligne (Vercel, OVH…).",tag:"one-shot",domain:true},
+  unsure:{t:"Je ne sais pas encore",s:"Conseille-moi selon mon projet et mon budget.",tag:"",domain:false}
+};
+const STRUCTURES={
+  onepage:{t:"Une seule page",s:"Tout sur une page, navigation par défilement (scroll)."},
+  multipage:{t:"Plusieurs pages séparées",s:"Chaque rubrique devient une page, avec menu de navigation."}
+};
+const FALLBACK={slogan:["L'excellence à portée de main, près de chez vous","Votre satisfaction, notre métier depuis toujours","Du savoir-faire local, un résultat qui se voit"],desc:["Nous mettons notre savoir-faire au service de vos projets, avec une exigence de qualité à chaque étape.","Une équipe à votre écoute, des solutions sur-mesure et un accompagnement de proximité."]};
+
+/* ===== État ===== */
+let state={contact:{nom:"",mail:"",tel:""},pack:"Site Essentiel — 297 €",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",
+  sector:"restaurant",style:"moderne",palette:"rose",custom:{p:"#ff2e7e",a:"#8b5cf6"},
+  biz:{name:"",slogan:"",desc:"",phone:"06 12 34 56 78",email:"contact@exemple.fr",address:"Tarascon-sur-Ariège, 09400"},
+  sections:{services:true,reservation:true,boutique:false,gallery:true,about:true,testimonials:false,hours:true,contact:true},
+  device:"desktop"};
+
+/* ===== Init UI ===== */
+function initSectors(){document.getElementById('sectors').innerHTML=Object.entries(SECTORS).map(([k,v])=>`<div class="chip ${k==state.sector?'on':''}" data-s="${k}" onclick="pickSector('${k}')"><span class="ico">${v.ico}</span>${v.label}</div>`).join('');}
+function initStyles(){document.getElementById('styles').innerHTML=Object.entries(STYLES).map(([k,v])=>`<div class="opt-card ${k==state.style?'on':''}" data-st="${k}" onclick="pickStyle('${k}')"><div class="t">${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
+function initPalettes(){document.getElementById('palettes').innerHTML=Object.entries(PALETTES).map(([k,v])=>{const sw=v.sw[0]==='rainbow'?`<i class="rainbow" style="width:100%"></i>`:v.sw.map(c=>`<i style="background:${c};border:1px solid rgba(128,128,128,.2)"></i>`).join('');return `<div class="opt-card ${k==state.palette?'on':''}" data-pal="${k}" onclick="pickPalette('${k}')"><div class="swatches">${sw}</div><div class="s">${v.t}</div></div>`;}).join('');}
+function initChecks(){document.getElementById('checks').innerHTML=Object.keys(SECTION_LABELS).map(k=>`<div class="check ${state.sections[k]?'on':''}" data-c="${k}" onclick="toggleSection('${k}',this)"><div class="box">✓</div><span class="ci">${SECTION_ICONS[k]}</span> ${SECTION_LABELS[k]}</div>`).join('');}
+function initHostings(){document.getElementById('hostings').innerHTML=Object.entries(HOSTINGS).map(([k,v])=>`<div class="opt-card ${k==state.hosting?'on':''}" data-h="${k}" onclick="pickHosting('${k}')"><div class="t">${v.t}${v.tag?`<span class="tag">${v.tag}</span>`:''}</div><div class="s">${v.s}</div></div>`).join('');}
+function initStructures(){document.getElementById('structures').innerHTML=Object.entries(STRUCTURES).map(([k,v])=>`<div class="opt-card ${k==state.structure?'on':''}" data-struct="${k}" onclick="pickStructure('${k}')"><div class="t">${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
+
+/* ===== Handlers ===== */
+function pickSector(k){state.sector=k;const s=SECTORS[k];
+  state.biz.name=s.name;state.biz.slogan=s.slogan;state.biz.desc=s.desc;
+  if(PALETTES[state.palette]&&PALETTES[state.palette].custom===undefined){} // palette garde la main sur couleurs
+  // sections par défaut du secteur
+  Object.keys(state.sections).forEach(x=>state.sections[x]=s.sections.includes(x));
+  ['name','slogan','desc'].forEach(f=>document.getElementById('f_'+f).value=s[f==='name'?'name':f]);
+  document.querySelectorAll('#sectors .chip').forEach(c=>c.classList.toggle('on',c.dataset.s===k));
+  initChecks();render();}
+function setBiz(k,v){state.biz[k]=v;render();}
+function pickStyle(k){state.style=k;document.querySelectorAll('#styles .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.st===k));render();}
+function pickPalette(k){state.palette=k;document.querySelectorAll('#palettes .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.pal===k));
+  document.getElementById('customcol').classList.toggle('show',!!PALETTES[k].custom);render();}
+function setCustom(){state.custom.p=document.getElementById('c_primary').value;state.custom.a=document.getElementById('c_accent').value;render();}
+function toggleSection(k,el){state.sections[k]=!state.sections[k];el.classList.toggle('on',state.sections[k]);render();}
+function pickHosting(k){state.hosting=k;document.querySelectorAll('#hostings .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));document.getElementById('domainField').style.display=HOSTINGS[k].domain?'block':'none';}
+function pickStructure(k){state.structure=k;state.currentPage='accueil';document.querySelectorAll('#structures .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.struct===k));render();}
+function setDevice(d){state.device=d;document.getElementById('frame').classList.toggle('mobile',d==='mobile');
+  document.getElementById('dDesk').classList.toggle('on',d==='desktop');document.getElementById('dMob').classList.toggle('on',d==='mobile');}
+function showTab(t){document.getElementById('panel').classList.toggle('show',t==='edit');document.getElementById('stage').classList.toggle('show',t==='view');
+  document.getElementById('tabEdit').classList.toggle('on',t==='edit');document.getElementById('tabView').classList.toggle('on',t==='view');}
+function count(){const v=document.getElementById('f_msg').value;state.msg=v;document.getElementById('cnt').textContent=v.length;}
+
+/* ===== IA ===== */
+async function aiGen(field,btn){const s=SECTORS[state.sector];btn.disabled=true;const old=btn.textContent;btn.textContent="…";let text="";
+  if(OSIA_AI.endpoint&&OSIA_AI.apiKey){
+    const prompt=field==='slogan'?`Génère UN slogan court (max 10 mots), percutant, en français, pour une entreprise du secteur "${s.label}" nommée "${state.biz.name||s.name}". Réponds uniquement par le slogan.`:`Rédige une accroche de 2 phrases (max 40 mots), chaleureuse et professionnelle, en français, pour la page d'accueil d'une entreprise du secteur "${s.label}" nommée "${state.biz.name||s.name}". Réponds uniquement par le texte.`;
+    try{const r=await fetch(OSIA_AI.endpoint.replace(/\/$/,'')+"/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+OSIA_AI.apiKey},body:JSON.stringify({model:OSIA_AI.model,messages:[{role:"user",content:prompt}],temperature:0.8,max_tokens:120})});const d=await r.json();text=(d.choices?.[0]?.message?.content||"").trim().replace(/^["«»]|["«»]$/g,'');}catch(e){text="";}}
+  if(!text){const arr=FALLBACK[field];text=arr[Math.floor(Math.random()*arr.length)];}
+  if(field==='slogan'){state.biz.slogan=text;document.getElementById('f_slogan').value=text;}else{state.biz.desc=text;document.getElementById('f_desc').value=text;}
+  render();btn.disabled=false;btn.textContent=old;}
+
+/* ===== Rendu ===== */
+function activeColors(){const pal=PALETTES[state.palette];if(pal.custom)return{p:state.custom.p,a:state.custom.a,dark:false};return{p:pal.p,a:pal.a,dark:pal.dark};}
+function ordered(){return Object.keys(SECTION_LABELS).filter(k=>state.sections[k]);}
+function pageList(){return state.structure==='multipage'?['accueil',...ordered()]:['accueil'];}
+function heroBlock(b,s){return `<div class="hero"><span class="kick">${s.label}</span><h1>${b.name||s.name}</h1><div class="slo">${b.slogan||s.slogan}</div><div class="ds">${b.desc||s.desc}</div><div class="btns"><a class="b1">Demander un devis</a><a class="b2">En savoir plus</a></div></div>`;}
+function sectionBlock(key,b,s){switch(key){
+  case 'services':return `<h2>Nos services</h2><p class="lead">Ce que nous faisons le mieux pour vous.</p><div class="cards3">${[["⭐","Service 1","Décrivez votre première prestation phare ici."],["⭐","Service 2","Un deuxième atout fort qui vous démarque."],["⭐","Service 3","Et un troisième pour compléter votre offre."]].map(c=>`<div class="c"><div class="ci">${c[0]}</div><h3>${c[1]}</h3><p>${c[2]}</p></div>`).join('')}</div>`;
+  case 'reservation':return `<div class="resa"><h2>Réservez en ligne</h2><p class="lead">Choisissez votre créneau en quelques secondes, 24h/24.</p><div class="pick"><span>📅 Aujourd'hui</span><span>🕐 12h30</span><span>👥 2 pers.</span></div><a class="b1">Réserver maintenant</a></div>`;
+  case 'boutique':return `<h2>Boutique</h2><p class="lead">Nos produits, en ligne.</p><div class="shop">${[["Produit A","19 €"],["Produit B","29 €"],["Produit C","39 €"],["Produit D","49 €"]].map(p=>`<div class="prod"><div class="pimg"></div><div class="pb"><h4>${p[0]}</h4><div class="pr">${p[1]}</div></div></div>`).join('')}</div>`;
+  case 'gallery':{const cols=['var(--p)','var(--a)','#6c7a89','var(--a)','var(--p)','#8a93a0'];return `<h2>Galerie</h2><p class="lead">Un aperçu de notre univers.</p><div class="gal">${cols.map((c,i)=>`<div class="ph" style="background:linear-gradient(135deg,${c},color-mix(in srgb,${c} 60%,#000))">Photo ${i+1}</div>`).join('')}</div>`;}
+  case 'about':return `<div class="about"><div class="ph">Votre photo / équipe</div><div><h2>À propos</h2><p>${b.desc||s.desc} Nous mettons un point d'honneur à offrir un service de proximité, attentif et durable.</p></div></div>`;
+  case 'testimonials':{const q=[["Un travail impeccable et un vrai sens du détail. Je recommande sans hésiter.","Marie L."],["Réactif, professionnel et à l'écoute. Exactement ce que je cherchais.","Thomas R."]];return `<h2>Avis clients</h2><p class="lead">Ils nous ont fait confiance.</p><div class="quotes">${q.map(x=>`<div class="q"><p>« ${x[0]} »</p><div class="who"><div class="av">${x[1][0]}</div><div><b>${x[1]}</b><span>Client</span></div></div></div>`).join('')}</div>`;}
+  case 'hours':{const d=[["Lundi – Vendredi","9h00 – 19h00"],["Samedi","9h00 – 12h30"],["Dimanche","Fermé"]];return `<h2>Horaires</h2><p class="lead">Quand nous trouver.</p><div class="hours">${d.map(x=>`<div class="hr"><span>${x[0]}</span><span>${x[1]}</span></div>`).join('')}</div>`;}
+  case 'contact':return `<div class="contact"><h2>Contactez-nous</h2><p class="lead">Un projet, une question ? Réponse rapide garantie.</p><div class="info"><div><b>Téléphone</b>${b.phone}</div><div><b>Email</b>${b.email}</div><div><b>Adresse</b>${b.address}</div></div></div>`;
+} return '';}
+function gotoPage(p){state.currentPage=p;render();}
+function render(){
+  const b=state.biz,s=SECTORS[state.sector],sty=STYLES[state.style],col=activeColors();
+  const dark=col.dark||sty.dark;
+  const site=document.getElementById('site');site.className=dark?'dark':'';
+  site.style.setProperty('--p',col.p);site.style.setProperty('--a',col.a);site.style.setProperty('--rad',sty.rad);site.style.setProperty('--ff',sty.ff);
+  const name=b.name||s.name;
+  const logo=`<div class="logo">${name.split(' ')[0]}<b>${name.split(' ').slice(1).join(' ')?' '+name.split(' ').slice(1).join(' '):'.'}</b></div>`;
+  const pages=pageList(),multi=state.structure==='multipage';
+  const contactPage=pages.includes('contact')?'contact':'accueil';
+  if(multi&&!pages.includes(state.currentPage))state.currentPage='accueil';
+  let nav,body='';
+  if(multi){
+    const links=pages.map(p=>`<a class="${p===state.currentPage?'navon':''}" onclick="gotoPage('${p}')">${p==='accueil'?'Accueil':SECTION_LABELS[p]}</a>`).join('');
+    nav=`<div class="nav">${logo}<div class="links">${links}</div><div class="cta" onclick="gotoPage('${contactPage}')">Contact</div></div>`;
+    if(state.currentPage==='accueil'){
+      body=heroBlock(b,s);
+      if(state.sections.services)body+=`<div class="sec alt">${sectionBlock('services',b,s)}</div>`;
+      body+=`<div class="sec"><div class="resa"><h2>Prêt à démarrer ?</h2><p class="lead">Discutons de votre projet dès aujourd'hui.</p><a class="b1" onclick="gotoPage('${contactPage}')">Nous contacter</a></div></div>`;
+    }else{
+      body=`<div class="pagehead"><span class="kick">${s.label}</span><h1>${SECTION_LABELS[state.currentPage]}</h1></div><div class="sec">${sectionBlock(state.currentPage,b,s)}</div>`;
+    }
+  }else{
+    const nl=ordered().filter(k=>k!=='contact').map(k=>`<a>${SECTION_LABELS[k]}</a>`).join('');
+    nav=`<div class="nav">${logo}<div class="links">${nl}</div><div class="cta">Contact</div></div>`;
+    body=heroBlock(b,s);
+    let alt=false;const A=()=>{alt=!alt;return alt?'alt':'';};
+    ordered().forEach(k=>{body+=`<div class="sec ${A()}">${sectionBlock(k,b,s)}</div>`;});
+  }
+  site.innerHTML=nav+body+`<div class="foot">© ${new Date().getFullYear()} ${name} — Site réalisé par OSIA · osia-pro.com</div>`;
+  const pc=document.getElementById('pagecount');
+  if(pc)pc.innerHTML=multi?`📄 <b>${pages.length} pages</b> : ${pages.map(p=>p==='accueil'?'Accueil':SECTION_LABELS[p]).join(' · ')}`:`📄 <b>1 page</b> — tout au défilement (scroll)`;
+}
+
+/* ===== Commande ===== */
+function readContact(){state.contact.nom=document.getElementById('f_cnom').value;state.contact.mail=document.getElementById('f_cmail').value;state.contact.tel=document.getElementById('f_ctel').value;state.pack=document.getElementById('f_pack').value;state.msg=document.getElementById('f_msg').value;}
+function buildBrief(){readContact();const active=Object.keys(state.sections).filter(k=>state.sections[k]).map(k=>SECTION_LABELS[k]);const pages=pageList();
+  return{nom:state.contact.nom,email:state.contact.mail,telephone:state.contact.tel,pack:state.pack,message:state.msg,
+    secteur:SECTORS[state.sector].label,entreprise:state.biz.name||SECTORS[state.sector].name,slogan:state.biz.slogan||SECTORS[state.sector].slogan,
+    style:STYLES[state.style].t,palette:PALETTES[state.palette].t,couleur_principale:activeColors().p,accent:activeColors().a,
+    structure:STRUCTURES[state.structure].t,nombre_de_pages:state.structure==='multipage'?pages.length:1,pages:state.structure==='multipage'?pages.map(p=>p==='accueil'?'Accueil':SECTION_LABELS[p]):['Page unique (scroll)'],
+    hebergement:HOSTINGS[state.hosting].t,nom_de_domaine:state.domain,
+    tel_site:state.biz.phone,email_site:state.biz.email,adresse_site:state.biz.address,sections:active};}
+function openOrder(){const c=buildBrief();
+  document.getElementById('recap').innerHTML=`
+    <div class="r"><span>Nom</span><span>${c.nom||'—'}</span></div>
+    <div class="r"><span>Email</span><span>${c.email||'—'}</span></div>
+    <div class="r"><span>Pack</span><span>${c.pack}</span></div>
+    <div class="r"><span>Secteur</span><span>${c.secteur}</span></div>
+    <div class="r"><span>Entreprise</span><span>${c.entreprise}</span></div>
+    <div class="r"><span>Style</span><span>${c.style}</span></div>
+    <div class="r"><span>Palette</span><span>${c.palette}</span></div>
+    <div class="r"><span>Sections</span><span>${c.sections.join(', ')}</span></div>
+    <div class="r"><span>Structure</span><span>${c.structure} · ${c.nombre_de_pages} ${c.nombre_de_pages>1?'pages':'page'}</span></div>
+    <div class="r"><span>Hébergement</span><span>${c.hebergement}${c.nom_de_domaine?' · '+c.nom_de_domaine:''}</span></div>`;
+  document.getElementById('err').style.display='none';document.getElementById('overlay').classList.add('open');}
+function closeOrder(){document.getElementById('overlay').classList.remove('open');}
+/* Pack du configurateur -> clé attendue par la gateway (PACK_MAP) */
+function packTier(p){p=(p||'').toLowerCase();if(p.includes('essentiel'))return'essentiel';if(p.includes('premium'))return'premium';if(p.includes('pro'))return'pro';return'';}
+/* Brief lisible (tout le détail du configurateur) -> champ message du lead */
+function briefText(c){return [
+  `Demande via le configurateur osia-pro.com.`,
+  `Entreprise : ${c.entreprise} (${c.secteur})`,
+  `Pack souhaité : ${c.pack}`,
+  `Slogan : ${c.slogan}`,
+  `Style : ${c.style} · Palette : ${c.palette} (${c.couleur_principale} / ${c.accent})`,
+  `Structure : ${c.structure} — ${c.nombre_de_pages} page(s) : ${(c.pages||[]).join(', ')}`,
+  `Sections : ${(c.sections||[]).join(', ')}`,
+  `Hébergement : ${c.hebergement}${c.nom_de_domaine?' · domaine : '+c.nom_de_domaine:''}`,
+  `Coordonnées à afficher : ${c.tel_site||'—'} / ${c.email_site||'—'} / ${c.adresse_site||'—'}`,
+  c.message?`Message du client : ${c.message}`:''
+].filter(Boolean).join('\n');}
+async function sendOrder(){const c=buildBrief();if(!c.nom||!c.email){document.getElementById('err').style.display='block';return;}
+  const payload={name:c.nom,email:c.email,phone:c.telephone,pack:packTier(c.pack),message:briefText(c),source:'configurateur'};
+  // 1) envoi DIRECT au backend OSIA2 (pipeline)
+  try{
+    const r=await fetch(OSIA_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    if(r.ok){toast("Brief envoyé à OSIA ✓");closeOrder();return;}
+    throw new Error("HTTP "+r.status);
+  }catch(e){
+    // 2) repli mailto si la gateway est injoignable
+    const body=`Bonjour, voici mon brief (le serveur OSIA était injoignable).%0D%0A%0D%0A`+encodeURIComponent(briefText(c))+`%0D%0A%0D%0ANom : ${c.nom} · Email : ${c.email} · Tél : ${c.telephone||'—'}`;
+    window.location.href=`mailto:${OSIA_ORDER_EMAIL}?subject=${encodeURIComponent('[OSIA][COMMANDE] '+c.entreprise)}&body=${body}`;
+    toast("Serveur injoignable — envoi par email");
+  }}
+function copyConfig(){navigator.clipboard.writeText(JSON.stringify(buildBrief(),null,2));toast("Brief copié ✓");}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* ===== Boot ===== */
+initSectors();initStyles();initPalettes();initChecks();initHostings();initStructures();
+document.getElementById('f_phone').value=state.biz.phone;document.getElementById('f_email').value=state.biz.email;document.getElementById('f_address').value=state.biz.address;
+pickSector('restaurant');pickPalette('rose');pickHosting('osia');pickStructure('multipage');
+</script>
+</body>
+</html>
