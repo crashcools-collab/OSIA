@@ -45,7 +45,7 @@
 }
 
 .forum-hero h1 .accent {
-  background: linear-gradient(90deg, #5865F2, var(--neon-magenta));
+  background: linear-gradient(90deg, #9d4edd, var(--neon-magenta));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -132,7 +132,7 @@
   gap: 8px;
   width: 100%;
   padding: 12px 14px;
-  background: linear-gradient(90deg, #5865F2, #7289DA);
+  background: linear-gradient(90deg, #9d4edd, #00f0ff);
   color: #fff;
   text-decoration: none;
   font-family: var(--font-display);
