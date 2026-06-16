@@ -94,6 +94,14 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:.15s}
 .check.on .box{background:var(--pink);border-color:var(--pink)}
 .check .ci{font-size:15px}
+.addpage{margin-top:8px;width:100%;background:var(--panel);border:1px dashed var(--line);color:var(--muted);border-radius:9px;padding:11px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:.15s}
+.addpage:hover{border-color:var(--pink);color:var(--pink);background:var(--pink-soft)}
+.cpage{display:flex;align-items:center;gap:8px;margin-top:8px}
+.cpage .ci{font-size:15px}
+.cpage input{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit;font-size:13.5px;padding:10px 12px}
+.cpage input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
+.cpage .rm{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:8px;width:36px;height:38px;flex-shrink:0;cursor:pointer;font-size:17px;line-height:1;transition:.15s}
+.cpage .rm:hover{border-color:var(--pink);color:var(--pink)}
 
 /* color pickers (palette = AUTRE) */
 .customcol{display:none;gap:10px;margin-top:10px}
@@ -260,14 +268,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="hsec">📋 Sections souhaitées</div>
     <div class="hsub">Coche ce qui s'applique.</div>
     <div class="checks" id="checks"></div>
+    <div class="hsub" style="margin-top:12px">Besoin d'autres pages ? Ajoute-les — on s'adapte à ce que TU veux.</div>
+    <div id="custompages"></div>
+    <button type="button" class="addpage" onclick="addCustomPage()">＋ Ajouter une page</button>
 
     <div class="hsec">📄 Structure & pages</div>
     <div class="hsub">Une longue page, ou un vrai site multi-pages avec menu ?</div>
     <div class="cards stack" id="structures"></div>
-    <div class="subfield" id="extraPagesField">
-      <div class="field"><label>Pages en plus <span class="opt">(une par ligne — jusqu'à 50 au total)</span></label>
-        <textarea id="f_extra" rows="3" placeholder="Blog&#10;FAQ&#10;Notre équipe&#10;Tarifs&#10;Recrutement…" oninput="setExtra(this.value)"></textarea></div>
-    </div>
     <div class="pagecount" id="pagecount"></div>
 
     <div class="hsec">🚀 Hébergement & mise en ligne</div>
@@ -360,7 +367,7 @@ const STRUCTURES={
 const FALLBACK={slogan:["L'excellence à portée de main, près de chez vous","Votre satisfaction, notre métier depuis toujours","Du savoir-faire local, un résultat qui se voit"],desc:["Nous mettons notre savoir-faire au service de vos projets, avec une exigence de qualité à chaque étape.","Une équipe à votre écoute, des solutions sur-mesure et un accompagnement de proximité."]};
 
 /* ===== État ===== */
-let state={contact:{nom:"",mail:"",tel:""},pack:"Site Basique (vitrine, coach, artisan)",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",extra:"",
+let state={contact:{nom:"",mail:"",tel:""},pack:"Site Basique (vitrine, coach, artisan)",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",customPages:[],
   sector:"restaurant",style:"moderne",palette:"rose",custom:{p:"#ff2e7e",a:"#8b5cf6"},
   biz:{name:"",slogan:"",desc:"",phone:"06 12 34 56 78",email:"contact@exemple.fr",address:"Tarascon-sur-Ariège, 09400"},
   sections:{services:true,reservation:true,boutique:false,gallery:true,about:true,testimonials:false,hours:true,contact:true},
@@ -390,8 +397,11 @@ function pickPalette(k){state.palette=k;document.querySelectorAll('#palettes .op
 function setCustom(){state.custom.p=document.getElementById('c_primary').value;state.custom.a=document.getElementById('c_accent').value;render();}
 function toggleSection(k,el){state.sections[k]=!state.sections[k];el.classList.toggle('on',state.sections[k]);render();}
 function pickHosting(k){state.hosting=k;document.querySelectorAll('#hostings .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));document.getElementById('domainField').style.display=HOSTINGS[k].domain?'block':'none';}
-function pickStructure(k){state.structure=k;state.currentPage='accueil';document.querySelectorAll('#structures .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.struct===k));const ef=document.getElementById('extraPagesField');if(ef)ef.style.display=k==='multipage'?'block':'none';render();}
-function setExtra(v){state.extra=v;render();}
+function pickStructure(k){state.structure=k;state.currentPage='accueil';document.querySelectorAll('#structures .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.struct===k));render();}
+function initCustomPages(){document.getElementById('custompages').innerHTML=state.customPages.map((n,i)=>`<div class="cpage"><span class="ci">📄</span><input value="${(n||'').replace(/"/g,'&quot;')}" placeholder="Nom de la page (ex : Blog, FAQ, Équipe)" oninput="setCustomPage(${i},this.value)"><button type="button" class="rm" onclick="removeCustomPage(${i})" title="Retirer">×</button></div>`).join('');}
+function addCustomPage(){if(state.customPages.length>=41){toast('Maximum 50 pages au total');return;}state.customPages.push('');initCustomPages();render();const ins=document.querySelectorAll('#custompages input');if(ins.length)ins[ins.length-1].focus();}
+function setCustomPage(i,v){state.customPages[i]=v;render();}
+function removeCustomPage(i){state.customPages.splice(i,1);initCustomPages();render();}
 function setDevice(d){state.device=d;document.getElementById('frame').classList.toggle('mobile',d==='mobile');
   document.getElementById('dDesk').classList.toggle('on',d==='desktop');document.getElementById('dMob').classList.toggle('on',d==='mobile');}
 function showTab(t){document.getElementById('panel').classList.toggle('show',t==='edit');document.getElementById('stage').classList.toggle('show',t==='view');
@@ -410,7 +420,7 @@ async function aiGen(field,btn){const s=SECTORS[state.sector];btn.disabled=true;
 /* ===== Rendu ===== */
 function activeColors(){const pal=PALETTES[state.palette];if(pal.custom)return{p:state.custom.p,a:state.custom.a,dark:false};return{p:pal.p,a:pal.a,dark:pal.dark};}
 function ordered(){return Object.keys(SECTION_LABELS).filter(k=>state.sections[k]);}
-function extraList(){return (state.extra||'').split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean);}
+function extraList(){return state.customPages.map(x=>(x||'').trim()).filter(Boolean);}
 function allPages(){
   if(state.structure!=='multipage')return [{key:'accueil',label:'Accueil'}];
   const built=[{key:'accueil',label:'Accueil'},...ordered().map(k=>({key:k,label:SECTION_LABELS[k]}))];
@@ -520,7 +530,7 @@ function copyConfig(){navigator.clipboard.writeText(JSON.stringify(buildBrief(),
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
 
 /* ===== Boot ===== */
-initSectors();initStyles();initPalettes();initChecks();initHostings();initStructures();
+initSectors();initStyles();initPalettes();initChecks();initCustomPages();initHostings();initStructures();
 document.getElementById('f_phone').value=state.biz.phone;document.getElementById('f_email').value=state.biz.email;document.getElementById('f_address').value=state.biz.address;
 pickSector('restaurant');pickPalette('rose');pickHosting('osia');pickStructure('multipage');
 </script>
