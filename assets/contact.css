@@ -154,7 +154,7 @@
 }
 
 .form-group select option {
-  background: #0a0a14;
+  background: #050510;
   color: var(--text-main);
 }
 
@@ -333,8 +333,8 @@
 .form-status.error {
   display: block;
   background: rgba(255, 0, 100, 0.1);
-  border: 1px solid #ff0064;
-  color: #ff6699;
+  border: 1px solid #ff00f5;
+  color: #ff00f5;
 }
 
 /* ===== RESPONSIVE ===== */
