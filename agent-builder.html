@@ -169,8 +169,11 @@ const OSIA_WEBHOOK = "https://api.osia-pro.com/api/webhook/lead";
 const OSIA_ORDER_EMAIL = "crashcool.iaos@gmail.com";
 
 const TYPES = {
-  simple:   {t:"Agent Simple",  s:"1 tâche précise · sans mémoire · rapide", pr:"597 €", pack:"agent-simple", icon:"⚡"},
-  superieur:{t:"Agent Supérieur",s:"Chatbot · mémoire · outils", pr:"1497 €", pack:"agent-superieur", icon:"🧠"}
+  simple:   {t:"Agent Simple",   s:"1 tâche précise · sans mémoire · rapide", pack:"agent-simple", icon:"⚡"},
+  superieur:{t:"Agent Supérieur",s:"Chatbot · mémoire · outils", pack:"agent-superieur", icon:"🧠"},
+  cerveau:  {t:"Cerveau IA",     s:"Orchestre plusieurs agents · missions complexes", pack:"cerveau", icon:"🧬"},
+  vocal:    {t:"Agent Vocal",    s:"Parle et écoute · voix naturelle", pack:"agent-vocal", icon:"🎙"},
+  surmesure:{t:"Sur-mesure",     s:"Tu décris, OSIA conçoit", pack:"sur-mesure", icon:"✨"}
 };
 const DOMAINES = {
   resto:  {ico:"🍽",label:"Restaurant", nom:"Assistant Resto", mission:"Réponds aux clients sur le menu, les horaires et les réservations.", q:"Vous avez une table pour 2 ce soir ?", a:"Avec plaisir ! Oui, il nous reste des créneaux à 19h30 et 21h. Combien de personnes et à quel nom je réserve ?"},
@@ -195,11 +198,11 @@ let state={contact:{nom:"",mail:"",tel:""},type:"simple",domaine:"resto",
   a:{nom:"Assistant Resto",mission:DOMAINES.resto.mission,ton:"pro"},
   tools:{web:false,files:false,memory:true,calc:false}};
 
-function initTypes(){document.getElementById('types').innerHTML=Object.entries(TYPES).map(([k,v])=>`<div class="opt-card ${k==state.type?'on':''}" data-k="${k}" onclick="pickType('${k}')"><span class="pr">${v.pr}</span><div class="t">${v.icon} ${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
+function initTypes(){document.getElementById('types').innerHTML=Object.entries(TYPES).map(([k,v])=>`<div class="opt-card ${k==state.type?'on':''}" data-k="${k}" onclick="pickType('${k}')"><div class="t">${v.icon} ${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
 function initDomaines(){document.getElementById('domaines').innerHTML=Object.entries(DOMAINES).map(([k,v])=>`<div class="chip ${k==state.domaine?'on':''}" data-k="${k}" onclick="pickDomaine('${k}')"><span class="ico">${v.ico}</span>${v.label}</div>`).join('');}
 function initTools(){document.getElementById('tools').innerHTML=Object.entries(TOOLS).map(([k,v])=>`<div class="check ${state.tools[k]?'on':''}" onclick="toggleTool('${k}',this)"><div class="box">✓</div>${v}</div>`).join('');}
 
-function pickType(k){state.type=k;document.querySelectorAll('#types .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.k===k));document.getElementById('superTools').classList.toggle('show',k==='superieur');render();}
+function pickType(k){state.type=k;document.querySelectorAll('#types .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.k===k));document.getElementById('superTools').classList.toggle('show',k==='superieur'||k==='cerveau');render();}
 function pickDomaine(k){state.domaine=k;const d=DOMAINES[k];state.a.nom=d.nom;state.a.mission=d.mission;document.getElementById('a_nom').value=d.nom;document.getElementById('a_mission').value=d.mission;count();document.querySelectorAll('#domaines .chip').forEach(c=>c.classList.toggle('on',c.dataset.k===k));render();}
 function setA(k,v){state.a[k]=v;render();}
 function toggleTool(k,el){state.tools[k]=!state.tools[k];el.classList.toggle('on',state.tools[k]);render();}
@@ -209,31 +212,34 @@ function count(){const v=document.getElementById('a_mission').value;document.get
 function render(){
   const d=DOMAINES[state.domaine],nom=state.a.nom||d.nom;
   document.getElementById('pName').textContent=nom;
-  document.getElementById('pAv').textContent=state.type==='superieur'?'🧠':'⚡';
+  document.getElementById('pAv').textContent=TYPES[state.type].icon;
   let intro;const ton=TONS[state.a.ton];
   if(state.a.ton==='chaleureux')intro=`Bonjour et bienvenue ! 😊 Je suis ${nom}, ravi de vous aider.`;
   else if(state.a.ton==='direct')intro=`${nom}. Dites-moi ce qu'il vous faut.`;
   else if(state.a.ton==='expert')intro=`Bonjour, ${nom} à votre service. Posez votre question, je vous explique en détail.`;
   else intro=`Bonjour, je suis ${nom}. Comment puis-je vous aider ?`;
+  const memo=(state.type==='superieur'||state.type==='cerveau');
   const toolsOn=Object.keys(state.tools).filter(k=>state.tools[k]);
-  const toolsHtml=(state.type==='superieur'&&toolsOn.length)?`<div class="badge-tools">${toolsOn.map(k=>`<span>${TOOLS[k]}</span>`).join('')}</div>`:'';
+  const toolsHtml=(memo&&toolsOn.length)?`<div class="badge-tools">${toolsOn.map(k=>`<span>${TOOLS[k]}</span>`).join('')}</div>`:'';
+  const extra=state.type==='cerveau'?'<div class="msg a">Et si la demande est complexe, je la découpe et je la répartis entre plusieurs agents. 🧬</div>':(state.type==='vocal'?'<div class="msg a">🎙 Je peux aussi te répondre à la voix, en parlant naturellement.</div>':'');
   document.getElementById('pBody').innerHTML=`
     <div class="msg a">${intro}${toolsHtml}</div>
     <div class="msg u">${d.q}</div>
     <div class="msg a">${d.a}</div>
-    ${state.type==='superieur'?'<div class="msg u">Et tu te souviens de notre échange précédent ?</div><div class="msg a">Oui — je garde le fil de la conversation et je réponds en fonction. 👍</div>':''}`;
+    ${memo?'<div class="msg u">Et tu te souviens de notre échange précédent ?</div><div class="msg a">Oui — je garde le fil de la conversation et je réponds en fonction. 👍</div>':''}
+    ${extra}`;
 }
 
 function buildBrief(){
   state.contact.nom=document.getElementById('c_nom').value;state.contact.mail=document.getElementById('c_mail').value;state.contact.tel=document.getElementById('c_tel').value;
-  const t=TYPES[state.type],toolsOn=Object.keys(state.tools).filter(k=>state.tools[k]).map(k=>TOOLS[k]);
+  const t=TYPES[state.type],memo=(state.type==='superieur'||state.type==='cerveau'),toolsOn=Object.keys(state.tools).filter(k=>state.tools[k]).map(k=>TOOLS[k]);
   return{nom:state.contact.nom,email:state.contact.mail,tel:state.contact.tel,
-    type:t.t,pack:t.pack,prix:t.pr,agent:state.a.nom,domaine:DOMAINES[state.domaine].label,
-    mission:state.a.mission,ton:TONS[state.a.ton],outils:state.type==='superieur'?(toolsOn.length?toolsOn.join(', '):'aucun'):'—'};
+    type:t.t,pack:t.pack,agent:state.a.nom,domaine:DOMAINES[state.domaine].label,
+    mission:state.a.mission,ton:TONS[state.a.ton],outils:memo?(toolsOn.length?toolsOn.join(', '):'aucun'):'—'};
 }
 function briefText(c){return [
   `Demande via le configurateur d'agent IA osia-pro.com.`,
-  `Type : ${c.type} (${c.prix})`,
+  `Type : ${c.type}`,
   `Nom de l'agent : ${c.agent}`,
   `Domaine : ${c.domaine}`,
   `Mission : ${c.mission}`,
@@ -245,7 +251,7 @@ function openOrder(){const c=buildBrief();
   document.getElementById('recap').innerHTML=`
     <div class="r"><span>Nom</span><span>${c.nom||'—'}</span></div>
     <div class="r"><span>Email</span><span>${c.email||'—'}</span></div>
-    <div class="r"><span>Type</span><span>${c.type} · ${c.prix}</span></div>
+    <div class="r"><span>Type</span><span>${c.type}</span></div>
     <div class="r"><span>Agent</span><span>${c.agent}</span></div>
     <div class="r"><span>Domaine</span><span>${c.domaine}</span></div>
     <div class="r"><span>Ton</span><span>${c.ton}</span></div>
