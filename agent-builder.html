@@ -201,14 +201,27 @@ const DOMAINES = {
 const TOOLS = {web:"🔎 Recherche web", files:"📄 Lecture de fichiers", memory:"💾 Mémoire longue", calc:"🧮 Calculs / données"};
 const TONS = {pro:"professionnel et clair", chaleureux:"chaleureux et accueillant", direct:"direct et efficace", expert:"expert et pédagogue"};
 const VOICES = {
-  f_douce:{ico:"🌸",label:"Féminine — douce"},
-  f_dyn:{ico:"⚡",label:"Féminine — dynamique"},
-  h_pose:{ico:"🎩",label:"Masculine — posée"},
-  h_ener:{ico:"🔥",label:"Masculine — énergique"},
-  neutre:{ico:"🎧",label:"Neutre — pro"}
+  femme_pro:{ico:"💼",label:"Femme · pro"},
+  femme_dynamique:{ico:"⚡",label:"Femme · dynamique"},
+  femme_douce:{ico:"🌸",label:"Femme · douce"},
+  femme_elegante:{ico:"💎",label:"Femme · élégante"},
+  femme_agee:{ico:"👵",label:"Femme · âgée"},
+  presentatrice:{ico:"🎤",label:"Présentatrice"},
+  narratrice:{ico:"📖",label:"Narratrice"},
+  meditation:{ico:"🧘",label:"Méditation"},
+  homme_grave:{ico:"🎙",label:"Homme · grave"},
+  homme_chaleureux:{ico:"☀️",label:"Homme · chaleureux"},
+  homme_jeune:{ico:"🧑",label:"Homme · jeune"},
+  homme_age:{ico:"👴",label:"Homme · âgé"},
+  narrateur:{ico:"📚",label:"Narrateur"},
+  epique:{ico:"🎬",label:"Épique"},
+  pub_radio:{ico:"📻",label:"Pub radio"},
+  coach:{ico:"💪",label:"Coach"},
+  journaliste:{ico:"🗞️",label:"Journaliste"},
+  conteur:{ico:"🪄",label:"Conteur"}
 };
 
-let state={contact:{nom:"",mail:"",tel:""},type:"simple",domaine:"resto",voix:"f_douce",
+let state={contact:{nom:"",mail:"",tel:""},type:"simple",domaine:"resto",voix:"femme_pro",
   a:{nom:"Assistant Resto",mission:DOMAINES.resto.mission,ton:"pro"},
   tools:{web:false,files:false,memory:true,calc:false}};
 
@@ -252,7 +265,7 @@ function buildBrief(){
   return{nom:state.contact.nom,email:state.contact.mail,tel:state.contact.tel,
     type:t.t,pack:t.pack,agent:state.a.nom,domaine:DOMAINES[state.domaine].label,
     mission:state.a.mission,ton:TONS[state.a.ton],outils:memo?(toolsOn.length?toolsOn.join(', '):'aucun'):'—',
-    voix:state.type==='vocal'?VOICES[state.voix].label:'—'};
+    voix:state.type==='vocal'?state.voix:'—',voixLabel:state.type==='vocal'?VOICES[state.voix].label:'—'};
 }
 function briefText(c){return [
   `Demande via le configurateur d'agent IA osia-pro.com.`,
@@ -262,7 +275,7 @@ function briefText(c){return [
   `Mission : ${c.mission}`,
   `Ton : ${c.ton}`,
   `Capacités/outils : ${c.outils}`,
-  `Voix : ${c.voix}`
+  `Voix : ${c.voixLabel} (${c.voix})`
 ].join('\n');}
 
 function openOrder(){const c=buildBrief();
@@ -274,7 +287,7 @@ function openOrder(){const c=buildBrief();
     <div class="r"><span>Domaine</span><span>${c.domaine}</span></div>
     <div class="r"><span>Ton</span><span>${c.ton}</span></div>
     <div class="r"><span>Outils</span><span>${c.outils}</span></div>
-    <div class="r"><span>Voix</span><span>${c.voix}</span></div>`;
+    <div class="r"><span>Voix</span><span>${c.voixLabel}</span></div>`;
   document.getElementById('err').style.display='none';document.getElementById('overlay').classList.add('open');}
 function closeOrder(){document.getElementById('overlay').classList.remove('open');}
 
