@@ -35,6 +35,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .btn{font-family:"Chakra Petch",sans-serif;font-weight:600;border:none;border-radius:9px;cursor:pointer;transition:.15s;font-size:13px}
 .btn-cta{background:linear-gradient(135deg,var(--pink),#ff5c9d);color:#fff;padding:11px 18px;box-shadow:0 6px 20px rgba(255,0,245,.3)}
 .btn-cta:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.mobile-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;padding:10px 14px;background:rgba(5,5,16,.96);border-top:1px solid var(--line)}
+.mobile-cta .btn{width:100%;justify-content:center;padding:13px}
 .btn-ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line);padding:10px 14px}
 .btn-ghost:hover{border-color:var(--pink)}
 
@@ -195,7 +197,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   .panel,.stage{width:100%;min-width:0;height:100%;border-right:none}
   .panel{display:none}.stage{display:none}
   .panel.show,.stage.show{display:block}.stage.show{display:flex}
-  .tab-toggle{display:flex}.topbar .btn-cta{display:none}
+  .tab-toggle{display:flex}.topbar .btn-cta{display:none}.mobile-cta{display:block}.panel{padding-bottom:80px}.stage{padding-bottom:80px}
 }
 @media(max-width:480px){.row2,.cards,.checks,.chips{grid-template-columns:1fr}.chips{grid-template-columns:1fr 1fr}}
 </style>
@@ -296,6 +298,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 
 <!-- MODAL -->
+<div class="mobile-cta"><button class="btn btn-cta" onclick="openOrder()">Envoyer mon brief &#8594;</button></div>
+
 <div class="overlay" id="overlay">
   <div class="modal">
     <button class="close" onclick="closeOrder()">×</button>
