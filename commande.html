@@ -12,19 +12,19 @@
    CHARTE osia-pro.com (UI du builder) — accent magenta/rose
    ========================================================= */
 :root{
-  --bg:#0a0a13; --panel:#12121e; --panel-2:#181828; --line:#2a2a3c;
-  --txt:#e9eaf2; --muted:#8a8ea6; --pink:#ff2e7e; --pink-soft:rgba(255,46,126,.12);
-  --violet:#8b5cf6; --ok:#2ad17e;
+  --bg:#050510; --panel:#0f0f1e; --panel-2:#16162a; --line:#2a2a3c;
+  --txt:#e9eaf2; --muted:#8a8ea6; --pink:#ff00f5; --pink-soft:rgba(255,0,245,.12);
+  --violet:#9d4edd; --ok:#2ad17e;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--txt);font-family:"Chakra Petch",sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(700px 400px at 10% -5%,rgba(255,46,126,.10),transparent),radial-gradient(600px 400px at 100% 0%,rgba(139,92,246,.08),transparent),
-  repeating-linear-gradient(45deg,transparent,transparent 39px,rgba(139,92,246,.022) 39px,rgba(139,92,246,.022) 40px)}
+  background:radial-gradient(700px 400px at 10% -5%,rgba(255,0,245,.10),transparent),radial-gradient(600px 400px at 100% 0%,rgba(157,78,221,.08),transparent),
+  repeating-linear-gradient(45deg,transparent,transparent 39px,rgba(157,78,221,.022) 39px,rgba(157,78,221,.022) 40px)}
 .mono{font-family:"JetBrains Mono",monospace}
 
 /* TOPBAR */
-.topbar{position:relative;z-index:3;height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px;background:rgba(10,10,19,.7);backdrop-filter:blur(8px)}
+.topbar{position:relative;z-index:3;height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px;background:rgba(5,5,16,.7);backdrop-filter:blur(8px)}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.5px}
 .brand .dot{color:var(--pink)}
 .brand small{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:1px}
@@ -33,7 +33,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .tab-toggle button{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
 .tab-toggle button.on{background:var(--pink);color:#fff}
 .btn{font-family:"Chakra Petch",sans-serif;font-weight:600;border:none;border-radius:9px;cursor:pointer;transition:.15s;font-size:13px}
-.btn-cta{background:linear-gradient(135deg,var(--pink),#ff5c9d);color:#fff;padding:11px 18px;box-shadow:0 6px 20px rgba(255,46,126,.3)}
+.btn-cta{background:linear-gradient(135deg,var(--pink),#ff5c9d);color:#fff;padding:11px 18px;box-shadow:0 6px 20px rgba(255,0,245,.3)}
 .btn-cta:hover{filter:brightness(1.07);transform:translateY(-1px)}
 .btn-ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line);padding:10px 14px}
 .btn-ghost:hover{border-color:var(--pink)}
@@ -58,13 +58,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .field input,.field textarea,.field select{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit;font-size:14px;padding:11px 12px;resize:vertical}
 .field input::placeholder,.field textarea::placeholder{color:#565a70}
 .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
-.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ff2e7e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ff00f5' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
 .counter{text-align:right;font-family:"JetBrains Mono",monospace;font-size:11px;color:#5b5f74;margin-top:4px}
 .pagecount{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
 .pagecount b{color:var(--txt)}
 .with-ai{display:flex;gap:6px}.with-ai input,.with-ai textarea{flex:1}
-.ai-btn{background:var(--pink-soft);border:1px solid rgba(255,46,126,.35);color:var(--pink);border-radius:9px;padding:0 12px;cursor:pointer;font-size:15px;white-space:nowrap;display:flex;align-items:center}
-.ai-btn:hover{background:rgba(255,46,126,.22)}.ai-btn:disabled{opacity:.5;cursor:wait}
+.ai-btn{background:var(--pink-soft);border:1px solid rgba(255,0,245,.35);color:var(--pink);border-radius:9px;padding:0 12px;cursor:pointer;font-size:15px;white-space:nowrap;display:flex;align-items:center}
+.ai-btn:hover{background:rgba(255,0,245,.22)}.ai-btn:disabled{opacity:.5;cursor:wait}
 
 /* CHIPS (secteur) */
 .chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
@@ -264,6 +264,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="hsec">📄 Structure & pages</div>
     <div class="hsub">Une longue page, ou un vrai site multi-pages avec menu ?</div>
     <div class="cards stack" id="structures"></div>
+    <div class="subfield" id="extraPagesField">
+      <div class="field"><label>Pages en plus <span class="opt">(une par ligne — jusqu'à 50 au total)</span></label>
+        <textarea id="f_extra" rows="3" placeholder="Blog&#10;FAQ&#10;Notre équipe&#10;Tarifs&#10;Recrutement…" oninput="setExtra(this.value)"></textarea></div>
+    </div>
     <div class="pagecount" id="pagecount"></div>
 
     <div class="hsec">🚀 Hébergement & mise en ligne</div>
@@ -351,12 +355,12 @@ const HOSTINGS={
 };
 const STRUCTURES={
   onepage:{t:"Une seule page",s:"Tout sur une page, navigation par défilement (scroll)."},
-  multipage:{t:"Plusieurs pages séparées",s:"Chaque rubrique devient une page, avec menu de navigation."}
+  multipage:{t:"Plusieurs pages séparées",s:"Chaque rubrique devient une page, avec menu — jusqu'à 50 pages."}
 };
 const FALLBACK={slogan:["L'excellence à portée de main, près de chez vous","Votre satisfaction, notre métier depuis toujours","Du savoir-faire local, un résultat qui se voit"],desc:["Nous mettons notre savoir-faire au service de vos projets, avec une exigence de qualité à chaque étape.","Une équipe à votre écoute, des solutions sur-mesure et un accompagnement de proximité."]};
 
 /* ===== État ===== */
-let state={contact:{nom:"",mail:"",tel:""},pack:"Site Basique (vitrine, coach, artisan)",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",
+let state={contact:{nom:"",mail:"",tel:""},pack:"Site Basique (vitrine, coach, artisan)",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",extra:"",
   sector:"restaurant",style:"moderne",palette:"rose",custom:{p:"#ff2e7e",a:"#8b5cf6"},
   biz:{name:"",slogan:"",desc:"",phone:"06 12 34 56 78",email:"contact@exemple.fr",address:"Tarascon-sur-Ariège, 09400"},
   sections:{services:true,reservation:true,boutique:false,gallery:true,about:true,testimonials:false,hours:true,contact:true},
@@ -386,7 +390,8 @@ function pickPalette(k){state.palette=k;document.querySelectorAll('#palettes .op
 function setCustom(){state.custom.p=document.getElementById('c_primary').value;state.custom.a=document.getElementById('c_accent').value;render();}
 function toggleSection(k,el){state.sections[k]=!state.sections[k];el.classList.toggle('on',state.sections[k]);render();}
 function pickHosting(k){state.hosting=k;document.querySelectorAll('#hostings .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));document.getElementById('domainField').style.display=HOSTINGS[k].domain?'block':'none';}
-function pickStructure(k){state.structure=k;state.currentPage='accueil';document.querySelectorAll('#structures .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.struct===k));render();}
+function pickStructure(k){state.structure=k;state.currentPage='accueil';document.querySelectorAll('#structures .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.struct===k));const ef=document.getElementById('extraPagesField');if(ef)ef.style.display=k==='multipage'?'block':'none';render();}
+function setExtra(v){state.extra=v;render();}
 function setDevice(d){state.device=d;document.getElementById('frame').classList.toggle('mobile',d==='mobile');
   document.getElementById('dDesk').classList.toggle('on',d==='desktop');document.getElementById('dMob').classList.toggle('on',d==='mobile');}
 function showTab(t){document.getElementById('panel').classList.toggle('show',t==='edit');document.getElementById('stage').classList.toggle('show',t==='view');
@@ -405,7 +410,14 @@ async function aiGen(field,btn){const s=SECTORS[state.sector];btn.disabled=true;
 /* ===== Rendu ===== */
 function activeColors(){const pal=PALETTES[state.palette];if(pal.custom)return{p:state.custom.p,a:state.custom.a,dark:false};return{p:pal.p,a:pal.a,dark:pal.dark};}
 function ordered(){return Object.keys(SECTION_LABELS).filter(k=>state.sections[k]);}
-function pageList(){return state.structure==='multipage'?['accueil',...ordered()]:['accueil'];}
+function extraList(){return (state.extra||'').split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean);}
+function allPages(){
+  if(state.structure!=='multipage')return [{key:'accueil',label:'Accueil'}];
+  const built=[{key:'accueil',label:'Accueil'},...ordered().map(k=>({key:k,label:SECTION_LABELS[k]}))];
+  const extra=extraList().map((n,i)=>({key:'x'+i,label:n}));
+  return built.concat(extra).slice(0,50);
+}
+function pageLabel(key){const p=allPages().find(x=>x.key===key);return p?p.label:'Accueil';}
 function heroBlock(b,s){return `<div class="hero"><span class="kick">${s.label}</span><h1>${b.name||s.name}</h1><div class="slo">${b.slogan||s.slogan}</div><div class="ds">${b.desc||s.desc}</div><div class="btns"><a class="b1">Demander un devis</a><a class="b2">En savoir plus</a></div></div>`;}
 function sectionBlock(key,b,s){switch(key){
   case 'services':return `<h2>Nos services</h2><p class="lead">Ce que nous faisons le mieux pour vous.</p><div class="cards3">${[["⭐","Service 1","Décrivez votre première prestation phare ici."],["⭐","Service 2","Un deuxième atout fort qui vous démarque."],["⭐","Service 3","Et un troisième pour compléter votre offre."]].map(c=>`<div class="c"><div class="ci">${c[0]}</div><h3>${c[1]}</h3><p>${c[2]}</p></div>`).join('')}</div>`;
@@ -425,19 +437,21 @@ function render(){
   site.style.setProperty('--p',col.p);site.style.setProperty('--a',col.a);site.style.setProperty('--rad',sty.rad);site.style.setProperty('--ff',sty.ff);
   const name=b.name||s.name;
   const logo=`<div class="logo">${name.split(' ')[0]}<b>${name.split(' ').slice(1).join(' ')?' '+name.split(' ').slice(1).join(' '):'.'}</b></div>`;
-  const pages=pageList(),multi=state.structure==='multipage';
-  const contactPage=pages.includes('contact')?'contact':'accueil';
-  if(multi&&!pages.includes(state.currentPage))state.currentPage='accueil';
+  const pages=allPages(),multi=state.structure==='multipage';
+  const contactPage=pages.some(p=>p.key==='contact')?'contact':'accueil';
+  if(multi&&!pages.some(p=>p.key===state.currentPage))state.currentPage='accueil';
   let nav,body='';
   if(multi){
-    const links=pages.map(p=>`<a class="${p===state.currentPage?'navon':''}" onclick="gotoPage('${p}')">${p==='accueil'?'Accueil':SECTION_LABELS[p]}</a>`).join('');
+    const links=pages.map(po=>`<a class="${po.key===state.currentPage?'navon':''}" onclick="gotoPage('${po.key}')">${po.label}</a>`).join('');
     nav=`<div class="nav">${logo}<div class="links">${links}</div><div class="cta" onclick="gotoPage('${contactPage}')">Contact</div></div>`;
     if(state.currentPage==='accueil'){
       body=heroBlock(b,s);
       if(state.sections.services)body+=`<div class="sec alt">${sectionBlock('services',b,s)}</div>`;
       body+=`<div class="sec"><div class="resa"><h2>Prêt à démarrer ?</h2><p class="lead">Discutons de votre projet dès aujourd'hui.</p><a class="b1" onclick="gotoPage('${contactPage}')">Nous contacter</a></div></div>`;
     }else{
-      body=`<div class="pagehead"><span class="kick">${s.label}</span><h1>${SECTION_LABELS[state.currentPage]}</h1></div><div class="sec">${sectionBlock(state.currentPage,b,s)}</div>`;
+      const lab=pageLabel(state.currentPage);
+      const inner=SECTION_LABELS[state.currentPage]?sectionBlock(state.currentPage,b,s):`<p class="lead">La page « ${lab} » sera rédigée sur-mesure pour votre projet.</p>`;
+      body=`<div class="pagehead"><span class="kick">${s.label}</span><h1>${lab}</h1></div><div class="sec">${inner}</div>`;
     }
   }else{
     const nl=ordered().filter(k=>k!=='contact').map(k=>`<a>${SECTION_LABELS[k]}</a>`).join('');
@@ -448,16 +462,16 @@ function render(){
   }
   site.innerHTML=nav+body+`<div class="foot">© ${new Date().getFullYear()} ${name} — Site réalisé par OSIA · osia-pro.com</div>`;
   const pc=document.getElementById('pagecount');
-  if(pc)pc.innerHTML=multi?`📄 <b>${pages.length} pages</b> : ${pages.map(p=>p==='accueil'?'Accueil':SECTION_LABELS[p]).join(' · ')}`:`📄 <b>1 page</b> — tout au défilement (scroll)`;
+  if(pc)pc.innerHTML=multi?`📄 <b>${pages.length} page${pages.length>1?'s':''}</b> : ${pages.map(p=>p.label).join(' · ')}`:`📄 <b>1 page</b> — tout au défilement (scroll)`;
 }
 
 /* ===== Commande ===== */
 function readContact(){state.contact.nom=document.getElementById('f_cnom').value;state.contact.mail=document.getElementById('f_cmail').value;state.contact.tel=document.getElementById('f_ctel').value;state.pack=document.getElementById('f_pack').value;state.msg=document.getElementById('f_msg').value;}
-function buildBrief(){readContact();const active=Object.keys(state.sections).filter(k=>state.sections[k]).map(k=>SECTION_LABELS[k]);const pages=pageList();
+function buildBrief(){readContact();const active=Object.keys(state.sections).filter(k=>state.sections[k]).map(k=>SECTION_LABELS[k]);const pages=allPages();
   return{nom:state.contact.nom,email:state.contact.mail,telephone:state.contact.tel,pack:state.pack,message:state.msg,
     secteur:SECTORS[state.sector].label,entreprise:state.biz.name||SECTORS[state.sector].name,slogan:state.biz.slogan||SECTORS[state.sector].slogan,
     style:STYLES[state.style].t,palette:PALETTES[state.palette].t,couleur_principale:activeColors().p,accent:activeColors().a,
-    structure:STRUCTURES[state.structure].t,nombre_de_pages:state.structure==='multipage'?pages.length:1,pages:state.structure==='multipage'?pages.map(p=>p==='accueil'?'Accueil':SECTION_LABELS[p]):['Page unique (scroll)'],
+    structure:STRUCTURES[state.structure].t,nombre_de_pages:state.structure==='multipage'?pages.length:1,pages:state.structure==='multipage'?pages.map(p=>p.label):['Page unique (scroll)'],
     hebergement:HOSTINGS[state.hosting].t,nom_de_domaine:state.domain,
     tel_site:state.biz.phone,email_site:state.biz.email,adresse_site:state.biz.address,sections:active};}
 function openOrder(){const c=buildBrief();
