@@ -314,15 +314,7 @@
 
       const bannerPrice = document.querySelector('.banner-price');
       if (bannerPrice) {
-        const priceByPack = {
-          "essentiel":       "297 €",
-          "pro":             "497 €",
-          "premium":         "697 €",
-          "workflow":        "30 € / unité",
-          "prompt":          "30 € / unité",
-          "agent-simple":    "597 €",
-          "agent-superieur": "sur devis",
-        };
+        const priceByPack = { "essentiel": "sur devis", "pro": "sur devis", "premium": "sur devis", "workflow": "sur devis", "prompt": "sur devis", "agent-simple": "sur devis", "agent-superieur": "sur devis" };
         bannerPrice.textContent = priceByPack[fmt.pack] || "";
       }
 
