@@ -7,6 +7,9 @@
    ci-dessous : il essaiera le backend puis retombera sur la KB.
    ============================================================ */
 
+/* Moteur multilingue (FR/EN/ES) — charge i18n.js sur toutes les pages */
+(function(){ if(!document.querySelector('script[src*="i18n.js"]')){ var s=document.createElement('script'); s.src='assets/i18n.js'; (document.head||document.documentElement).appendChild(s); } })();
+
 const OSIA_API = ""; // ex: "https://api.osia-pro.com/api/chat" — vide = 100% local
 
 /* ---- Base de connaissance (grille 2026, sans les forges supprimees du menu) ---- */
