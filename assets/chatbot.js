@@ -21,19 +21,19 @@ const OSIA_KB = [
   },
   {
     kw: ["tarif", "prix", "cout", "combien", "coute", "budget", "cher"],
-    a: "Grille 2026 (HT, micro-entreprise, TVA non applicable) :\n• **Site web** : Basique 297 € · Intermédiaire 497 € · Complexe 697 €\n• **Agent IA** : Simple 597 € · Supérieur 1 497 €\n• **Pack Complet** (OS + cerveau + 30+ agents) : 8 997 €\nGrille complète sur la page **Tarifs**."
+    a: "Pour le moment, nos tarifs sont **sur devis** (on n'est pas encore en vente publique). Dis-moi ton besoin via la page **Contact** ou les boutons **« Créer mon site / mon agent »**, et on te chiffre ça rapidement — devis gratuit."
   },
   {
     kw: ["site", "vitrine", "page web", "landing", "html"],
-    a: "Un **site web OSIA** est généré sur-mesure depuis ton brief, livré sous **3 à 7 jours** :\n• **Basique 297 €** — vitrine, coach, artisan (4-5 sections + formulaire)\n• **Intermédiaire 497 €** — restaurant, portfolio, landing page\n• **Complexe 697 €** — e-commerce, association (panier, dons, membres)\nTu peux le configurer en direct avec le bouton **« Créez votre site »**."
+    a: "Un **site web OSIA** est généré sur-mesure depuis ton brief, livré sous **3 à 7 jours** :\n• **Basique** — vitrine, coach, artisan (4-5 sections + formulaire)\n• **Intermédiaire** — restaurant, portfolio, landing page\n• **Complexe** — e-commerce, association (panier, dons, membres)\nTarif **sur devis**. Configure-le en direct avec le bouton **« Créer mon site »**."
   },
   {
     kw: ["agent", "chatbot", "assistant", "bot ", "ia qui"],
-    a: "On crée des **agents IA** sur-mesure :\n• **Simple 597 €** — fait 1 tâche précise (résumer, traduire, classer), script + interface web\n• **Supérieur 1 497 €** — chatbot multi-outils avec mémoire, recherche web, lecture de fichiers\nConfigure le tien avec le bouton **« Créez votre agent »**."
+    a: "On crée des **agents IA** sur-mesure :\n• **Simple** — fait 1 tâche précise (résumer, traduire, classer)\n• **Supérieur** — chatbot multi-outils avec mémoire, recherche web, lecture de fichiers\nIl existe aussi un **Cerveau IA** (orchestre plusieurs agents) et un **Agent Vocal**. Tarif **sur devis** — configure le tien avec **« Créer mon agent »**."
   },
   {
     kw: ["pack", "complet", "cerveau", "os ", "ecosysteme", "entreprise"],
-    a: "Le **Pack Complet** (8 997 € au lieu de 10 479 €) = tout l'écosystème : un **OS** dédié à ton métier + un **cerveau** orchestrateur + l'accès à **30+ agents**, setup et formation inclus. Livré sous **4 semaines**, après un **audit gratuit d'1h en visio**."
+    a: "Le **Pack Complet** = tout l'écosystème : un **OS** dédié à ton métier + un **cerveau** orchestrateur + l'accès à **30+ agents**, setup et formation inclus. Livré sous **4 semaines**, après un **audit gratuit d'1h en visio**. Tarif **sur devis**."
   },
   {
     kw: ["delai", "livraison", "quand", "combien de temps", "rapide", "vite", "jours"],
