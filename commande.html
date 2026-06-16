@@ -218,9 +218,9 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
       <div class="field"><label>Téléphone <span class="opt">(optionnel)</span></label><input id="f_ctel" placeholder="06 12 34 56 78"></div>
       <div class="field"><label>Pack qui m'intéresse</label>
         <select id="f_pack">
-          <option>Site Essentiel — 297 €</option>
-          <option>Site Pro — 697 €</option>
-          <option>Site Premium — 1 497 €</option>
+          <option>Site Basique (vitrine, coach, artisan)</option>
+          <option>Site Intermédiaire (restaurant, portfolio, landing)</option>
+          <option>Site Complexe (e-commerce, association)</option>
           <option>Je ne sais pas encore — conseille-moi</option>
         </select></div>
     </div>
@@ -356,7 +356,7 @@ const STRUCTURES={
 const FALLBACK={slogan:["L'excellence à portée de main, près de chez vous","Votre satisfaction, notre métier depuis toujours","Du savoir-faire local, un résultat qui se voit"],desc:["Nous mettons notre savoir-faire au service de vos projets, avec une exigence de qualité à chaque étape.","Une équipe à votre écoute, des solutions sur-mesure et un accompagnement de proximité."]};
 
 /* ===== État ===== */
-let state={contact:{nom:"",mail:"",tel:""},pack:"Site Essentiel — 297 €",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",
+let state={contact:{nom:"",mail:"",tel:""},pack:"Site Basique (vitrine, coach, artisan)",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",
   sector:"restaurant",style:"moderne",palette:"rose",custom:{p:"#ff2e7e",a:"#8b5cf6"},
   biz:{name:"",slogan:"",desc:"",phone:"06 12 34 56 78",email:"contact@exemple.fr",address:"Tarascon-sur-Ariège, 09400"},
   sections:{services:true,reservation:true,boutique:false,gallery:true,about:true,testimonials:false,hours:true,contact:true},
