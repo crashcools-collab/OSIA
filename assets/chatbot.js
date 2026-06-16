@@ -21,7 +21,7 @@ const OSIA_KB = [
   },
   {
     kw: ["tarif", "prix", "cout", "combien", "coute", "budget", "cher"],
-    a: "Grille 2026 (HT, micro-entreprise, TVA non applicable) :\n• **Site web** : Basique 297 € · Intermédiaire 497 € · Complexe 697 €\n• **Agent IA** : Simple 597 € · Supérieur 1 497 €\n• **Forge** (workflow n8n ou prompt) : 30 €/unité\n• **Pack Complet** (OS + cerveau + 30+ agents) : 8 997 €\nGrille complète sur la page **Tarifs**."
+    a: "Grille 2026 (HT, micro-entreprise, TVA non applicable) :\n• **Site web** : Basique 297 € · Intermédiaire 497 € · Complexe 697 €\n• **Agent IA** : Simple 597 € · Supérieur 1 497 €\n• **Pack Complet** (OS + cerveau + 30+ agents) : 8 997 €\nGrille complète sur la page **Tarifs**."
   },
   {
     kw: ["site", "vitrine", "page web", "landing", "html"],
@@ -30,10 +30,6 @@ const OSIA_KB = [
   {
     kw: ["agent", "chatbot", "assistant", "bot ", "ia qui"],
     a: "On crée des **agents IA** sur-mesure :\n• **Simple 597 €** — fait 1 tâche précise (résumer, traduire, classer), script + interface web\n• **Supérieur 1 497 €** — chatbot multi-outils avec mémoire, recherche web, lecture de fichiers\nConfigure le tien avec le bouton **« Créez votre agent »**."
-  },
-  {
-    kw: ["forge", "workflow", "automation", "automatisation", "n8n", "prompt", "zapier", "make"],
-    a: "Une **Forge** = une brique unitaire à **30 €** :\n• un **workflow n8n** prêt à importer (mail auto, leads → tableur, post auto…)\n• ou un **prompt système** optimisé et testé\nPour en commander une : page **Contact**."
   },
   {
     kw: ["pack", "complet", "cerveau", "os ", "ecosysteme", "entreprise"],
