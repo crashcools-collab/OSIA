@@ -1,79 +1,106 @@
 /* ============================================================
-   OSIA Chatbot - scripté, FAQ préprogrammées
-   Inclut dans toutes les pages via <script src="assets/chatbot.js">
+   OSIA Chatbot 2026 — base de connaissance a jour + matching accent-insensible
+   Inclus sur toutes les pages via <script src="assets/chatbot.js">
+   ------------------------------------------------------------
+   Bot 100% local (aucune cle API exposee). Pour le brancher plus
+   tard sur le vrai Claude (gateway OSIA2), renseigne OSIA_API
+   ci-dessous : il essaiera le backend puis retombera sur la KB.
    ============================================================ */
 
-const OSIA_FAQ = [
+const OSIA_API = ""; // ex: "https://api.osia-pro.com/api/chat" — vide = 100% local
+
+/* ---- Base de connaissance (grille 2026, sans les forges supprimees du menu) ---- */
+const OSIA_KB = [
   {
-    keywords: ["bonjour", "salut", "hello", "hey", "coucou"],
-    answer: "Salut ! Je suis OSIA-Bot. Je connais tout sur OSIA. Tu veux savoir quoi ?"
+    kw: ["bonjour", "salut", "hello", "coucou", "bonsoir", "hey ", "yo "],
+    a: "Salut 👋 Je suis OSIA-Bot. Je connais nos sites web, nos agents IA, les tarifs et les délais. Qu'est-ce que tu veux savoir ?"
   },
   {
-    keywords: ["osia", "qui", "quoi", "c'est quoi", "presentation"],
-    answer: "OSIA est une agence web automatisée. On livre des sites pros + des workflows + des prompts, le tout généré par IA et livré sous 24-48h. Tu choisis le pack, tu paies, tu reçois ton ZIP clé en main."
+    kw: ["c est quoi osia", "cest quoi osia", "quoi osia", "qui etes", "vous faites quoi", "presentation", "comment ca marche", "comment marche"],
+    a: "OSIA est une agence **100% IA**. À partir d'un simple brief, on conçoit et on livre : des **sites web**, des **agents IA** sur-mesure, et même un **OS + cerveau** complet pour piloter ton activité. Tu commandes, l'IA produit, tu reçois ton livrable clé en main."
   },
   {
-    keywords: ["prix", "cout", "tarif", "combien", "coute", "297", "essentiel"],
-    answer: "Site web Essentiel = 297 € (PDF + ZIP livré). Workflow custom = 30 €/unité. Prompt custom = 30 €/unité. Et tu as 3 workflows + 3 prompts GRATUITS sur la page Freebies."
+    kw: ["tarif", "prix", "cout", "combien", "coute", "budget", "cher"],
+    a: "Grille 2026 (HT, micro-entreprise, TVA non applicable) :\n• **Site web** : Basique 297 € · Intermédiaire 497 € · Complexe 697 €\n• **Agent IA** : Simple 597 € · Supérieur 1 497 €\n• **Forge** (workflow n8n ou prompt) : 30 €/unité\n• **Pack Complet** (OS + cerveau + 30+ agents) : 8 997 €\nGrille complète sur la page **Tarifs**."
   },
   {
-    keywords: ["workflow", "automation", "n8n"],
-    answer: "Un workflow = une automatisation prête à l'emploi (mail auto, leads vers Sheets, post auto, etc). Format JSON, importable dans n8n. 30 €/unité ou 3 gratuits."
+    kw: ["site", "vitrine", "page web", "landing", "html"],
+    a: "Un **site web OSIA** est généré sur-mesure depuis ton brief, livré sous **3 à 7 jours** :\n• **Basique 297 €** — vitrine, coach, artisan (4-5 sections + formulaire)\n• **Intermédiaire 497 €** — restaurant, portfolio, landing page\n• **Complexe 697 €** — e-commerce, association (panier, dons, membres)\nTu peux le configurer en direct avec le bouton **« Créez votre site »**."
   },
   {
-    keywords: ["prompt", "ia", "ai", "claude", "gpt"],
-    answer: "Un prompt OSIA = un prompt testé et optimisé pour Claude / GPT, prêt à coller. Catégories : copywriting, SEO, audit, automatisation. 30 €/unité ou 3 gratuits."
+    kw: ["agent", "chatbot", "assistant", "bot ", "ia qui"],
+    a: "On crée des **agents IA** sur-mesure :\n• **Simple 597 €** — fait 1 tâche précise (résumer, traduire, classer), script + interface web\n• **Supérieur 1 497 €** — chatbot multi-outils avec mémoire, recherche web, lecture de fichiers\nConfigure le tien avec le bouton **« Créez votre agent »**."
   },
   {
-    keywords: ["delai", "livraison", "quand", "combien de temps"],
-    answer: "24-48h pour un site Essentiel. Workflows et prompts = sous 24h. Tout livré par email avec ZIP + facture PDF."
+    kw: ["forge", "workflow", "automation", "automatisation", "n8n", "prompt", "zapier", "make"],
+    a: "Une **Forge** = une brique unitaire à **30 €** :\n• un **workflow n8n** prêt à importer (mail auto, leads → tableur, post auto…)\n• ou un **prompt système** optimisé et testé\nPour en commander une : page **Contact**."
   },
   {
-    keywords: ["paiement", "stripe", "virement", "payer", "carte"],
-    answer: "Stripe (carte bancaire) ou virement bancaire (IBAN sur la facture). Échéance 30 jours pour les pros."
+    kw: ["pack", "complet", "cerveau", "os ", "ecosysteme", "entreprise"],
+    a: "Le **Pack Complet** (8 997 € au lieu de 10 479 €) = tout l'écosystème : un **OS** dédié à ton métier + un **cerveau** orchestrateur + l'accès à **30+ agents**, setup et formation inclus. Livré sous **4 semaines**, après un **audit gratuit d'1h en visio**."
   },
   {
-    keywords: ["tva", "facture", "auto", "entrepreneur", "micro"],
-    answer: "Régime micro-entreprise : TVA non applicable (art. 293 B du CGI). La facture est conforme, avec mentions légales obligatoires."
+    kw: ["delai", "livraison", "quand", "combien de temps", "rapide", "vite", "jours"],
+    a: "Délais : **site web 3-7 jours**, **agent IA quelques jours**, **Pack Complet ~4 semaines**. Tout est livré par email avec le **ZIP + la facture PDF**."
   },
   {
-    keywords: ["zip", "fichier", "format", "livré"],
-    answer: "Tu reçois un ZIP avec : le site HTML complet, un README, un fichier INSTRUCTIONS (comment héberger), et les assets. Tu héberges où tu veux (Vercel, OVH, Hostinger, etc.)."
+    kw: ["paiement", "payer", "paie", "paye", "regl", "moyen de paiement", "stripe", "virement", "carte", " cb", "iban", "facture", "tva"],
+    a: "Paiement par **Stripe (CB)** ou **virement (IBAN sur la facture)**. Régime micro-entreprise : **TVA non applicable** (art. 293 B du CGI), tarifs HT. Échéance 30 jours possible pour les pros."
   },
   {
-    keywords: ["heberger", "host", "vercel", "domaine"],
-    answer: "Hébergement non inclus. Recommandé : Vercel (gratuit), OVH ou Hostinger. Le ZIP contient un guide pas-à-pas."
+    kw: ["zip", "fichier", "format", "livrable", "heberg", "vercel", "ovh", "hostinger", "domaine"],
+    a: "Tu reçois un **ZIP autonome** : le site/agent complet, un README et un guide d'installation. **Hébergement non inclus** — recommandé : Vercel (gratuit), OVH ou Hostinger. Le guide t'explique pas à pas."
   },
   {
-    keywords: ["formulaire", "lead", "contact", "demander", "commander"],
-    answer: "Va sur la page Contact, remplis le formulaire. Je te recontacte par email dans la journée pour valider ton brief."
+    kw: ["gratuit", "free", "audit", "tableur", "essai", "tester"],
+    a: "Deux **outils gratuits** sur le site : l'**Audit de site** (note ton site sur 100) et le **Tableur IA** (un prof IA intégré). Aucune carte demandée — accès depuis le menu **Outils**."
   },
   {
-    keywords: ["gratuit", "freebie", "free", "3", "essai"],
-    answer: "3 workflows + 3 prompts gratuits sur la page Freebies. Tu donnes ton email, tu télécharges. Aucun spam."
+    kw: ["marketplace", "catalogue", "modele", "exemple", "template"],
+    a: "La **Marketplace** rassemble nos modèles et briques prêts à l'emploi (sites, agents, workflows). De quoi démarrer vite — accès via le menu **Marketplace**."
   },
   {
-    keywords: ["modele", "exemple", "demo", "sites"],
-    answer: "Va sur la page Sites pour voir les modèles : vitrine pro, restaurant, coach, ecommerce simple. Chaque modèle est adaptable à ton brief."
+    kw: ["commander", "commande", "contact", "demander", "devis", "parler", "joindre", "brief"],
+    a: "Pour lancer un projet : clique **« Créez votre site »** ou **« Créez votre agent »** pour un brief direct, ou passe par la page **Contact** — on te répond dans la journée."
   },
   {
-    keywords: ["garanti", "remboursement", "satisfait"],
-    answer: "Si le livrable ne correspond pas au brief : 1 révision gratuite. Si après révision tu n'es pas satisfait : remboursement intégral."
+    kw: ["garantie", "revision", "satisfait", "rembours", "modif"],
+    a: "Une **révision est incluse** si le livrable ne correspond pas à ton brief. Les conditions détaillées sont dans les **CGV**."
   },
   {
-    keywords: ["merci", "ok", "super", "cool", "parfait"],
-    answer: "Avec plaisir 🚀 Autre question ?"
+    kw: ["merci", "super", "cool", "parfait", "genial", "top"],
+    a: "Avec plaisir 🚀 Une autre question ?"
   }
 ];
 
-const FALLBACK_ANSWER = "Je n'ai pas la réponse précise. Le mieux : remplis le formulaire de la page Contact, je te réponds perso dans la journée.";
+const FALLBACK = "Bonne question — je n'ai pas la réponse exacte sous la main. Le plus simple : la page **Contact** (réponse dans la journée), ou le bouton **« Créez votre site / votre agent »** pour un brief direct.";
 
 const SUGGESTS = [
   "C'est quoi OSIA ?",
-  "Combien ça coûte ?",
-  "Délai de livraison ?",
-  "C'est quoi les freebies ?"
+  "Vos tarifs ?",
+  "Créer mon site",
+  "Créer mon agent",
+  "Délais de livraison ?"
 ];
+
+/* accents -> rien, minuscules, ponctuation -> espace */
+function osiaNorm(s) {
+  return s.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9 ]/g, ' ')
+    .replace(/\s+/g, ' ');
+}
+
+function osiaFind(question) {
+  const q = ' ' + osiaNorm(question) + ' ';
+  let best = null, bestScore = 0;
+  for (const e of OSIA_KB) {
+    let score = 0;
+    for (const k of e.kw) { if (q.includes(osiaNorm(k))) score += (k.trim().includes(' ') ? 2 : 1); }
+    if (score > bestScore) { bestScore = score; best = e; }
+  }
+  return best ? best.a : FALLBACK;
+}
 
 function osiaChatbotInit() {
   const html = `
@@ -103,10 +130,20 @@ function osiaChatbotInit() {
   const input = document.getElementById('chatInput');
   const send = document.getElementById('chatSend');
 
+  function esc(t) {
+    return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   function addMessage(text, type) {
     const msg = document.createElement('div');
     msg.className = 'chat-msg ' + type;
-    msg.textContent = text;
+    if (type === 'bot') {
+      msg.innerHTML = esc(text)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+    } else {
+      msg.textContent = text;
+    }
     body.appendChild(msg);
     body.scrollTop = body.scrollHeight;
   }
@@ -117,40 +154,46 @@ function osiaChatbotInit() {
       const btn = document.createElement('button');
       btn.className = 'chat-suggest';
       btn.textContent = s;
-      btn.onclick = () => {
-        input.value = s;
-        handleSend();
-      };
+      btn.onclick = () => { input.value = s; handleSend(); };
       suggests.appendChild(btn);
     });
   }
 
-  function findAnswer(question) {
-    const q = question.toLowerCase();
-    let best = null;
-    let bestScore = 0;
-
-    for (const entry of OSIA_FAQ) {
-      let score = 0;
-      for (const kw of entry.keywords) {
-        if (q.includes(kw)) score++;
-      }
-      if (score > bestScore) {
-        bestScore = score;
-        best = entry;
-      }
+  async function answerFor(q) {
+    // Si un backend Claude est configure, on l'essaie puis on retombe sur la KB.
+    if (OSIA_API) {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 6000);
+        const r = await fetch(OSIA_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: q }),
+          signal: ctrl.signal
+        });
+        clearTimeout(t);
+        if (r.ok) {
+          const data = await r.json();
+          if (data && data.answer) return data.answer;
+        }
+      } catch (e) { /* backend indispo -> KB locale */ }
     }
-    return best ? best.answer : FALLBACK_ANSWER;
+    return osiaFind(q);
   }
 
-  function handleSend() {
+  async function handleSend() {
     const q = input.value.trim();
     if (!q) return;
     addMessage(q, 'user');
     input.value = '';
-    setTimeout(() => {
-      addMessage(findAnswer(q), 'bot');
-    }, 350);
+    const typing = document.createElement('div');
+    typing.className = 'chat-msg bot';
+    typing.textContent = '…';
+    body.appendChild(typing);
+    body.scrollTop = body.scrollHeight;
+    const a = await answerFor(q);
+    typing.remove();
+    addMessage(a, 'bot');
   }
 
   toggle.onclick = () => {
@@ -158,15 +201,13 @@ function osiaChatbotInit() {
     toggle.classList.toggle('open');
     if (win.classList.contains('open') && body.children.length === 0) {
       setTimeout(() => {
-        addMessage("Salut ! Je suis OSIA-Bot. Pose-moi n'importe quelle question sur OSIA — tarifs, délais, ce que tu reçois, etc.", 'bot');
+        addMessage("Salut ! Je suis **OSIA-Bot**. Pose-moi ta question sur OSIA — sites, agents IA, tarifs, délais, paiement… je connais.", 'bot');
       }, 200);
     }
   };
 
   send.onclick = handleSend;
-  input.addEventListener('keypress', e => {
-    if (e.key === 'Enter') handleSend();
-  });
+  input.addEventListener('keypress', e => { if (e.key === 'Enter') handleSend(); });
 
   renderSuggests();
 }
@@ -179,36 +220,28 @@ document.addEventListener('DOMContentLoaded', osiaChatbotInit);
    ============================================================ */
 
 function osiaNavAutohideInit() {
-  // SKIP sur la page d'accueil (nav normale toujours visible)
   const path = window.location.pathname;
   const isHome = (
-    path === '/' ||
-    path === '' ||
-    path.endsWith('/index.html') ||
-    path === '/index.html'
+    path === '/' || path === '' ||
+    path.endsWith('/index.html') || path === '/index.html'
   );
   if (isHome) return;
 
   const nav = document.querySelector('.osia-nav');
   if (!nav) return;
-
-  // Ajoute la classe d'auto-hide (CSS controle le rendu)
   nav.classList.add('autohide');
 
-  // Crée un indicateur visuel en haut de page
   const hint = document.createElement('div');
   hint.className = 'nav-hint';
   hint.title = 'Survole pour afficher le menu';
   document.body.appendChild(hint);
 
   let hideTimer = null;
-
   function showNav() {
     if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
     nav.classList.add('is-visible');
     hint.classList.add('faded');
   }
-
   function hideNav() {
     hideTimer = setTimeout(() => {
       nav.classList.remove('is-visible');
@@ -216,26 +249,18 @@ function osiaNavAutohideInit() {
     }, 250);
   }
 
-  // Détecte position de la souris (top 80px = zone d'apparition)
   document.addEventListener('mousemove', (e) => {
-    if (e.clientY < 80) {
-      showNav();
-    } else if (e.clientY > 120) {
-      hideNav();
-    }
+    if (e.clientY < 80) showNav();
+    else if (e.clientY > 120) hideNav();
   });
 
-  // Garde la nav visible quand on hover dessus
   nav.addEventListener('mouseenter', showNav);
   nav.addEventListener('mouseleave', hideNav);
 
-  // Show nav au scroll vers le haut (UX confort)
   let lastScrollY = window.scrollY;
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
-    if (y < lastScrollY && y < 100) {
-      showNav();
-    }
+    if (y < lastScrollY && y < 100) showNav();
     lastScrollY = y;
   });
 }
