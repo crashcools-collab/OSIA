@@ -6,9 +6,10 @@
   <title>OSIA · Marketplace</title>
   <link rel="stylesheet" href="assets/style.css" />
   <style>
-    /* ---- Marketplace : etat vide, couleurs OSIA ---- */
+    /* ---- Marketplace : couleurs OSIA ---- */
     :root{
       --mk-bg:#050510; --mk-cyan:#00f0ff; --mk-magenta:#ff00f5; --mk-violet:#9d4edd;
+      --mk-green:#00ff88; --mk-gold:#ffd24a;
       --mk-card:rgba(255,255,255,.03); --mk-line:rgba(157,78,221,.25); --mk-muted:#8a8ea6;
     }
     .mk-wrap{max-width:1100px;margin:0 auto;padding:48px 22px 90px}
@@ -17,15 +18,30 @@
     .mk-h1{font-size:clamp(30px,5vw,52px);line-height:1.05;margin:14px 0 10px;font-weight:800}
     .mk-h1 .grad{background:linear-gradient(90deg,var(--mk-cyan),var(--mk-magenta));
       -webkit-background-clip:text;background-clip:text;color:transparent}
-    .mk-sub{color:var(--mk-muted);font-size:16px;max-width:620px;line-height:1.6}
+    .mk-sub{color:var(--mk-muted);font-size:16px;max-width:640px;line-height:1.6}
     .mk-cta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 44px}
     .mk-btn{display:inline-block;padding:13px 20px;border-radius:11px;font-weight:700;font-size:14px;
       text-decoration:none;transition:.15s}
-    .mk-btn.primary{background:linear-gradient(135deg,var(--mk-magenta),var(--mk-violet));color:#fff;
-      box-shadow:0 8px 30px rgba(255,0,245,.25)}
+    .mk-btn.primary{background:linear-gradient(135deg,var(--mk-green),#0bd1a0);color:#04120b;
+      box-shadow:0 8px 30px rgba(0,255,136,.25)}
     .mk-btn.ghost{border:1px solid var(--mk-line);color:#e9eaf2;background:var(--mk-card)}
     .mk-btn:hover{transform:translateY(-2px)}
     .mk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+    /* carte produit REELLE */
+    .mk-prod{position:relative;border:1px solid rgba(0,255,136,.35);border-radius:16px;padding:22px;
+      background:linear-gradient(180deg,rgba(0,255,136,.06),var(--mk-card));display:flex;flex-direction:column;
+      gap:10px;text-decoration:none;transition:.15s;min-height:170px}
+    .mk-prod:hover{transform:translateY(-3px);border-color:rgba(0,255,136,.6)}
+    .mk-prod .octa{width:34px;height:34px;flex:none;background:conic-gradient(from 0deg,var(--mk-green),var(--mk-gold),var(--mk-green));
+      clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);box-shadow:0 0 14px rgba(0,255,136,.4)}
+    .mk-prod .nm{font-size:19px;font-weight:800;color:#fff;letter-spacing:.5px}
+    .mk-prod .ds{color:var(--mk-muted);font-size:13px;line-height:1.5;flex:1}
+    .mk-prod .ft{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+    .mk-prod .pr{color:var(--mk-gold);font-weight:800;font-size:14px}
+    .mk-prod .go{color:var(--mk-green);font-weight:700;font-size:13px}
+    .mk-badge{position:absolute;top:14px;right:14px;font-family:"JetBrains Mono",monospace;font-size:10px;
+      letter-spacing:1px;color:#04120b;background:var(--mk-green);border-radius:20px;padding:3px 10px;font-weight:700}
+    /* squelettes "bientot" */
     .mk-skel{position:relative;border:1px solid var(--mk-line);border-radius:16px;padding:22px;
       background:var(--mk-card);overflow:hidden;min-height:170px;display:flex;flex-direction:column;gap:12px}
     .mk-skel::before{content:"";position:absolute;inset:0;
@@ -59,23 +75,29 @@
   <main class="osia-main">
     <div class="mk-wrap">
       <span class="mk-tag">// Marketplace IA · agents · cerveaux · OS</span>
-      <h1 class="mk-h1">La <span class="grad">Marketplace IA</span> arrive bientôt.</h1>
+      <h1 class="mk-h1">La <span class="grad">Marketplace IA</span> ouvre ses portes.</h1>
       <p class="mk-sub">
-        Le catalogue des agents IA, cerveaux et OS prêts à l'emploi — sélectionnés
-        et testés par OSIA. On le remplit en ce moment. En attendant, tu peux déjà
-        créer ton agent sur-mesure.
+        Le catalogue des agents IA, cerveaux et OS d'OSIA — sélectionnés et testés par l'agence.
+        Le premier produit est là : <b style="color:#fff">OCTOGONE</b>, notre OS IA à 80 agents.
+        D'autres arrivent bientôt.
       </p>
 
       <div class="mk-cta">
-        <a class="mk-btn primary" href="agent-builder.html">&#129302; Créer mon agent</a>
-        <a class="mk-btn ghost" href="pack-complet.html">&#128293; Voir le Pack Complet</a>
+        <a class="mk-btn primary" href="octogone.html">&#11042; Découvrir OCTOGONE</a>
+        <a class="mk-btn ghost" href="agent-builder.html">&#129302; Créer mon agent</a>
         <a class="mk-btn ghost" href="contact.html">Être prévenu →</a>
       </div>
 
       <div class="mk-grid">
+        <a class="mk-prod" href="octogone.html">
+          <span class="mk-badge">DISPONIBLE</span>
+          <span class="octa"></span>
+          <div class="nm">OCTOGONE</div>
+          <div class="ds">OS IA · 80 agents qui travaillent ensemble. Mode AGENT (un expert) ou MISSION (l'équipe sort un livrable fini). Mémoire, marque blanche, 100% local.</div>
+          <div class="ft"><span class="pr">Sur devis</span><span class="go">Découvrir &#8594;</span></div>
+        </a>
         <div class="mk-skel"><span class="mk-lock">BIENTÔT</span><div class="ico">&#129302;</div><div class="bar w70"></div><div class="bar w45"></div></div>
         <div class="mk-skel"><span class="mk-lock">BIENTÔT</span><div class="ico">&#127756;</div><div class="bar w70"></div><div class="bar w45"></div></div>
-        <div class="mk-skel"><span class="mk-lock">BIENTÔT</span><div class="ico">&#9889;</div><div class="bar w70"></div><div class="bar w45"></div></div>
         <div class="mk-skel"><span class="mk-lock">BIENTÔT</span><div class="ico">&#129504;</div><div class="bar w70"></div><div class="bar w45"></div></div>
         <div class="mk-skel"><span class="mk-lock">BIENTÔT</span><div class="ico">&#128241;</div><div class="bar w70"></div><div class="bar w45"></div></div>
         <div class="mk-skel"><span class="mk-lock">BIENTÔT</span><div class="ico">&#128640;</div><div class="bar w70"></div><div class="bar w45"></div></div>
