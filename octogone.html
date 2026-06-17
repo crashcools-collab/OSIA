@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OCTOGONE — OS IA · 80 agents | OSIA</title>
+  <meta name="description" content="OCTOGONE : 80 agents IA qui travaillent ensemble. Un OS IA complet, en marque blanche, 100% local. Sur devis." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    :root{
+      --oc-bg:#050510; --oc-cyan:#00f0ff; --oc-magenta:#ff00f5; --oc-violet:#9d4edd;
+      --oc-green:#00ff88; --oc-gold:#ffd24a;
+      --oc-card:rgba(255,255,255,.03); --oc-line:rgba(157,78,221,.25); --oc-muted:#8a8ea6;
+    }
+    .oc-wrap{max-width:1080px;margin:0 auto;padding:46px 22px 90px}
+    .oc-back{font-size:13px;color:var(--oc-muted);text-decoration:none}.oc-back:hover{color:var(--oc-cyan)}
+    .oc-hero{display:flex;align-items:center;gap:18px;margin:18px 0 8px;flex-wrap:wrap}
+    .octa{width:54px;height:54px;flex:none;background:conic-gradient(from 0deg,var(--oc-green),var(--oc-gold),var(--oc-green));
+      clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);box-shadow:0 0 22px rgba(0,255,136,.4)}
+    .oc-h1{font-size:clamp(30px,5vw,50px);line-height:1.04;font-weight:800;margin:0}
+    .oc-h1 .grad{background:linear-gradient(90deg,var(--oc-green),var(--oc-cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .oc-tag{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;letter-spacing:2px;color:var(--oc-cyan);text-transform:uppercase}
+    .oc-lead{color:#d6d8e6;font-size:17px;line-height:1.6;max-width:720px;margin:14px 0 6px}
+    .oc-cta{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 10px;align-items:center}
+    .oc-price{font-weight:800;font-size:18px;color:var(--oc-gold);margin-right:6px}
+    .oc-btn{display:inline-block;padding:14px 22px;border-radius:12px;font-weight:700;font-size:15px;text-decoration:none;transition:.15s}
+    .oc-btn.primary{background:linear-gradient(135deg,var(--oc-green),#0bd1a0);color:#04120b;box-shadow:0 8px 30px rgba(0,255,136,.25)}
+    .oc-btn.ghost{border:1px solid var(--oc-line);color:#e9eaf2;background:var(--oc-card)}
+    .oc-btn:hover{transform:translateY(-2px)}
+    .oc-sec{margin-top:40px}
+    .oc-sec h2{font-size:22px;margin:0 0 14px;font-weight:800}
+    .oc-sec h2 .em{color:var(--oc-green)}
+    .oc-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .oc-box{border:1px solid var(--oc-line);border-radius:16px;padding:20px;background:var(--oc-card)}
+    .oc-box h3{margin:0 0 8px;font-size:16px;color:#fff}
+    .oc-box p,.oc-box li{color:var(--oc-muted);font-size:14px;line-height:1.55}
+    .oc-box ul{margin:6px 0 0;padding-left:18px}
+    .oc-feats{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:4px}
+    .oc-feat{border:1px solid var(--oc-line);border-radius:12px;padding:14px 16px;background:var(--oc-card)}
+    .oc-feat b{display:block;color:#fff;font-size:14px;margin-bottom:3px}
+    .oc-feat span{color:var(--oc-muted);font-size:13px;line-height:1.5}
+    .oc-deliv{margin-top:34px;border:1px solid rgba(0,255,136,.3);border-radius:16px;padding:20px 22px;background:rgba(0,255,136,.05)}
+    .oc-deliv h3{margin:0 0 8px;color:#eafff5;font-size:17px}
+    .oc-deliv p{color:#bfe9d6;font-size:14px;line-height:1.6;margin:0}
+    .oc-final{margin-top:36px;text-align:center;border-top:1px solid var(--oc-line);padding-top:30px}
+    .oc-final p{color:var(--oc-muted);font-size:14px;margin:10px 0 0}
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="commande.html">&#10024; Créez votre site</a></li>
+      <li><a href="agent-builder.html">&#129302; Créez votre agent</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a class="active" href="marketplace.html">Marketplace</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="osia-main">
+    <div class="oc-wrap">
+      <a class="oc-back" href="marketplace.html">&#8592; Retour à la Marketplace</a>
+
+      <span class="oc-tag" style="display:block;margin-top:16px">// OS IA · le produit phare</span>
+      <div class="oc-hero">
+        <span class="octa"></span>
+        <h1 class="oc-h1"><span class="grad">OCTOGONE</span></h1>
+      </div>
+      <p class="oc-tag">80 agents IA · 8 divisions · 1 seul fichier</p>
+      <p class="oc-lead">
+        La centrale d'intelligence artificielle d'OSIA. <b>80 spécialistes IA</b> qui travaillent
+        ensemble : un expert pour une tâche, ou toute une équipe qui s'enchaîne automatiquement
+        jusqu'à un <b>livrable fini, téléchargeable</b>. Mémoire intelligente, marque blanche, 100% local.
+      </p>
+
+      <div class="oc-cta">
+        <span class="oc-price">Sur devis</span>
+        <a class="oc-btn primary" href="contact.html">Demander OCTOGONE &#8594;</a>
+        <a class="oc-btn ghost" href="contact.html">Poser une question</a>
+      </div>
+
+      <!-- À QUOI / POURQUOI / POUR QUI -->
+      <div class="oc-sec">
+        <div class="oc-3">
+          <div class="oc-box">
+            <h3>&#127919; À quoi ça sert ?</h3>
+            <p>À produire, vite et bien, ce qu'un cabinet de 80 spécialistes ferait :</p>
+            <ul>
+              <li>sites web complets (1 fichier HTML livrable)</li>
+              <li>textes de vente, emails, pages, posts</li>
+              <li>devis, factures, CGV, RGPD, contrats</li>
+              <li>stratégie, pricing, business plan</li>
+            </ul>
+          </div>
+          <div class="oc-box">
+            <h3>&#128161; Pourquoi OCTOGONE ?</h3>
+            <ul>
+              <li>80 rôles experts déjà cadrés (pas une IA générique)</li>
+              <li>le mode MISSION sort un <b>livrable fini</b>, pas des bouts</li>
+              <li>une mémoire qui retient prix, clients, décisions</li>
+              <li>100% local : ta clé et tes données restent chez toi</li>
+            </ul>
+          </div>
+          <div class="oc-box">
+            <h3>&#129489; Pour qui ?</h3>
+            <ul>
+              <li>l'entrepreneur / la TPE qui veut produire sans embaucher</li>
+              <li>le freelance / l'agence qui veut livrer plus, vite</li>
+              <li>le revendeur (marque blanche intégrée)</li>
+              <li>le débutant (un Professeur intégré le guide)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FONCTIONNALITÉS -->
+      <div class="oc-sec">
+        <h2>Ce que contient <span class="em">OCTOGONE</span></h2>
+        <div class="oc-feats">
+          <div class="oc-feat"><b>80 agents · 8 divisions</b><span>Acquisition, Production, Marketing, Client, Finance, Juridique, Tech, Stratégie.</span></div>
+          <div class="oc-feat"><b>2 modes</b><span>AGENT (un expert) et MISSION (l'équipe enchaînée par un Orchestrateur).</span></div>
+          <div class="oc-feat"><b>Mémoire intelligente</b><span>Historique, résumés auto et faits appris, partagés par les 80 agents.</span></div>
+          <div class="oc-feat"><b>Qualité (QA)</b><span>Un agent relit et corrige le livrable avant de te le rendre.</span></div>
+          <div class="oc-feat"><b>Multi-IA</b><span>Mistral, Groq, DeepSeek, OpenAI — au choix, avec repli automatique.</span></div>
+          <div class="oc-feat"><b>Marque blanche</b><span>Ton nom, ton logo, tes couleurs en 30 secondes.</span></div>
+          <div class="oc-feat"><b>Professeur intégré</b><span>Un guide qui t'explique quoi utiliser et comment.</span></div>
+          <div class="oc-feat"><b>1 fichier · 100% local</b><span>Aucune installation, aucun serveur, rien n'est envoyé ailleurs.</span></div>
+        </div>
+      </div>
+
+      <!-- LIVRAISON -->
+      <div class="oc-deliv">
+        <h3>&#128230; Ce que tu reçois après commande</h3>
+        <p>
+          Le fichier <b>OCTOGONE</b> personnalisé à ta marque (nom, logo, couleurs) + le <b>guide
+          PDF complet</b> (présentation et mode d'emploi pas-à-pas). Mise en main incluse.
+          <br>Le produit n'est pas en téléchargement libre : il est <b>livré après commande</b>.
+        </p>
+      </div>
+
+      <div class="oc-final">
+        <a class="oc-btn primary" href="contact.html">Demander OCTOGONE &#8594;</a>
+        <p>Un produit OSIA — conçu, testé et livré par l'agence.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="osia-foot">
+    <div class="page-indicator">OCTOGONE · OS IA · OSIA</div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav">
+      <a href="marketplace.html">← Marketplace</a>
+      <a href="contact.html" class="next">Demander un devis →</a>
+    </div>
+  </footer>
+
+  <script src="assets/chatbot.js"></script>
+</body>
+</html>
