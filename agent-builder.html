@@ -1,581 +1,398 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OSIA · Créez votre agent IA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSIA · Créez votre agent IA</title>
+  <link rel="stylesheet" href="assets/style.css" />
 <style>
-  :root{
-    --bg:#0a0b14; --panel:#12141f; --panel2:#0e1019; --line:#232739; --txt:#e8ebf2;
-    --mut:#8a93a7; --accent:#ff3da6; --accent2:#7b5cff; --cyan:#2dd4ff; --green:#34d399; --amber:#f5b942;
-    --grad:linear-gradient(90deg,#ff3da6,#7b5cff);
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:14px;line-height:1.55}
-  .mono{font-family:"SF Mono",Consolas,monospace}
-  a{color:var(--accent)}
-  /* nav */
-  .osia-nav{display:flex;align-items:center;gap:22px;padding:14px 26px;border-bottom:1px solid var(--line);background:rgba(10,11,20,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:30;flex-wrap:wrap}
-  .osia-logo{font-weight:800;font-size:20px;letter-spacing:.5px}
-  .osia-logo .dot{color:var(--accent)}
-  .nav-links{display:flex;gap:18px;list-style:none;margin:0;padding:0;flex-wrap:wrap;font-size:13px}
-  .nav-links a{color:var(--mut);text-decoration:none}
-  .nav-links a:hover,.nav-links a.active{color:var(--txt)}
-  .nav-cta{margin-left:auto}
-  .nav-cta a{background:var(--grad);color:#fff;padding:9px 16px;border-radius:9px;text-decoration:none;font-weight:700;font-size:13px}
-  /* header */
-  .head{max-width:1320px;margin:0 auto;padding:30px 22px 8px}
-  .tag{font-family:"SF Mono",Consolas,monospace;color:var(--accent);font-size:12px;letter-spacing:2px;text-transform:uppercase}
-  .head h1{margin:6px 0 6px;font-size:30px;line-height:1.15}
-  .head h1 .ac{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .head p{color:var(--mut);max-width:680px;margin:0}
-  /* layout */
-  .wrap{max-width:1320px;margin:0 auto;padding:18px 22px 120px;display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:start}
-  @media(max-width:1000px){.wrap{grid-template-columns:1fr}}
-  /* steps */
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
-  .step-head{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}
-  .step-head .num{width:30px;height:30px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
-  .step.done .num{background:var(--grad);border-color:transparent;color:#fff}
-  .step-head .t{font-weight:700;font-size:15px}
-  .step-head .s{color:var(--mut);font-size:12px;margin-top:1px}
-  .step-head .chev{margin-left:auto;color:var(--mut);transition:.2s}
-  .step.open .chev{transform:rotate(90deg)}
-  .step-body{display:none;padding:4px 18px 20px;border-top:1px solid var(--line)}
-  .step.open .step-body{display:block}
-  label.lbl{display:block;color:var(--mut);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin:14px 0 6px}
-  input[type=text],input[type=email],textarea,select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:inherit}
-  textarea{resize:vertical;min-height:62px}
-  input::placeholder,textarea::placeholder{color:#5b6478}
-  .row{display:flex;gap:12px;flex-wrap:wrap}
-  .row>div{flex:1;min-width:160px}
-  .hintl{color:var(--mut);font-size:11.5px;margin:4px 0 0}
-  /* type cards */
-  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  @media(max-width:560px){.cards3{grid-template-columns:1fr}}
-  .tcard{border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;background:var(--panel2)}
-  .tcard.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-  .tcard .ti{font-size:20px}
-  .tcard .tn{font-weight:700;margin:5px 0 2px}
-  .tcard .td{color:var(--mut);font-size:11.5px}
-  /* chips */
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-  .chip{border:1px solid var(--line);background:var(--panel2);color:var(--mut);border-radius:20px;padding:6px 13px;font-size:12.5px;cursor:pointer;user-select:none}
-  .chip.on{border-color:var(--accent);color:var(--txt);background:rgba(255,61,166,.1)}
-  /* faq */
-  .faq-item{display:flex;gap:8px;margin-bottom:8px}
-  .faq-item input{flex:1}
-  .mini{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:0 11px;cursor:pointer;font-size:16px}
-  .addbtn{background:none;border:1px dashed var(--line);color:var(--mut);border-radius:9px;padding:8px 12px;cursor:pointer;font-size:12.5px;margin-top:4px}
-  .addbtn:hover{border-color:var(--accent);color:var(--txt)}
-  .toggle{display:flex;align-items:center;gap:9px;margin:8px 0;font-size:13.5px;cursor:pointer}
-  .toggle input{width:auto}
-  /* RIGHT preview */
-  .side{position:sticky;top:84px}
-  .pv-tabs{display:flex;gap:6px;margin-bottom:12px}
-  .pv-tab{flex:1;text-align:center;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--mut);cursor:pointer;font-size:13px;font-weight:600}
-  .pv-tab.on{color:var(--txt);border-color:var(--accent);background:rgba(255,61,166,.08)}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
-  .panel h4{margin:0 0 4px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--accent)}
-  .panel .ph{color:var(--mut);font-size:11.5px;margin:0 0 12px}
-  .colorrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
-  .colorrow span{font-size:13px}
-  .colorrow input[type=color]{width:46px;height:30px;border:1px solid var(--line);border-radius:7px;background:none;padding:2px;cursor:pointer}
-  .emojis{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-  .emoji{width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-  .emoji.on{border-color:var(--accent);background:rgba(255,61,166,.12)}
-  /* widget preview */
-  .stage{position:relative;height:430px;border:1px solid var(--line);border-radius:14px;margin-top:12px;overflow:hidden;background:
-     radial-gradient(900px 300px at 50% -10%, rgba(123,92,255,.18), transparent),
-     repeating-linear-gradient(0deg,transparent 0 38px,rgba(255,255,255,.02) 38px 39px),
-     #0c0e18}
-  .stage .browser{position:absolute;inset:14px;border:1px solid var(--line);border-radius:10px;background:#0a0c14;opacity:.5}
-  .widget{position:absolute;width:260px;border-radius:16px;overflow:hidden;background:#fff;color:#1a2030;box-shadow:0 18px 40px rgba(0,0,0,.45);font-size:12.5px}
-  .widget.br{right:18px;bottom:74px} .widget.bl{left:18px;bottom:74px}
-  .w-head{padding:12px 14px;color:#fff;display:flex;align-items:center;gap:9px}
-  .w-ava{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:16px}
-  .w-name{font-weight:700;font-size:13px}
-  .w-stat{font-size:10.5px;opacity:.85}
-  .w-body{padding:12px;background:#f4f6fb;min-height:150px;max-height:190px;overflow-y:auto}
-  .bub{padding:8px 11px;border-radius:12px;margin-bottom:8px;max-width:85%;line-height:1.4}
-  .bub.bot{background:#fff;border:1px solid #e6e9f0;border-bottom-left-radius:3px}
-  .bub.me{margin-left:auto;color:#fff;border-bottom-right-radius:3px}
-  .w-input{display:flex;border-top:1px solid #e6e9f0;background:#fff}
-  .w-input input{flex:1;border:0;padding:10px 12px;font-size:12.5px;outline:none;color:#1a2030;background:none}
-  .w-input button{border:0;color:#fff;padding:0 14px;cursor:pointer;font-weight:700}
-  .launcher{position:absolute;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.4)}
-  .launcher.br{right:18px;bottom:14px} .launcher.bl{left:18px;bottom:14px}
-  /* footer bar */
-  .actionbar{position:fixed;bottom:0;left:0;right:0;background:rgba(12,14,22,.95);border-top:1px solid var(--line);backdrop-filter:blur(8px);z-index:25}
-  .actionbar .inner{max-width:1320px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .progress{flex:1;min-width:160px}
-  .progress .bar{height:7px;background:var(--panel2);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
-  .progress .fill{height:100%;width:0;background:var(--grad);transition:.3s}
-  .progress .ptxt{color:var(--mut);font-size:11.5px;margin-top:4px}
-  .btn{border:none;border-radius:10px;padding:12px 20px;font-weight:700;cursor:pointer;font-size:14px}
-  .btn.primary{background:var(--grad);color:#fff}
-  .btn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--txt)}
-  .btn:disabled{opacity:.5;cursor:not-allowed}
-  /* modal */
-  .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:40;align-items:center;justify-content:center;padding:20px}
-  .ov.on{display:flex}
-  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:680px;width:100%;max-height:86vh;overflow-y:auto;padding:22px}
-  .modal h3{margin:0 0 4px}
-  .modal .mp{color:var(--mut);font-size:12.5px;margin:0 0 14px}
-  .modal textarea{min-height:280px;font-family:"SF Mono",Consolas,monospace;font-size:12px}
-  .mrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+/* ===== Configurateur d'agent — scellé sous #oab ===== */
+#oab{
+  --bg:#050510; --panel:rgba(15,15,30,.6); --panel2:rgba(8,8,20,.7); --line:rgba(0,240,255,.18);
+  --txt:#e8e8f5; --mut:#8888a8; --accent:#ff00f5; --accent2:#00f0ff;
+  --grad:linear-gradient(90deg,#ff00f5,#00f0ff);
+  max-width:1320px;margin:0 auto;padding:22px 22px 130px;color:var(--txt);
+  font-family:var(--font-mono,'JetBrains Mono',monospace);
+}
+#oab *{box-sizing:border-box}
+#oab .tag{color:var(--accent2);font-size:12px;letter-spacing:2px;text-transform:uppercase}
+#oab h1{font-family:var(--font-display,'Orbitron',sans-serif);margin:6px 0;font-size:30px;line-height:1.15}
+#oab h1 .ac{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#oab .lead{color:var(--mut);max-width:680px;margin:0 0 16px}
+#oab .grid{display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:start}
+@media(max-width:1000px){#oab .grid{grid-template-columns:1fr}}
+#oab input[type=text],#oab input[type=email],#oab textarea,#oab select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:inherit}
+#oab textarea{resize:vertical;min-height:62px}
+#oab input::placeholder,#oab textarea::placeholder{color:#5b6478}
+#oab .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+#oab .step-head{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}
+#oab .step-head .num{width:30px;height:30px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+#oab .step.done .num{background:var(--grad);border-color:transparent;color:#04121a}
+#oab .step-head .t{font-weight:700;font-size:15px}
+#oab .step-head .s{color:var(--mut);font-size:12px;margin-top:1px}
+#oab .step-head .chev{margin-left:auto;color:var(--mut);transition:.2s}
+#oab .step.open .chev{transform:rotate(90deg)}
+#oab .step-body{display:none;padding:4px 18px 20px;border-top:1px solid var(--line)}
+#oab .step.open .step-body{display:block}
+#oab label.lbl{display:block;color:var(--mut);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin:14px 0 6px}
+#oab .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:560px){#oab .cards3{grid-template-columns:1fr}}
+#oab .tcard{border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;background:var(--panel2)}
+#oab .tcard.on{border-color:var(--accent);box-shadow:0 0 14px rgba(255,0,245,.35)}
+#oab .tcard .ti{font-size:20px}
+#oab .tcard .tn{font-weight:700;margin:5px 0 2px}
+#oab .tcard .td{color:var(--mut);font-size:11.5px}
+#oab .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+#oab .chip{border:1px solid var(--line);background:var(--panel2);color:var(--mut);border-radius:20px;padding:6px 13px;font-size:12.5px;cursor:pointer;user-select:none}
+#oab .chip.on{border-color:var(--accent2);color:var(--txt);background:rgba(0,240,255,.1)}
+#oab .faq-item{display:flex;gap:8px;margin-bottom:8px}
+#oab .faq-item input{flex:1}
+#oab .mini{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:0 11px;cursor:pointer;font-size:16px}
+#oab .addbtn{background:none;border:1px dashed var(--line);color:var(--mut);border-radius:9px;padding:8px 12px;cursor:pointer;font-size:12.5px;margin-top:4px}
+#oab .addbtn:hover{border-color:var(--accent);color:var(--txt)}
+#oab .toggle{display:flex;align-items:center;gap:9px;margin:8px 0;font-size:13.5px;cursor:pointer}
+#oab .toggle input{width:auto}
+#oab .hintl{color:var(--mut);font-size:11.5px}
+#oab .side{position:sticky;top:84px}
+#oab .pv-tabs{display:flex;gap:6px;margin-bottom:12px}
+#oab .pv-tab{flex:1;text-align:center;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--mut);cursor:pointer;font-size:13px;font-weight:600}
+#oab .pv-tab.on{color:var(--txt);border-color:var(--accent2);background:rgba(0,240,255,.08)}
+#oab .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+#oab .panel h4{margin:0 0 4px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--accent2)}
+#oab .panel .ph{color:var(--mut);font-size:11.5px;margin:0 0 12px}
+#oab .colorrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
+#oab .colorrow span{font-size:13px}
+#oab .colorrow input[type=color]{width:46px;height:30px;border:1px solid var(--line);border-radius:7px;background:none;padding:2px;cursor:pointer}
+#oab .emojis{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+#oab .emoji{width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#oab .emoji.on{border-color:var(--accent);background:rgba(255,0,245,.12)}
+#oab .stage{position:relative;height:430px;border:1px solid var(--line);border-radius:14px;margin-top:12px;overflow:hidden;background:radial-gradient(900px 300px at 50% -10%, rgba(0,240,255,.14), transparent),#0a0c14}
+#oab .widget{position:absolute;width:260px;border-radius:16px;overflow:hidden;background:#fff;color:#1a2030;box-shadow:0 18px 40px rgba(0,0,0,.5);font-size:12.5px}
+#oab .widget.br{right:18px;bottom:74px}
+#oab .widget.bl{left:18px;bottom:74px}
+#oab .w-head{padding:12px 14px;color:#fff;display:flex;align-items:center;gap:9px}
+#oab .w-ava{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:16px}
+#oab .w-name{font-weight:700;font-size:13px}
+#oab .w-stat{font-size:10.5px;opacity:.85}
+#oab .w-body{padding:12px;background:#f4f6fb;min-height:150px;max-height:190px;overflow-y:auto}
+#oab .bub{padding:8px 11px;border-radius:12px;margin-bottom:8px;max-width:85%;line-height:1.4}
+#oab .bub.bot{background:#fff;border:1px solid #e6e9f0;border-bottom-left-radius:3px}
+#oab .bub.me{margin-left:auto;color:#fff;border-bottom-right-radius:3px}
+#oab .w-input{display:flex;border-top:1px solid #e6e9f0;background:#fff}
+#oab .w-input input{flex:1;border:0;padding:10px 12px;font-size:12.5px;outline:none;color:#1a2030;background:none}
+#oab .w-input button{border:0;color:#fff;padding:0 14px;cursor:pointer;font-weight:700}
+#oab .launcher{position:absolute;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.4)}
+#oab .launcher.br{right:18px;bottom:14px}
+#oab .launcher.bl{left:18px;bottom:14px}
+#oab .actionbar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,5,16,.95);border-top:1px solid var(--line);backdrop-filter:blur(8px);z-index:25}
+#oab .actionbar .inner{max-width:1320px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#oab .progress{flex:1;min-width:160px}
+#oab .progress .bar{height:7px;background:var(--panel2);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+#oab .progress .fill{height:100%;width:0;background:var(--grad);transition:.3s}
+#oab .progress .ptxt{color:var(--mut);font-size:11.5px;margin-top:4px}
+#oab .btn{border:none;border-radius:10px;padding:12px 20px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+#oab .btn.primary{background:var(--grad);color:#04121a}
+#oab .btn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--txt)}
+#oab .ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;z-index:40;align-items:center;justify-content:center;padding:20px}
+#oab .ov.on{display:flex}
+#oab .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:680px;width:100%;max-height:86vh;overflow-y:auto;padding:22px;backdrop-filter:blur(12px)}
+#oab .modal h3{margin:0 0 4px}
+#oab .modal .mp{color:var(--mut);font-size:12.5px;margin:0 0 14px}
+#oab .modal textarea{min-height:280px;font-family:monospace;font-size:12px}
+#oab .mrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
-<nav class="osia-nav">
-  <div class="osia-logo">OSIA<span class="dot">.</span></div>
-  <ul class="nav-links">
-    <li><a href="index.html">Accueil</a></li>
-    <li><a href="commande.html">Sites web</a></li>
-    <li><a class="active" href="agent-builder.html">Créer mon agent</a></li>
-    <li><a href="agent-simple.html">Agents IA</a></li>
-    <li><a href="cerveaux.html">Cerveau IA</a></li>
-    <li><a href="tarifs.html">Tarifs</a></li>
-    <li><a href="marketplace.html">Marketplace</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-  <div class="nav-cta"><a href="#" onclick="genBrief();return false">Envoyer mon brief →</a></div>
-</nav>
+  <nav class="osia-nav">
+    <div class="osia-logo">OSIA<span class="dot">.</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-submenu">
+        <a href="sites.html">&#127760; Sites web</a>
+        <ul class="submenu">
+          <li><a href="commande.html">&#10024; Cr&eacute;er mon site</a></li>
+          <li><a href="sites.html">Les formats &amp; prix</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a class="active" href="agent-simple.html">&#129302; IA &amp; Agents</a>
+        <ul class="submenu">
+          <li><a href="agent-builder.html">&#10024; Cr&eacute;er mon agent</a></li>
+          <li><a href="agent-simple.html">Agents IA</a></li>
+          <li><a href="cerveaux.html">Cerveau IA</a></li>
+          <li><a href="os.html">OS IA</a></li>
+          <li><a href="pack-complet.html">Pack Complet &#x1F525;</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a href="outil-audit.html">Outils gratuits</a>
+        <ul class="submenu">
+          <li><a href="outil-audit.html">Audit de site</a></li>
+          <li><a href="outil-tableur.html">Tableur IA</a></li>
+        </ul>
+      </li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li class="has-submenu">
+        <a href="forum.html">Communaut&eacute;</a>
+        <ul class="submenu">
+          <li><a href="forum.html">Forum</a></li>
+          <li><a href="temoignages.html">T&eacute;moignages</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
 
-<div class="head">
-  <div class="tag">// CONFIGURATEUR D'AGENT IA</div>
-  <h1>Créez votre <span class="ac">agent IA sur-mesure</span></h1>
-  <p>Remplis les sections, personnalise l'apparence à droite, teste ton agent en direct, puis envoie ton brief. Pas un simple bot : un agent défini, habillé et connecté à ton activité.</p>
-</div>
+  <div id="oab">
+    <div class="tag">// CONFIGURATEUR D'AGENT IA</div>
+    <h1>Créez votre <span class="ac">agent IA sur-mesure</span></h1>
+    <p class="lead">Remplis les sections, personnalise l'apparence à droite, teste ton agent en direct, puis envoie ton brief.</p>
 
-<div class="wrap">
-  <!-- LEFT : BUILDER -->
-  <div id="builder">
+  <div class="grid">
+    <div id="builder">
 
-    <!-- 1 -->
-    <div class="step open" data-step>
-      <div class="step-head"><div class="num">1</div><div><div class="t">🏷️ Identité de l'agent</div><div class="s">Nom, type, domaine</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Nom de l'agent</label>
-        <input type="text" id="f_nom" placeholder="ex : Léa, l'assistante du Bistrot d'Augustin">
-        <label class="lbl">Type d'agent</label>
-        <div class="cards3" id="typeCards">
-          <div class="tcard on" data-type="Agent simple"><div class="ti">🤖</div><div class="tn">Agent simple</div><div class="td">1 mission, réponses + actions de base.</div></div>
-          <div class="tcard" data-type="Agent supérieur"><div class="ti">🧠</div><div class="tn">Agent supérieur</div><div class="td">Multi-tâches, outils, mémoire.</div></div>
-          <div class="tcard" data-type="Cerveau IA"><div class="ti">🌐</div><div class="tn">Cerveau IA</div><div class="td">Orchestre plusieurs agents.</div></div>
-        </div>
-        <label class="lbl">Domaine d'activité</label>
-        <input type="text" id="f_domaine" placeholder="ex : restaurant, immobilier, artisan, e-commerce…">
-      </div>
-    </div>
-
-    <!-- 2 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">2</div><div><div class="t">🎯 Mission principale</div><div class="s">Objectifs &amp; limites</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Objectif principal</label>
-        <input type="text" id="f_obj" placeholder="ex : répondre aux clients et prendre les réservations">
-        <label class="lbl">Objectifs secondaires</label>
-        <textarea id="f_obj2" placeholder="ex : récupérer l'email, proposer le menu du jour, réduire les no-show"></textarea>
-        <label class="lbl">Limites à respecter (ce qu'il ne doit JAMAIS faire)</label>
-        <textarea id="f_limites" placeholder="ex : ne jamais promettre de remise, ne pas donner d'avis médical, ne pas inventer de dispo"></textarea>
-      </div>
-    </div>
-
-    <!-- 3 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">3</div><div><div class="t">🧠 Personnalité &amp; style</div><div class="s">Ton, langage, traits</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Ton de communication</label>
-        <div class="chips" data-single id="c_ton">
-          <span class="chip on">Professionnel</span><span class="chip">Amical</span><span class="chip">Expert</span><span class="chip">Chaleureux</span><span class="chip">Direct</span><span class="chip">Humoristique</span>
-        </div>
-        <label class="lbl">Niveau de langage</label>
-        <div class="chips" data-single id="c_lang">
-          <span class="chip on">Simple</span><span class="chip">Courant</span><span class="chip">Technique</span><span class="chip">Formel</span>
-        </div>
-        <label class="lbl">Traits de personnalité (plusieurs)</label>
-        <div class="chips" id="c_traits">
-          <span class="chip">Calme</span><span class="chip">Rapide</span><span class="chip">Empathique</span><span class="chip">Rassurant</span><span class="chip">Persuasif</span><span class="chip">Patient</span><span class="chip">Précis</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">4</div><div><div class="t">📚 Connaissances</div><div class="s">Entreprise, offre, infos, FAQ</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Description de l'entreprise</label>
-        <textarea id="f_desc" placeholder="Qui vous êtes, depuis quand, ce qui vous distingue…"></textarea>
-        <label class="lbl">Produits / services</label>
-        <textarea id="f_prod" placeholder="Liste de ce que vous proposez (avec prix si possible)"></textarea>
-        <label class="lbl">Informations importantes</label>
-        <textarea id="f_infos" placeholder="Horaires, tarifs, zones d'intervention, délais, moyens de paiement…"></textarea>
-        <label class="lbl">FAQ personnalisée</label>
-        <div id="faqList"></div>
-        <button class="addbtn" onclick="addFaq()">+ Ajouter une question / réponse</button>
-      </div>
-    </div>
-
-    <!-- 5 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">5</div><div><div class="t">🛠️ Compétences &amp; actions</div><div class="s">Ce qu'il a le droit de faire</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Actions autorisées</label>
-        <div class="chips" id="c_actions">
-          <span class="chip">Prendre un RDV</span><span class="chip">Faire une réservation</span><span class="chip">Envoyer un email</span><span class="chip">Générer un devis</span><span class="chip">Qualifier un lead</span><span class="chip">Collecter coordonnées</span><span class="chip">Transférer à un humain</span>
-        </div>
-        <label class="lbl">Outils disponibles</label>
-        <div class="chips" id="c_outils">
-          <span class="chip">Agenda / Calendar</span><span class="chip">CRM</span><span class="chip">Base de données</span><span class="chip">API interne OSIA</span><span class="chip">Email (Brevo)</span><span class="chip">Paiement (Stripe)</span><span class="chip">Stock / catalogue</span>
-        </div>
-        <label class="lbl">Tâches automatiques</label>
-        <textarea id="f_taches" placeholder="ex : relancer un client après 48h sans réponse, envoyer un récap après chaque RDV"></textarea>
-      </div>
-    </div>
-
-    <!-- 6 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">6</div><div><div class="t">🧩 Scénarios d'interaction</div><div class="s">Dialogues &amp; comportements</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Exemples de dialogues</label>
-        <textarea id="f_dialogues" placeholder="Client : « Vous êtes ouverts dimanche ? »\nAgent : « Oui, de 12h à 14h30. Je vous réserve une table ? »"></textarea>
-        <label class="lbl">Cas d'usage principaux</label>
-        <textarea id="f_cas" placeholder="ex : réservation, demande de devis, question horaires, réclamation"></textarea>
-        <label class="lbl">Comportements attendus</label>
-        <textarea id="f_comport" placeholder="ex : toujours proposer une réservation si le client hésite ; relancer une fois si pas de réponse"></textarea>
-      </div>
-    </div>
-
-    <!-- 7 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">7</div><div><div class="t">🧬 Mémoire &amp; apprentissage</div><div class="s">Ce qu'il retient (ou pas)</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="toggle"><input type="checkbox" id="m_courte" checked> Mémoire courte (conversation en cours)</label>
-        <label class="toggle"><input type="checkbox" id="m_longue"> Mémoire longue (clients réguliers, préférences)</label>
-        <label class="lbl">Données à retenir</label>
-        <textarea id="f_retenir" placeholder="ex : prénom, dernière commande, préférences (sans gluten…)"></textarea>
-        <label class="lbl">Données à ne JAMAIS stocker</label>
-        <textarea id="f_jamais" placeholder="ex : numéro de carte bancaire, données de santé, mots de passe"></textarea>
-      </div>
-    </div>
-
-    <!-- 8 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">8</div><div><div class="t">🔐 Sécurité &amp; permissions</div><div class="s">Accès &amp; validations</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Niveau d'accès</label>
-        <div class="chips" data-single id="c_acces">
-          <span class="chip on">Lecture seule</span><span class="chip">Actions limitées</span><span class="chip">Actions étendues</span>
-        </div>
-        <label class="lbl">Restrictions</label>
-        <textarea id="f_restr" placeholder="ex : pas d'accès aux données financières, pas d'envoi hors horaires"></textarea>
-        <label class="lbl">Validation humaine requise avant…</label>
-        <div class="chips" id="c_valid">
-          <span class="chip">Envoyer un devis</span><span class="chip">Encaisser un paiement</span><span class="chip">Envoyer un email</span><span class="chip">Annuler une réservation</span><span class="chip">Action sensible</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">9</div><div><div class="t">🧭 Connexion à l'écosystème OSIA</div><div class="s">Agents, modules, orchestration</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <label class="lbl">Agents secondaires à utiliser</label>
-        <div class="chips" id="c_secondaires">
-          <span class="chip">Agent vocal</span><span class="chip">Relance devis</span><span class="chip">Standard téléphonique</span><span class="chip">Rédacteur contenu</span><span class="chip">Analyste avis</span>
-        </div>
-        <label class="lbl">Modules du Cerveau IA</label>
-        <div class="chips" id="c_modules">
-          <span class="chip">Mémoire centrale</span><span class="chip">Base de connaissances</span><span class="chip">Routeur d'intentions</span><span class="chip">Journal / logs</span>
-        </div>
-        <label class="toggle"><input type="checkbox" id="m_orch"> Orchestration automatique entre agents</label>
-      </div>
-    </div>
-
-    <!-- 10 -->
-    <div class="step" data-step>
-      <div class="step-head"><div class="num">10</div><div><div class="t">🧪 Tests &amp; validation</div><div class="s">Simule avant de livrer</div></div><div class="chev">▸</div></div>
-      <div class="step-body">
-        <p class="hintl">Teste ton agent dans l'aperçu à droite : tape un message, il répond selon le ton et les infos saisies (simulation locale). Affine ensuite les sections.</p>
-        <label class="toggle"><input type="checkbox" id="m_test" checked> Activer le mode test (simulation)</label>
-        <label class="lbl">Ajustements finaux / notes pour OSIA</label>
-        <textarea id="f_notes" placeholder="Tout ce que tu veux préciser avant la production de l'agent"></textarea>
-      </div>
-    </div>
-  </div>
-
-  <!-- RIGHT : PREVIEW + DASHBOARD -->
-  <div class="side">
-    <div class="pv-tabs">
-      <div class="pv-tab on" data-pv="apercu">👁️ Aperçu live</div>
-      <div class="pv-tab" data-pv="apparence">🎨 Apparence</div>
-    </div>
-
-    <!-- APPARENCE -->
-    <div class="panel" id="pane-apparence" style="display:none">
-      <h4>Personnalisation visuelle</h4>
-      <p class="ph">Habille ton agent — l'aperçu se met à jour en direct.</p>
-      <div class="colorrow"><span>Couleur principale</span><input type="color" id="col_primary" value="#ff3da6"></div>
-      <div class="colorrow"><span>Bulle visiteur</span><input type="color" id="col_user" value="#7b5cff"></div>
-      <div class="colorrow"><span>Fond du chat</span><input type="color" id="col_bg" value="#f4f6fb"></div>
-      <label class="lbl">Avatar</label>
-      <div class="emojis" id="avatars">
-        <span class="emoji on">🤖</span><span class="emoji">💬</span><span class="emoji">🧠</span><span class="emoji">👩‍💼</span><span class="emoji">👨‍🍳</span><span class="emoji">🛠️</span><span class="emoji">🏠</span><span class="emoji">✨</span>
-      </div>
-      <label class="lbl">Message d'accueil</label>
-      <input type="text" id="f_welcome" value="Bonjour 👋 Comment puis-je vous aider ?">
-      <label class="lbl">Position du widget</label>
-      <select id="f_pos"><option value="br">En bas à droite</option><option value="bl">En bas à gauche</option></select>
-      <label class="lbl">Forme du lanceur</label>
-      <select id="f_launch"><option value="round">Rond</option><option value="square">Arrondi carré</option></select>
-    </div>
-
-    <!-- APERCU -->
-    <div id="pane-apercu">
-      <div class="stage">
-        <div class="browser"></div>
-        <div class="widget br" id="pvWidget">
-          <div class="w-head" id="pvHead">
-            <div class="w-ava" id="pvAva">🤖</div>
-            <div><div class="w-name" id="pvName">Votre agent</div><div class="w-stat">● en ligne</div></div>
+      <div class="step open" data-step>
+        <div class="step-head"><div class="num">1</div><div><div class="t">🏷️ Identité de l'agent</div><div class="s">Nom, type, domaine</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Nom de l'agent</label>
+          <input type="text" id="f_nom" placeholder="ex : Léa, l'assistante du Bistrot d'Augustin">
+          <label class="lbl">Type d'agent</label>
+          <div class="cards3" id="typeCards">
+            <div class="tcard on" data-type="Agent simple"><div class="ti">🤖</div><div class="tn">Agent simple</div><div class="td">1 mission, réponses + actions de base.</div></div>
+            <div class="tcard" data-type="Agent supérieur"><div class="ti">🧠</div><div class="tn">Agent supérieur</div><div class="td">Multi-tâches, outils, mémoire.</div></div>
+            <div class="tcard" data-type="Cerveau IA"><div class="ti">🌐</div><div class="tn">Cerveau IA</div><div class="td">Orchestre plusieurs agents.</div></div>
           </div>
-          <div class="w-body" id="pvBody"></div>
-          <div class="w-input"><input type="text" id="pvInput" placeholder="Écrire un message…"><button id="pvSend">➤</button></div>
+          <label class="lbl">Domaine d'activité</label>
+          <input type="text" id="f_domaine" placeholder="ex : restaurant, immobilier, artisan, e-commerce…">
         </div>
-        <div class="launcher br" id="pvLauncher">💬</div>
       </div>
-      <p class="hintl" style="text-align:center">Aperçu de démonstration — l'agent réel utilisera tes infos et tes outils.</p>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">2</div><div><div class="t">🎯 Mission principale</div><div class="s">Objectifs &amp; limites</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Objectif principal</label>
+          <input type="text" id="f_obj" placeholder="ex : répondre aux clients et prendre les réservations">
+          <label class="lbl">Objectifs secondaires</label>
+          <textarea id="f_obj2" placeholder="ex : récupérer l'email, proposer le menu du jour"></textarea>
+          <label class="lbl">Limites à respecter (ce qu'il ne doit JAMAIS faire)</label>
+          <textarea id="f_limites" placeholder="ex : ne jamais promettre de remise, ne pas inventer de dispo"></textarea>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">3</div><div><div class="t">🧠 Personnalité &amp; style</div><div class="s">Ton, langage, traits</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Ton de communication</label>
+          <div class="chips" data-single id="c_ton"><span class="chip on">Professionnel</span><span class="chip">Amical</span><span class="chip">Expert</span><span class="chip">Chaleureux</span><span class="chip">Direct</span><span class="chip">Humoristique</span></div>
+          <label class="lbl">Niveau de langage</label>
+          <div class="chips" data-single id="c_lang"><span class="chip on">Simple</span><span class="chip">Courant</span><span class="chip">Technique</span><span class="chip">Formel</span></div>
+          <label class="lbl">Traits de personnalité (plusieurs)</label>
+          <div class="chips" id="c_traits"><span class="chip">Calme</span><span class="chip">Rapide</span><span class="chip">Empathique</span><span class="chip">Rassurant</span><span class="chip">Persuasif</span><span class="chip">Patient</span><span class="chip">Précis</span></div>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">4</div><div><div class="t">📚 Connaissances</div><div class="s">Entreprise, offre, infos, FAQ</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Description de l'entreprise</label>
+          <textarea id="f_desc" placeholder="Qui vous êtes, depuis quand, ce qui vous distingue…"></textarea>
+          <label class="lbl">Produits / services</label>
+          <textarea id="f_prod" placeholder="Liste de ce que vous proposez (avec prix si possible)"></textarea>
+          <label class="lbl">Informations importantes</label>
+          <textarea id="f_infos" placeholder="Horaires, tarifs, zones, délais, paiement…"></textarea>
+          <label class="lbl">FAQ personnalisée</label>
+          <div id="faqList"></div>
+          <button class="addbtn" onclick="addFaq()">+ Ajouter une question / réponse</button>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">5</div><div><div class="t">🛠️ Compétences &amp; actions</div><div class="s">Ce qu'il a le droit de faire</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Actions autorisées</label>
+          <div class="chips" id="c_actions"><span class="chip">Prendre un RDV</span><span class="chip">Faire une réservation</span><span class="chip">Envoyer un email</span><span class="chip">Générer un devis</span><span class="chip">Qualifier un lead</span><span class="chip">Collecter coordonnées</span><span class="chip">Transférer à un humain</span></div>
+          <label class="lbl">Outils disponibles</label>
+          <div class="chips" id="c_outils"><span class="chip">Agenda / Calendar</span><span class="chip">CRM</span><span class="chip">Base de données</span><span class="chip">API interne OSIA</span><span class="chip">Email (Brevo)</span><span class="chip">Paiement (Stripe)</span><span class="chip">Stock / catalogue</span></div>
+          <label class="lbl">Tâches automatiques</label>
+          <textarea id="f_taches" placeholder="ex : relancer un client après 48h sans réponse"></textarea>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">6</div><div><div class="t">🧩 Scénarios d'interaction</div><div class="s">Dialogues &amp; comportements</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Exemples de dialogues</label>
+          <textarea id="f_dialogues" placeholder="Client : « Vous êtes ouverts dimanche ? » / Agent : « Oui, de 12h à 14h30… »"></textarea>
+          <label class="lbl">Cas d'usage principaux</label>
+          <textarea id="f_cas" placeholder="ex : réservation, demande de devis, question horaires"></textarea>
+          <label class="lbl">Comportements attendus</label>
+          <textarea id="f_comport" placeholder="ex : toujours proposer une réservation si le client hésite"></textarea>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">7</div><div><div class="t">🧬 Mémoire &amp; apprentissage</div><div class="s">Ce qu'il retient (ou pas)</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="toggle"><input type="checkbox" id="m_courte" checked> Mémoire courte (conversation en cours)</label>
+          <label class="toggle"><input type="checkbox" id="m_longue"> Mémoire longue (clients réguliers, préférences)</label>
+          <label class="lbl">Données à retenir</label>
+          <textarea id="f_retenir" placeholder="ex : prénom, dernière commande, préférences"></textarea>
+          <label class="lbl">Données à ne JAMAIS stocker</label>
+          <textarea id="f_jamais" placeholder="ex : carte bancaire, données de santé, mots de passe"></textarea>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">8</div><div><div class="t">🔐 Sécurité &amp; permissions</div><div class="s">Accès &amp; validations</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Niveau d'accès</label>
+          <div class="chips" data-single id="c_acces"><span class="chip on">Lecture seule</span><span class="chip">Actions limitées</span><span class="chip">Actions étendues</span></div>
+          <label class="lbl">Restrictions</label>
+          <textarea id="f_restr" placeholder="ex : pas d'accès aux données financières"></textarea>
+          <label class="lbl">Validation humaine requise avant…</label>
+          <div class="chips" id="c_valid"><span class="chip">Envoyer un devis</span><span class="chip">Encaisser un paiement</span><span class="chip">Envoyer un email</span><span class="chip">Annuler une réservation</span><span class="chip">Action sensible</span></div>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">9</div><div><div class="t">🧭 Connexion à l'écosystème OSIA</div><div class="s">Agents, modules, orchestration</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <label class="lbl">Agents secondaires à utiliser</label>
+          <div class="chips" id="c_secondaires"><span class="chip">Agent vocal</span><span class="chip">Relance devis</span><span class="chip">Standard téléphonique</span><span class="chip">Rédacteur contenu</span><span class="chip">Analyste avis</span></div>
+          <label class="lbl">Modules du Cerveau IA</label>
+          <div class="chips" id="c_modules"><span class="chip">Mémoire centrale</span><span class="chip">Base de connaissances</span><span class="chip">Routeur d'intentions</span><span class="chip">Journal / logs</span></div>
+          <label class="toggle"><input type="checkbox" id="m_orch"> Orchestration automatique entre agents</label>
+        </div>
+      </div>
+
+      <div class="step" data-step>
+        <div class="step-head"><div class="num">10</div><div><div class="t">🧪 Tests &amp; validation</div><div class="s">Simule avant de livrer</div></div><div class="chev">▸</div></div>
+        <div class="step-body">
+          <p class="hintl">Teste ton agent dans l'aperçu à droite : tape un message, il répond selon le ton et les infos (simulation locale).</p>
+          <label class="toggle"><input type="checkbox" id="m_test" checked> Activer le mode test (simulation)</label>
+          <label class="lbl">Ajustements finaux / notes pour OSIA</label>
+          <textarea id="f_notes" placeholder="Tout ce que tu veux préciser avant la production"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="pv-tabs">
+        <div class="pv-tab on" data-pv="apercu">👁️ Aperçu live</div>
+        <div class="pv-tab" data-pv="apparence">🎨 Apparence</div>
+      </div>
+      <div class="panel" id="pane-apparence" style="display:none">
+        <h4>Personnalisation visuelle</h4>
+        <p class="ph">Habille ton agent — l'aperçu se met à jour en direct.</p>
+        <div class="colorrow"><span>Couleur principale</span><input type="color" id="col_primary" value="#ff00f5"></div>
+        <div class="colorrow"><span>Bulle visiteur</span><input type="color" id="col_user" value="#00f0ff"></div>
+        <div class="colorrow"><span>Fond du chat</span><input type="color" id="col_bg" value="#f4f6fb"></div>
+        <label class="lbl">Avatar</label>
+        <div class="emojis" id="avatars"><span class="emoji on">🤖</span><span class="emoji">💬</span><span class="emoji">🧠</span><span class="emoji">👩‍💼</span><span class="emoji">👨‍🍳</span><span class="emoji">🛠️</span><span class="emoji">🏠</span><span class="emoji">✨</span></div>
+        <label class="lbl">Message d'accueil</label>
+        <input type="text" id="f_welcome" value="Bonjour 👋 Comment puis-je vous aider ?">
+        <label class="lbl">Position du widget</label>
+        <select id="f_pos"><option value="br">En bas à droite</option><option value="bl">En bas à gauche</option></select>
+        <label class="lbl">Forme du lanceur</label>
+        <select id="f_launch"><option value="round">Rond</option><option value="square">Arrondi carré</option></select>
+      </div>
+      <div id="pane-apercu">
+        <div class="stage">
+          <div class="widget br" id="pvWidget">
+            <div class="w-head" id="pvHead">
+              <div class="w-ava" id="pvAva">🤖</div>
+              <div><div class="w-name" id="pvName">Votre agent</div><div class="w-stat">● en ligne</div></div>
+            </div>
+            <div class="w-body" id="pvBody"></div>
+            <div class="w-input"><input type="text" id="pvInput" placeholder="Écrire un message…"><button id="pvSend">➤</button></div>
+          </div>
+          <div class="launcher br" id="pvLauncher">💬</div>
+        </div>
+        <p class="hintl" style="text-align:center">Aperçu de démonstration — l'agent réel utilisera tes infos.</p>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ACTION BAR -->
-<div class="actionbar">
-  <div class="inner">
-    <div class="progress">
-      <div class="bar"><div class="fill" id="pfill"></div></div>
-      <div class="ptxt" id="ptxt">0 % complété</div>
-    </div>
+  <div class="actionbar"><div class="inner">
+    <div class="progress"><div class="bar"><div class="fill" id="pfill"></div></div><div class="ptxt" id="ptxt">0 % complété</div></div>
     <button class="btn ghost" onclick="saveLocal(true)">💾 Sauvegarder</button>
     <button class="btn primary" onclick="genBrief()">Générer mon brief →</button>
-  </div>
-</div>
+  </div></div>
 
-<!-- MODAL -->
-<div class="ov" id="ov">
-  <div class="modal">
+  <div class="ov" id="ov"><div class="modal">
     <h3>📦 Brief de ton agent</h3>
-    <p class="mp">Voici le brief complet de ton agent. Copie-le ou télécharge-le, puis envoie-le à OSIA pour la production. (Le branchement « envoi direct » se fera côté backend OSIA.)</p>
+    <p class="mp">Brief complet prêt à envoyer à OSIA pour la production.</p>
     <textarea id="briefOut" readonly></textarea>
     <div class="mrow">
       <button class="btn primary" onclick="copyBrief()">📋 Copier</button>
       <button class="btn ghost" onclick="dlBrief()">⬇ Télécharger .json</button>
       <button class="btn ghost" onclick="closeOv()">Fermer</button>
     </div>
-  </div>
-</div>
+  </div></div>
+  </div><!-- /#oab -->
 
+  <footer class="osia-foot">
+    <div class="page-indicator">CONFIGURATEUR · AGENT IA</div>
+    <div class="foot-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="foot-nav"><a href="commande.html" class="next">Créer mon site →</a></div>
+  </footer>
+
+  <script src="assets/chatbot.js"></script>
 <script>
 "use strict";
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const LS = "osia_agent_builder_v1";
 const state = { type:"Agent simple", avatar:"🤖" };
-
-/* ---- accordion ---- */
 $$("[data-step] .step-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
-
-/* ---- type cards ---- */
-$$("#typeCards .tcard").forEach(c=>c.onclick=()=>{
-  $$("#typeCards .tcard").forEach(x=>x.classList.remove("on"));
-  c.classList.add("on"); state.type=c.dataset.type; updatePreview(); progress();
-});
-
-/* ---- chips ---- */
-function wireChips(sel){
-  const box=$(sel); if(!box) return;
-  const single=box.hasAttribute("data-single");
-  box.querySelectorAll(".chip").forEach(ch=>ch.onclick=()=>{
-    if(single){ box.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); ch.classList.add("on"); }
-    else ch.classList.toggle("on");
-    updatePreview(); progress(); saveLocal(false);
-  });
-}
+$$("#typeCards .tcard").forEach(c=>c.onclick=()=>{$$("#typeCards .tcard").forEach(x=>x.classList.remove("on"));c.classList.add("on");state.type=c.dataset.type;updatePreview();progress();});
+function wireChips(sel){const box=$(sel);if(!box)return;const single=box.hasAttribute("data-single");box.querySelectorAll(".chip").forEach(ch=>ch.onclick=()=>{if(single){box.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));ch.classList.add("on");}else ch.classList.toggle("on");updatePreview();progress();saveLocal(false);});}
 ["#c_ton","#c_lang","#c_traits","#c_actions","#c_outils","#c_acces","#c_valid","#c_secondaires","#c_modules"].forEach(wireChips);
-function chipVals(sel){ return $$(sel+" .chip.on").map(c=>c.textContent.trim()); }
-function chipOne(sel){ const c=$(sel+" .chip.on"); return c?c.textContent.trim():""; }
-
-/* ---- FAQ ---- */
-function addFaq(q,a){
-  const row=document.createElement("div"); row.className="faq-item";
-  row.innerHTML=`<input type="text" placeholder="Question" value="${(q||"").replace(/"/g,'&quot;')}">
-    <input type="text" placeholder="Réponse" value="${(a||"").replace(/"/g,'&quot;')}">
-    <button class="mini" title="Supprimer">×</button>`;
-  row.querySelector(".mini").onclick=()=>{row.remove();progress();saveLocal(false);};
-  row.querySelectorAll("input").forEach(i=>i.oninput=()=>{progress();saveLocal(false);});
-  $("#faqList").appendChild(row);
-}
-function faqVals(){ return $$("#faqList .faq-item").map(r=>{const i=r.querySelectorAll("input");return {q:i[0].value,r:i[1].value};}).filter(x=>x.q||x.r); }
-
-/* ---- avatars ---- */
-$$("#avatars .emoji").forEach(e=>e.onclick=()=>{
-  $$("#avatars .emoji").forEach(x=>x.classList.remove("on"));
-  e.classList.add("on"); state.avatar=e.textContent; updatePreview(); saveLocal(false);
-});
-
-/* ---- preview ---- */
-function shade(hex,p){ // darken hex by p (0..1)
-  const n=parseInt(hex.slice(1),16); let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
-  r=Math.round(r*(1-p));g=Math.round(g*(1-p));b=Math.round(b*(1-p));
-  return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
-}
+function chipVals(sel){return $$(sel+" .chip.on").map(c=>c.textContent.trim());}
+function chipOne(sel){const c=$(sel+" .chip.on");return c?c.textContent.trim():"";}
+function addFaq(q,a){const row=document.createElement("div");row.className="faq-item";row.innerHTML=`<input type="text" placeholder="Question" value="${(q||"").replace(/"/g,'&quot;')}"><input type="text" placeholder="Réponse" value="${(a||"").replace(/"/g,'&quot;')}"><button class="mini" title="Supprimer">×</button>`;row.querySelector(".mini").onclick=()=>{row.remove();progress();saveLocal(false);};row.querySelectorAll("input").forEach(i=>i.oninput=()=>{progress();saveLocal(false);});$("#faqList").appendChild(row);}
+function faqVals(){return $$("#faqList .faq-item").map(r=>{const i=r.querySelectorAll("input");return {q:i[0].value,r:i[1].value};}).filter(x=>x.q||x.r);}
+$$("#avatars .emoji").forEach(e=>e.onclick=()=>{$$("#avatars .emoji").forEach(x=>x.classList.remove("on"));e.classList.add("on");state.avatar=e.textContent;updatePreview();saveLocal(false);});
+function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.round(r*(1-p));g=Math.round(g*(1-p));b=Math.round(b*(1-p));return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+let convo=[];
 function updatePreview(){
-  const primary=$("#col_primary").value, user=$("#col_user").value, bg=$("#col_bg").value;
-  const name=$("#f_nom").value.trim()||"Votre agent";
-  const welcome=$("#f_welcome").value.trim()||"Bonjour 👋";
-  const pos=$("#f_pos").value;
-  // head gradient
+  const primary=$("#col_primary").value,user=$("#col_user").value,bg=$("#col_bg").value;
+  const name=$("#f_nom").value.trim()||"Votre agent",welcome=$("#f_welcome").value.trim()||"Bonjour 👋",pos=$("#f_pos").value;
   $("#pvHead").style.background=`linear-gradient(135deg,${primary},${shade(primary,.35)})`;
-  $("#pvAva").textContent=state.avatar;
-  $("#pvName").textContent=name;
-  $("#pvBody").style.background=bg;
-  $("#pvWidget").className="widget "+pos;
-  $("#pvLauncher").className="launcher "+pos;
+  $("#pvAva").textContent=state.avatar;$("#pvName").textContent=name;$("#pvBody").style.background=bg;
+  $("#pvWidget").className="widget "+pos;$("#pvLauncher").className="launcher "+pos;
   $("#pvLauncher").style.background=`linear-gradient(135deg,${primary},${shade(primary,.35)})`;
   $("#pvLauncher").style.borderRadius=$("#f_launch").value==="square"?"16px":"50%";
-  $("#pvLauncher").textContent=state.avatar;
-  $("#pvSend").style.background=primary;
-  // colors used by chat bubbles
-  state.primary=primary; state.user=user;
-  // render conversation (welcome first)
-  renderChat(welcome);
+  $("#pvLauncher").textContent=state.avatar;$("#pvSend").style.background=primary;
+  state.primary=primary;state.user=user;renderChat(welcome);
 }
-let convo=[];
-function renderChat(welcome){
-  const body=$("#pvBody");
-  let html=`<div class="bub bot">${esc(welcome)}</div>`;
-  convo.forEach(m=>{
-    if(m.who==="me") html+=`<div class="bub me" style="background:${state.user}">${esc(m.t)}</div>`;
-    else html+=`<div class="bub bot">${esc(m.t)}</div>`;
-  });
-  body.innerHTML=html; body.scrollTop=body.scrollHeight;
-}
-function botReply(userText){
-  const ton=chipOne("#c_ton")||"professionnel";
-  const name=$("#f_nom").value.trim()||"l'agent";
-  const obj=$("#f_obj").value.trim();
-  const ouv = ton==="Amical"||ton==="Chaleureux" ? "Avec plaisir ! " : ton==="Direct" ? "" : "Bien sûr. ";
-  let r = ouv;
-  const u=userText.toLowerCase();
-  if(/horaire|ouvert|heure/.test(u)) r+="Voici nos horaires : (renseignés dans la section Connaissances). Souhaitez-vous que je réserve ?";
-  else if(/prix|tarif|combien|devis/.test(u)) r+="Je peux vous établir une estimation. Voulez-vous un devis personnalisé ?";
-  else if(/rdv|reserv|rendez/.test(u)) r+="Je m'en occupe — quel jour vous arrangerait ?";
-  else if(/bonjour|salut|hello/.test(u)) r+=($("#f_welcome").value.trim()||"Bonjour ! Comment puis-je aider ?");
-  else r+= obj ? `Je suis là pour ${obj.toLowerCase()}. Dites-m'en plus et je vous guide.` : "Dites-m'en un peu plus et je vous oriente tout de suite.";
-  return r;
-}
-function sendPv(){
-  const inp=$("#pvInput"); const t=inp.value.trim(); if(!t) return;
-  convo.push({who:"me",t});
-  if($("#m_test").checked) convo.push({who:"bot",t:botReply(t)});
-  inp.value=""; renderChat($("#f_welcome").value.trim()||"Bonjour 👋");
-}
-$("#pvSend").onclick=sendPv;
-$("#pvInput").addEventListener("keydown",e=>{if(e.key==="Enter")sendPv();});
-
-/* tabs */
-$$(".pv-tab").forEach(t=>t.onclick=()=>{
-  $$(".pv-tab").forEach(x=>x.classList.remove("on")); t.classList.add("on");
-  const v=t.dataset.pv;
-  $("#pane-apercu").style.display=v==="apercu"?"block":"none";
-  $("#pane-apparence").style.display=v==="apparence"?"block":"none";
-});
-
-/* bind live inputs */
-["col_primary","col_user","col_bg","f_nom","f_welcome","f_pos","f_launch"].forEach(id=>{
-  const el=document.getElementById(id); if(el){ el.addEventListener("input",()=>{updatePreview();saveLocal(false);}); }
-});
+function renderChat(welcome){const body=$("#pvBody");let html=`<div class="bub bot">${esc(welcome)}</div>`;convo.forEach(m=>{html+=m.who==="me"?`<div class="bub me" style="background:${state.user}">${esc(m.t)}</div>`:`<div class="bub bot">${esc(m.t)}</div>`;});body.innerHTML=html;body.scrollTop=body.scrollHeight;}
+function botReply(userText){const ton=chipOne("#c_ton")||"professionnel";const obj=$("#f_obj").value.trim();const ouv=ton==="Amical"||ton==="Chaleureux"?"Avec plaisir ! ":ton==="Direct"?"":"Bien sûr. ";let r=ouv;const u=userText.toLowerCase();if(/horaire|ouvert|heure/.test(u))r+="Voici nos horaires (renseignés dans la section Connaissances). Je vous réserve une table ?";else if(/prix|tarif|combien|devis/.test(u))r+="Je peux vous établir une estimation. Voulez-vous un devis ?";else if(/rdv|reserv|rendez/.test(u))r+="Je m'en occupe — quel jour vous arrangerait ?";else if(/bonjour|salut|hello/.test(u))r+=($("#f_welcome").value.trim()||"Bonjour ! Comment puis-je aider ?");else r+=obj?`Je suis là pour ${obj.toLowerCase()}. Dites-m'en plus.`:"Dites-m'en un peu plus et je vous oriente.";return r;}
+function sendPv(){const inp=$("#pvInput");const t=inp.value.trim();if(!t)return;convo.push({who:"me",t});if($("#m_test").checked)convo.push({who:"bot",t:botReply(t)});inp.value="";renderChat($("#f_welcome").value.trim()||"Bonjour 👋");}
+$("#pvSend").onclick=sendPv;$("#pvInput").addEventListener("keydown",e=>{if(e.key==="Enter")sendPv();});
+$$(".pv-tab").forEach(t=>t.onclick=()=>{$$(".pv-tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");$("#pane-apercu").style.display=t.dataset.pv==="apercu"?"block":"none";$("#pane-apparence").style.display=t.dataset.pv==="apparence"?"block":"none";});
+["col_primary","col_user","col_bg","f_nom","f_welcome","f_pos","f_launch"].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener("input",()=>{updatePreview();saveLocal(false);});});
 $$("#builder input, #builder textarea").forEach(el=>el.addEventListener("input",()=>{progress();saveLocal(false);}));
-
-/* progress */
-function progress(){
-  const checks=[
-    $("#f_nom").value, state.type, $("#f_domaine").value, $("#f_obj").value, $("#f_limites").value,
-    chipOne("#c_ton"), chipVals("#c_traits").length, $("#f_desc").value, $("#f_prod").value,
-    faqVals().length, chipVals("#c_actions").length, $("#f_taches").value, $("#f_cas").value,
-    $("#f_retenir").value, chipOne("#c_acces"), chipVals("#c_secondaires").length
-  ];
-  const filled=checks.filter(Boolean).length, pct=Math.round(filled/checks.length*100);
-  $("#pfill").style.width=pct+"%"; $("#ptxt").textContent=pct+" % complété";
-  // mark steps done if any field inside filled
-  $$("[data-step]").forEach(st=>{
-    const has=Array.from(st.querySelectorAll("input[type=text],textarea,.chip.on,.tcard.on,input[type=checkbox]:checked"))
-      .some(e=> (e.classList&&(e.classList.contains("chip")||e.classList.contains("tcard")))? true : (e.value&&e.value.trim()) || e.checked);
-    st.classList.toggle("done",has);
-  });
-}
-
-/* gather + brief */
-function gather(){
-  return {
-    identite:{ nom:$("#f_nom").value, type:state.type, domaine:$("#f_domaine").value },
-    mission:{ principal:$("#f_obj").value, secondaires:$("#f_obj2").value, limites:$("#f_limites").value },
-    personnalite:{ ton:chipOne("#c_ton"), langage:chipOne("#c_lang"), traits:chipVals("#c_traits") },
-    connaissances:{ entreprise:$("#f_desc").value, produits:$("#f_prod").value, infos:$("#f_infos").value, faq:faqVals() },
-    competences:{ actions:chipVals("#c_actions"), outils:chipVals("#c_outils"), taches_auto:$("#f_taches").value },
-    scenarios:{ dialogues:$("#f_dialogues").value, cas_usage:$("#f_cas").value, comportements:$("#f_comport").value },
-    memoire:{ courte:$("#m_courte").checked, longue:$("#m_longue").checked, retenir:$("#f_retenir").value, jamais_stocker:$("#f_jamais").value },
-    securite:{ acces:chipOne("#c_acces"), restrictions:$("#f_restr").value, validation_humaine:chipVals("#c_valid") },
-    ecosysteme:{ agents_secondaires:chipVals("#c_secondaires"), modules:chipVals("#c_modules"), orchestration:$("#m_orch").checked },
-    apparence:{ avatar:state.avatar, couleur_principale:$("#col_primary").value, couleur_visiteur:$("#col_user").value, fond:$("#col_bg").value, message_accueil:$("#f_welcome").value, position:$("#f_pos").value, lanceur:$("#f_launch").value },
-    tests:{ mode_test:$("#m_test").checked, notes:$("#f_notes").value }
-  };
-}
-function genBrief(){
-  const b=gather();
-  if(!b.identite.nom){ alert("Donne au moins un nom à ton agent (section 1)."); return; }
-  $("#briefOut").value=JSON.stringify(b,null,2);
-  $("#ov").classList.add("on");
-}
-function copyBrief(){ navigator.clipboard.writeText($("#briefOut").value); }
-function dlBrief(){
-  const b=new Blob([$("#briefOut").value],{type:"application/json"});
-  const a=document.createElement("a"); a.href=URL.createObjectURL(b);
-  a.download="brief-agent-"+( ($("#f_nom").value||"osia").toLowerCase().replace(/[^a-z0-9]+/g,"-") )+".json"; a.click();
-}
-function closeOv(){ $("#ov").classList.remove("on"); }
-$("#ov").onclick=e=>{ if(e.target.id==="ov") closeOv(); };
-
-/* persistence */
-function saveLocal(flash){
-  const data={ html:{}, type:state.type, avatar:state.avatar };
-  $$("#builder input[type=text],#builder textarea,#f_welcome").forEach(e=>data.html[e.id]=e.value);
-  data.colors={primary:$("#col_primary").value,user:$("#col_user").value,bg:$("#col_bg").value,pos:$("#f_pos").value,launch:$("#f_launch").value};
-  data.chips={}; ["c_ton","c_lang","c_traits","c_actions","c_outils","c_acces","c_valid","c_secondaires","c_modules"].forEach(id=>data.chips[id]=chipVals("#"+id));
-  data.checks={}; ["m_courte","m_longue","m_orch","m_test"].forEach(id=>data.checks[id]=$("#"+id).checked);
-  data.faq=faqVals();
-  localStorage.setItem(LS,JSON.stringify(data));
-  if(flash){ const t=$("#ptxt"); const o=t.textContent; t.textContent="✓ Sauvegardé"; setTimeout(()=>t.textContent=o,1200); }
-}
-function restore(){
-  let d; try{ d=JSON.parse(localStorage.getItem(LS)||"null"); }catch(e){}
-  if(!d) return;
-  if(d.html) Object.entries(d.html).forEach(([k,v])=>{const el=document.getElementById(k); if(el)el.value=v;});
-  if(d.type){ state.type=d.type; $$("#typeCards .tcard").forEach(c=>c.classList.toggle("on",c.dataset.type===d.type)); }
-  if(d.avatar){ state.avatar=d.avatar; $$("#avatars .emoji").forEach(e=>e.classList.toggle("on",e.textContent===d.avatar)); }
-  if(d.colors){ $("#col_primary").value=d.colors.primary; $("#col_user").value=d.colors.user; $("#col_bg").value=d.colors.bg; $("#f_pos").value=d.colors.pos; $("#f_launch").value=d.colors.launch; }
-  if(d.chips) Object.entries(d.chips).forEach(([id,vals])=>{ const box=$("#"+id); if(box) box.querySelectorAll(".chip").forEach(ch=>ch.classList.toggle("on",vals.includes(ch.textContent.trim()))); });
-  if(d.checks) Object.entries(d.checks).forEach(([id,v])=>{const el=document.getElementById(id); if(el)el.checked=v;});
-  if(d.faq&&d.faq.length) d.faq.forEach(f=>addFaq(f.q,f.r));
-}
-function esc(s){ return (s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m])); }
-
-/* init */
+function progress(){const checks=[$("#f_nom").value,state.type,$("#f_domaine").value,$("#f_obj").value,$("#f_limites").value,chipOne("#c_ton"),chipVals("#c_traits").length,$("#f_desc").value,$("#f_prod").value,faqVals().length,chipVals("#c_actions").length,$("#f_taches").value,$("#f_cas").value,$("#f_retenir").value,chipOne("#c_acces"),chipVals("#c_secondaires").length];const filled=checks.filter(Boolean).length,pct=Math.round(filled/checks.length*100);$("#pfill").style.width=pct+"%";$("#ptxt").textContent=pct+" % complété";$$("[data-step]").forEach(st=>{const has=Array.from(st.querySelectorAll("input[type=text],textarea,.chip.on,.tcard.on,input[type=checkbox]:checked")).some(e=>(e.classList&&(e.classList.contains("chip")||e.classList.contains("tcard")))?true:(e.value&&e.value.trim())||e.checked);st.classList.toggle("done",has);});}
+function gather(){return{identite:{nom:$("#f_nom").value,type:state.type,domaine:$("#f_domaine").value},mission:{principal:$("#f_obj").value,secondaires:$("#f_obj2").value,limites:$("#f_limites").value},personnalite:{ton:chipOne("#c_ton"),langage:chipOne("#c_lang"),traits:chipVals("#c_traits")},connaissances:{entreprise:$("#f_desc").value,produits:$("#f_prod").value,infos:$("#f_infos").value,faq:faqVals()},competences:{actions:chipVals("#c_actions"),outils:chipVals("#c_outils"),taches_auto:$("#f_taches").value},scenarios:{dialogues:$("#f_dialogues").value,cas_usage:$("#f_cas").value,comportements:$("#f_comport").value},memoire:{courte:$("#m_courte").checked,longue:$("#m_longue").checked,retenir:$("#f_retenir").value,jamais_stocker:$("#f_jamais").value},securite:{acces:chipOne("#c_acces"),restrictions:$("#f_restr").value,validation_humaine:chipVals("#c_valid")},ecosysteme:{agents_secondaires:chipVals("#c_secondaires"),modules:chipVals("#c_modules"),orchestration:$("#m_orch").checked},apparence:{avatar:state.avatar,couleur_principale:$("#col_primary").value,couleur_visiteur:$("#col_user").value,fond:$("#col_bg").value,message_accueil:$("#f_welcome").value,position:$("#f_pos").value,lanceur:$("#f_launch").value},tests:{mode_test:$("#m_test").checked,notes:$("#f_notes").value}};}
+function genBrief(){const b=gather();if(!b.identite.nom){alert("Donne au moins un nom à ton agent (section 1).");return;}$("#briefOut").value=JSON.stringify(b,null,2);$("#ov").classList.add("on");}
+function copyBrief(){navigator.clipboard.writeText($("#briefOut").value);}
+function dlBrief(){const b=new Blob([$("#briefOut").value],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="brief-agent-"+(($("#f_nom").value||"osia").toLowerCase().replace(/[^a-z0-9]+/g,"-"))+".json";a.click();}
+function closeOv(){$("#ov").classList.remove("on");}
+$("#ov").onclick=e=>{if(e.target.id==="ov")closeOv();};
+function saveLocal(flash){const data={html:{},type:state.type,avatar:state.avatar};$$("#builder input[type=text],#builder textarea,#f_welcome").forEach(e=>data.html[e.id]=e.value);data.colors={primary:$("#col_primary").value,user:$("#col_user").value,bg:$("#col_bg").value,pos:$("#f_pos").value,launch:$("#f_launch").value};data.chips={};["c_ton","c_lang","c_traits","c_actions","c_outils","c_acces","c_valid","c_secondaires","c_modules"].forEach(id=>data.chips[id]=chipVals("#"+id));data.checks={};["m_courte","m_longue","m_orch","m_test"].forEach(id=>data.checks[id]=$("#"+id).checked);data.faq=faqVals();localStorage.setItem(LS,JSON.stringify(data));if(flash){const t=$("#ptxt");const o=t.textContent;t.textContent="✓ Sauvegardé";setTimeout(()=>t.textContent=o,1200);}}
+function restore(){let d;try{d=JSON.parse(localStorage.getItem(LS)||"null");}catch(e){}if(!d)return;if(d.html)Object.entries(d.html).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});if(d.type){state.type=d.type;$$("#typeCards .tcard").forEach(c=>c.classList.toggle("on",c.dataset.type===d.type));}if(d.avatar){state.avatar=d.avatar;$$("#avatars .emoji").forEach(e=>e.classList.toggle("on",e.textContent===d.avatar));}if(d.colors){$("#col_primary").value=d.colors.primary;$("#col_user").value=d.colors.user;$("#col_bg").value=d.colors.bg;$("#f_pos").value=d.colors.pos;$("#f_launch").value=d.colors.launch;}if(d.chips)Object.entries(d.chips).forEach(([id,vals])=>{const box=$("#"+id);if(box)box.querySelectorAll(".chip").forEach(ch=>ch.classList.toggle("on",vals.includes(ch.textContent.trim())));});if(d.checks)Object.entries(d.checks).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.checked=v;});if(d.faq&&d.faq.length)d.faq.forEach(f=>addFaq(f.q,f.r));}
+function esc(s){return (s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]));}
 restore();
-if(!$$("#faqList .faq-item").length){ addFaq("Quels sont vos horaires ?",""); addFaq("Faites-vous des devis gratuits ?",""); }
-updatePreview(); progress();
+if(!$$("#faqList .faq-item").length){addFaq("Quels sont vos horaires ?","");addFaq("Faites-vous des devis gratuits ?","");}
+updatePreview();progress();
 </script>
 </body>
 </html>
