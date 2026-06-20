@@ -323,14 +323,20 @@
   </div></div>
 
   <div class="ov" id="ov"><div class="modal">
-    <h3>📦 Brief de ton agent</h3>
-    <p class="mp">Brief complet prêt à envoyer à OSIA pour la production.</p>
-    <textarea id="briefOut" readonly></textarea>
+    <h3>🚀 Envoyer mon brief</h3>
+    <p class="mp">Laisse tes coordonnées : OSIA reçoit ta demande directement et te construit l'agent.</p>
+    <label class="lbl">Ton nom / entreprise *</label><input type="text" id="o_nom" placeholder="Nom ou entreprise">
+    <label class="lbl">Ton email *</label><input type="text" id="o_email" placeholder="toi@email.com">
+    <label class="lbl">Ton téléphone</label><input type="text" id="o_tel" placeholder="06 12 34 56 78">
+    <div id="oerr" style="display:none;color:#ff6b6b;font-size:12px;margin-top:8px">Renseigne au moins ton nom et ton email.</div>
+    <details style="margin-top:12px"><summary style="cursor:pointer;color:var(--mut);font-size:12px">Voir le brief complet (JSON)</summary><textarea id="briefOut" readonly style="margin-top:8px;min-height:180px"></textarea></details>
     <div class="mrow">
-      <button class="btn primary" onclick="copyBrief()">📋 Copier</button>
-      <button class="btn ghost" onclick="dlBrief()">⬇ Télécharger .json</button>
+      <button class="btn primary" onclick="sendOrder()">🚀 Envoyer ma demande</button>
+      <button class="btn ghost" onclick="copyBrief()">📋 Copier</button>
+      <button class="btn ghost" onclick="dlBrief()">⬇ .json</button>
       <button class="btn ghost" onclick="closeOv()">Fermer</button>
     </div>
+    <div id="otoast" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0e1220;border:1px solid var(--line);color:#fff;padding:10px 18px;border-radius:10px;z-index:60;opacity:0;transition:.3s;pointer-events:none;font-size:13px"></div>
   </div></div>
   </div><!-- /#oab -->
 
@@ -382,7 +388,37 @@ $$(".pv-tab").forEach(t=>t.onclick=()=>{$$(".pv-tab").forEach(x=>x.classList.rem
 $$("#builder input, #builder textarea").forEach(el=>el.addEventListener("input",()=>{progress();saveLocal(false);}));
 function progress(){const checks=[$("#f_nom").value,state.type,$("#f_domaine").value,$("#f_obj").value,$("#f_limites").value,chipOne("#c_ton"),chipVals("#c_traits").length,$("#f_desc").value,$("#f_prod").value,faqVals().length,chipVals("#c_actions").length,$("#f_taches").value,$("#f_cas").value,$("#f_retenir").value,chipOne("#c_acces"),chipVals("#c_secondaires").length];const filled=checks.filter(Boolean).length,pct=Math.round(filled/checks.length*100);$("#pfill").style.width=pct+"%";$("#ptxt").textContent=pct+" % complété";$$("[data-step]").forEach(st=>{const has=Array.from(st.querySelectorAll("input[type=text],textarea,.chip.on,.tcard.on,input[type=checkbox]:checked")).some(e=>(e.classList&&(e.classList.contains("chip")||e.classList.contains("tcard")))?true:(e.value&&e.value.trim())||e.checked);st.classList.toggle("done",has);});}
 function gather(){return{identite:{nom:$("#f_nom").value,type:state.type,domaine:$("#f_domaine").value},mission:{principal:$("#f_obj").value,secondaires:$("#f_obj2").value,limites:$("#f_limites").value},personnalite:{ton:chipOne("#c_ton"),langage:chipOne("#c_lang"),traits:chipVals("#c_traits")},connaissances:{entreprise:$("#f_desc").value,produits:$("#f_prod").value,infos:$("#f_infos").value,faq:faqVals()},competences:{actions:chipVals("#c_actions"),outils:chipVals("#c_outils"),taches_auto:$("#f_taches").value},scenarios:{dialogues:$("#f_dialogues").value,cas_usage:$("#f_cas").value,comportements:$("#f_comport").value},memoire:{courte:$("#m_courte").checked,longue:$("#m_longue").checked,retenir:$("#f_retenir").value,jamais_stocker:$("#f_jamais").value},securite:{acces:chipOne("#c_acces"),restrictions:$("#f_restr").value,validation_humaine:chipVals("#c_valid")},ecosysteme:{agents_secondaires:chipVals("#c_secondaires"),modules:chipVals("#c_modules"),orchestration:$("#m_orch").checked},apparence:{avatar:state.avatar,couleur_principale:$("#col_primary").value,couleur_visiteur:$("#col_user").value,fond:$("#col_bg").value,message_accueil:$("#f_welcome").value,position:$("#f_pos").value,lanceur:$("#f_launch").value},tests:{mode_test:$("#m_test").checked,notes:$("#f_notes").value}};}
+const OSIA_WEBHOOK="https://api.osia-pro.com/api/webhook/lead";
+const OSIA_ORDER_EMAIL="crashcool.iaos@gmail.com";
+function briefText(b){return [
+ `Demande via le configurateur d'agent IA osia-pro.com.`,
+ `Agent : ${b.identite.nom} · Type : ${b.identite.type} · Domaine : ${b.identite.domaine||'—'}`,
+ `Mission : ${b.mission.principal||'—'}`,
+ `Objectifs secondaires : ${b.mission.secondaires||'—'} · Limites : ${b.mission.limites||'—'}`,
+ `Ton : ${b.personnalite.ton} · Langage : ${b.personnalite.langage} · Traits : ${(b.personnalite.traits||[]).join(', ')||'—'}`,
+ `Actions : ${(b.competences.actions||[]).join(', ')||'—'}`,
+ `Outils : ${(b.competences.outils||[]).join(', ')||'—'}`,
+ `Agents secondaires : ${(b.ecosysteme.agents_secondaires||[]).join(', ')||'—'} · Orchestration : ${b.ecosysteme.orchestration?'oui':'non'}`,
+ `Apparence : avatar ${b.apparence.avatar}, couleur ${b.apparence.couleur_principale}`,
+ b.tests.notes?`Notes : ${b.tests.notes}`:''
+].filter(Boolean).join('\n');}
 function genBrief(){const b=gather();if(!b.identite.nom){alert("Donne au moins un nom à ton agent (section 1).");return;}$("#briefOut").value=JSON.stringify(b,null,2);$("#ov").classList.add("on");}
+async function sendOrder(){
+  const b=gather();const nom=$("#o_nom").value.trim(),email=$("#o_email").value.trim(),tel=$("#o_tel").value.trim();
+  if(!nom||!email){$("#oerr").style.display='block';return;}
+  $("#oerr").style.display='none';
+  const payload={name:nom,email,phone:tel,pack:b.identite.type,message:briefText(b),source:'configurateur-agent'};
+  try{
+    const r=await fetch(OSIA_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    if(r.ok){toast("Brief envoyé à OSIA ✓");setTimeout(closeOv,900);return;}
+    throw new Error("HTTP "+r.status);
+  }catch(e){
+    const body=`Bonjour, voici mon brief d'agent (serveur OSIA injoignable).%0D%0A%0D%0A`+encodeURIComponent(briefText(b))+`%0D%0A%0D%0ANom : ${nom} · Email : ${email} · Tel : ${tel||'—'}`;
+    window.location.href=`mailto:${OSIA_ORDER_EMAIL}?subject=${encodeURIComponent('[OSIA][COMMANDE AGENT] '+b.identite.nom)}&body=${body}`;
+    toast("Serveur injoignable — envoi par email");
+  }
+}
+function toast(m){const t=$("#otoast");if(!t)return;t.textContent=m;t.style.opacity='1';setTimeout(()=>t.style.opacity='0',2600);}
 function copyBrief(){navigator.clipboard.writeText($("#briefOut").value);}
 function dlBrief(){const b=new Blob([$("#briefOut").value],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="brief-agent-"+(($("#f_nom").value||"osia").toLowerCase().replace(/[^a-z0-9]+/g,"-"))+".json";a.click();}
 function closeOv(){$("#ov").classList.remove("on");}
