@@ -3,540 +3,504 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OSIA — Créez votre site & envoyez votre brief</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>OSIA · Créez votre site en direct</title>
 <style>
-/* =========================================================
-   CHARTE osia-pro.com (UI du builder) — accent magenta/rose
-   ========================================================= */
-:root{
-  --bg:#050510; --panel:#0f0f1e; --panel-2:#16162a; --line:#2a2a3c;
-  --txt:#e9eaf2; --muted:#8a8ea6; --pink:#ff00f5; --pink-soft:rgba(255,0,245,.12);
-  --violet:#9d4edd; --ok:#2ad17e;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--txt);font-family:"Chakra Petch",sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(700px 400px at 10% -5%,rgba(255,0,245,.10),transparent),radial-gradient(600px 400px at 100% 0%,rgba(157,78,221,.08),transparent),
-  repeating-linear-gradient(45deg,transparent,transparent 39px,rgba(157,78,221,.022) 39px,rgba(157,78,221,.022) 40px)}
-.mono{font-family:"JetBrains Mono",monospace}
-
-/* TOPBAR */
-.topbar{position:relative;z-index:3;height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px;background:rgba(5,5,16,.7);backdrop-filter:blur(8px)}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.5px}
-.brand .dot{color:var(--pink)}
-.brand small{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:1px}
-.topbar-actions{display:flex;gap:8px;align-items:center}
-.tab-toggle{display:none;gap:4px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:3px}
-.tab-toggle button{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
-.tab-toggle button.on{background:var(--pink);color:#fff}
-.btn{font-family:"Chakra Petch",sans-serif;font-weight:600;border:none;border-radius:9px;cursor:pointer;transition:.15s;font-size:13px}
-.btn-cta{background:linear-gradient(135deg,var(--pink),#ff5c9d);color:#fff;padding:11px 18px;box-shadow:0 6px 20px rgba(255,0,245,.3)}
-.btn-cta:hover{filter:brightness(1.07);transform:translateY(-1px)}
-.mobile-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;padding:10px 14px;background:rgba(5,5,16,.96);border-top:1px solid var(--line)}
-.mobile-cta .btn{width:100%;justify-content:center;padding:13px}
-.btn-ghost{background:var(--panel-2);color:var(--txt);border:1px solid var(--line);padding:10px 14px}
-.btn-ghost:hover{border-color:var(--pink)}
-
-/* LAYOUT */
-.shell{position:relative;z-index:2;display:flex;height:calc(100vh - 60px)}
-.panel{width:440px;min-width:440px;border-right:1px solid var(--line);overflow-y:auto;padding:20px 20px 70px}
-.stage{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px}
-
-/* SECTION HEADERS (style // commentaire) */
-.hsec{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:1.5px;color:var(--pink);text-transform:uppercase;margin:26px 0 4px;font-weight:700}
-.hsec:first-child{margin-top:0}
-.hsub{color:var(--muted);font-size:13px;margin-bottom:14px}
-.divider{height:1px;background:repeating-linear-gradient(90deg,var(--line),var(--line) 5px,transparent 5px,transparent 10px);margin:24px 0}
-
-/* FIELDS */
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{margin-bottom:13px}
-.field label{display:block;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.field label .req{color:var(--pink)}
-.field label .opt{color:#5b5f74;text-transform:none;letter-spacing:0}
-.field input,.field textarea,.field select{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit;font-size:14px;padding:11px 12px;resize:vertical}
-.field input::placeholder,.field textarea::placeholder{color:#565a70}
-.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
-.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ff00f5' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
-.counter{text-align:right;font-family:"JetBrains Mono",monospace;font-size:11px;color:#5b5f74;margin-top:4px}
-.pagecount{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
-.pagecount b{color:var(--txt)}
-.with-ai{display:flex;gap:6px}.with-ai input,.with-ai textarea{flex:1}
-.ai-btn{background:var(--pink-soft);border:1px solid rgba(255,0,245,.35);color:var(--pink);border-radius:9px;padding:0 12px;cursor:pointer;font-size:15px;white-space:nowrap;display:flex;align-items:center}
-.ai-btn:hover{background:rgba(255,0,245,.22)}.ai-btn:disabled{opacity:.5;cursor:wait}
-
-/* CHIPS (secteur) */
-.chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 8px;cursor:pointer;text-align:center;font-size:12px;font-weight:500;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:5px}
-.chip .ico{font-size:19px}.chip:hover{border-color:var(--muted)}
-.chip.on{border-color:var(--pink);background:var(--pink-soft);color:var(--pink)}
-
-/* CARDS (style visuel + palette) */
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.cards.stack{grid-template-columns:1fr}
-.opt-card .t .tag{float:right;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:20px;background:var(--pink-soft);color:var(--pink);text-transform:uppercase;font-weight:700}
-.subfield{margin-top:10px}
-.opt-card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;transition:.15s}
-.opt-card:hover{border-color:var(--muted)}
-.opt-card.on{border-color:var(--pink);background:var(--pink-soft)}
-.opt-card .t{font-weight:600;font-size:14px;margin-bottom:3px}
-.opt-card .s{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;line-height:1.4}
-.swatches{display:flex;gap:5px;margin-bottom:9px}
-.swatches i{width:30px;height:24px;border-radius:5px;display:block}
-.rainbow{background:linear-gradient(90deg,#ff2d2d,#ffae00,#3fd13f,#22d3ee,#8b5cf6)}
-
-/* CHECKBOXES (sections) */
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.check{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:11px 12px;cursor:pointer;font-size:13.5px;transition:.15s}
-.check:hover{border-color:var(--muted)}
-.check.on{border-color:var(--pink)}
-.box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:.15s}
-.check.on .box{background:var(--pink);border-color:var(--pink)}
-.check .ci{font-size:15px}
-.addpage{margin-top:8px;width:100%;background:var(--panel);border:1px dashed var(--line);color:var(--muted);border-radius:9px;padding:11px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:.15s}
-.addpage:hover{border-color:var(--pink);color:var(--pink);background:var(--pink-soft)}
-.cpage{display:flex;align-items:center;gap:8px;margin-top:8px}
-.cpage .ci{font-size:15px}
-.cpage input{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:inherit;font-size:13.5px;padding:10px 12px}
-.cpage input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
-.cpage .rm{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:8px;width:36px;height:38px;flex-shrink:0;cursor:pointer;font-size:17px;line-height:1;transition:.15s}
-.cpage .rm:hover{border-color:var(--pink);color:var(--pink)}
-
-/* color pickers (palette = AUTRE) */
-.customcol{display:none;gap:10px;margin-top:10px}
-.customcol.show{display:flex}
-.cp{flex:1}.cp label{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase}
-.cp input[type=color]{width:100%;height:36px;border:1px solid var(--line);border-radius:7px;background:var(--panel);cursor:pointer;padding:2px}
-
-/* STAGE / PREVIEW */
-.device-bar{display:flex;gap:6px;margin-bottom:14px}
-.device-bar button{background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11px;padding:7px 14px;border-radius:7px;cursor:pointer}
-.device-bar button.on{border-color:var(--pink);color:var(--pink)}
-.frame-wrap{width:100%;display:flex;justify-content:center;flex:1}
-.frame{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.65);width:100%;max-width:1100px;transition:max-width .3s;height:fit-content}
-.frame.mobile{max-width:390px}
-
-/* ===== SITE PREVIEW (scopé #site) ===== */
-#site{--p:#ff2e7e;--a:#8b5cf6;--ink:#16181d;--soft:#5b6270;--bg1:#fff;--bg2:#f5f7fa;--rad:16px;--ff:'Poppins',sans-serif;font-family:var(--ff);color:var(--ink);background:var(--bg1)}
-#site.dark{--ink:#eef1f6;--soft:#aab1bf;--bg1:#0f1115;--bg2:#171a20}
-#site *{box-sizing:border-box}
-#site .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 30px;background:var(--bg1);border-bottom:1px solid rgba(128,128,128,.12);position:sticky;top:0;z-index:5}
-#site .logo{font-weight:800;font-size:19px;color:var(--ink)}#site .logo b{color:var(--p)}
-#site .nav .links{display:flex;gap:18px;font-size:13px;color:var(--soft);font-weight:500}
-#site .nav .cta{background:var(--p);color:#fff;padding:9px 16px;border-radius:var(--rad);font-size:13px;font-weight:600}
-#site .hero{padding:62px 30px;text-align:center;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
-#site .kick{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--p);background:color-mix(in srgb,var(--p) 12%,transparent);padding:6px 14px;border-radius:30px;margin-bottom:18px}
-#site .hero h1{font-size:46px;line-height:1.08;font-weight:800;max-width:760px;margin:0 auto 14px;letter-spacing:-1px}
-#site .hero .slo{font-size:18px;color:var(--soft);max-width:580px;margin:0 auto 10px;line-height:1.5;font-weight:500}
-#site .hero .ds{font-size:15px;color:var(--soft);max-width:560px;margin:0 auto 26px;line-height:1.6}
-#site .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-#site .b1{background:var(--p);color:#fff;padding:14px 26px;border-radius:var(--rad);font-weight:700;font-size:15px}
-#site .b2{background:transparent;color:var(--ink);border:1.5px solid color-mix(in srgb,var(--ink) 25%,transparent);padding:14px 26px;border-radius:var(--rad);font-weight:600;font-size:15px}
-#site .sec{padding:54px 30px}#site .sec.alt{background:var(--bg2)}
-#site .sec h2{font-size:31px;font-weight:800;text-align:center;margin-bottom:8px;letter-spacing:-.5px}
-#site .lead{text-align:center;color:var(--soft);max-width:520px;margin:0 auto 34px;font-size:15px}
-#site .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1000px;margin:0 auto}
-#site .c{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:26px 22px;text-align:center}
-#site .c .ci{width:54px;height:54px;border-radius:14px;background:color-mix(in srgb,var(--p) 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px}
-#site .c h3{font-size:18px;font-weight:700;margin-bottom:8px}#site .c p{font-size:14px;color:var(--soft);line-height:1.55}
-#site .about{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:1000px;margin:0 auto}
-#site .about .ph{aspect-ratio:4/3;border-radius:var(--rad);background:linear-gradient(135deg,var(--p),var(--a));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px;opacity:.92}
-#site .about h2{text-align:left;margin-bottom:14px}#site .about p{color:var(--soft);font-size:15px;line-height:1.7}
-#site .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1000px;margin:0 auto}
-#site .gal .ph{aspect-ratio:1;border-radius:var(--rad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500}
-#site .resa{max-width:640px;margin:0 auto;text-align:center;background:linear-gradient(135deg,color-mix(in srgb,var(--p) 14%,transparent),color-mix(in srgb,var(--a) 12%,transparent));border-radius:var(--rad);padding:40px 30px}
-#site .resa .pick{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0}
-#site .resa .pick span{background:var(--bg1);border:1px solid rgba(128,128,128,.18);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600}
-#site .shop{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1000px;margin:0 auto}
-#site .prod{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);overflow:hidden}
-#site .prod .pimg{aspect-ratio:1;background:linear-gradient(135deg,var(--p),var(--a));opacity:.85}
-#site .prod .pb{padding:13px 14px}#site .prod h4{font-size:14px;font-weight:600;margin-bottom:4px}
-#site .prod .pr{color:var(--p);font-weight:700;font-size:15px}
-#site .quotes{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:880px;margin:0 auto}
-#site .q{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:24px}
-#site .q p{font-size:15px;line-height:1.6;font-style:italic;margin-bottom:14px}
-#site .who{display:flex;align-items:center;gap:11px}#site .av{width:40px;height:40px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
-#site .who b{font-size:14px}#site .who span{font-size:12px;color:var(--soft);display:block}
-#site .hours{max-width:520px;margin:0 auto;background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);overflow:hidden}
-#site .hr{display:flex;justify-content:space-between;padding:13px 22px;border-bottom:1px solid rgba(128,128,128,.1);font-size:14.5px}
-#site .hr:last-child{border:none}#site .hr span:first-child{font-weight:600}#site .hr span:last-child{color:var(--soft)}
-#site .contact{max-width:760px;margin:0 auto;text-align:center}
-#site .info{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-#site .info div{background:var(--bg1);border:1px solid rgba(128,128,128,.14);border-radius:var(--rad);padding:18px 24px;font-size:14px;min-width:200px}
-#site .info b{display:block;color:var(--p);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
-#site .foot{padding:26px 30px;text-align:center;background:var(--bg2);font-size:13px;color:var(--soft);border-top:1px solid rgba(128,128,128,.1)}
-#site .nav .links a{cursor:pointer;transition:color .15s}
-#site .nav .links a:hover{color:var(--p)}
-#site .nav .links a.navon{color:var(--p);font-weight:700}
-#site .nav .cta{cursor:pointer}
-#site .pagehead{padding:48px 30px 6px;text-align:center;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
-#site .pagehead h1{font-size:38px;font-weight:800;letter-spacing:-.5px;margin-top:10px}
-.frame.mobile #site .nav .links{display:none}
-.frame.mobile #site .hero h1{font-size:30px}
-.frame.mobile #site .cards3,.frame.mobile #site .gal,.frame.mobile #site .shop,.frame.mobile #site .about,.frame.mobile #site .quotes,.frame.mobile #site .info{grid-template-columns:1fr}
-
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(5,5,11,.78);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(4px)}
-.overlay.open{display:flex}
-.modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:540px;width:100%;max-height:88vh;overflow-y:auto;padding:28px}
-.modal h2{font-size:22px;font-weight:700;margin-bottom:6px}.modal .sub{color:var(--muted);font-size:13.5px;margin-bottom:18px}
-.recap{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:18px}
-.recap .r{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line);gap:14px}
-.recap .r:last-child{border:none}.recap .r span:first-child{color:var(--muted);white-space:nowrap}.recap .r span:last-child{font-weight:600;text-align:right}
-.modal .actions{display:flex;gap:10px;flex-wrap:wrap}.modal .actions .btn{flex:1;min-width:140px;text-align:center;padding:12px}
-.modal .close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;margin-top:-6px}
-.err{color:var(--pink);font-size:13px;margin-bottom:12px;display:none}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pink);color:#fff;font-weight:600;padding:12px 22px;border-radius:10px;font-size:14px;transition:.3s;z-index:60}
-.toast.show{transform:translateX(-50%) translateY(0)}
-
-@media(max-width:960px){
-  .shell{display:block;height:calc(100vh - 60px)}
-  .panel,.stage{width:100%;min-width:0;height:100%;border-right:none}
-  .panel{display:none}.stage{display:none}
-  .panel.show,.stage.show{display:block}.stage.show{display:flex}
-  .tab-toggle{display:flex}.topbar .btn-cta{display:none}.mobile-cta{display:block}.panel{padding-bottom:80px}.stage{padding-bottom:80px}
-}
-@media(max-width:480px){.row2,.cards,.checks,.chips{grid-template-columns:1fr}.chips{grid-template-columns:1fr 1fr}}
+  :root{
+    --bg:#0a0b14; --panel:#12141f; --panel2:#0e1019; --line:#232739; --txt:#e8ebf2;
+    --mut:#8a93a7; --accent:#ff3da6; --accent2:#7b5cff; --cyan:#2dd4ff; --green:#34d399; --amber:#f5b942;
+    --grad:linear-gradient(90deg,#ff3da6,#7b5cff);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:14px;line-height:1.55}
+  a{color:var(--accent)}
+  .osia-nav{display:flex;align-items:center;gap:22px;padding:14px 26px;border-bottom:1px solid var(--line);background:rgba(10,11,20,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:30;flex-wrap:wrap}
+  .osia-logo{font-weight:800;font-size:20px;letter-spacing:.5px}
+  .osia-logo .dot{color:var(--accent)}
+  .nav-links{display:flex;gap:18px;list-style:none;margin:0;padding:0;flex-wrap:wrap;font-size:13px}
+  .nav-links a{color:var(--mut);text-decoration:none}
+  .nav-links a:hover,.nav-links a.active{color:var(--txt)}
+  .nav-cta{margin-left:auto}
+  .nav-cta a{background:var(--grad);color:#fff;padding:9px 16px;border-radius:9px;text-decoration:none;font-weight:700;font-size:13px}
+  .head{max-width:1320px;margin:0 auto;padding:30px 22px 8px}
+  .tag{font-family:"SF Mono",Consolas,monospace;color:var(--accent);font-size:12px;letter-spacing:2px;text-transform:uppercase}
+  .head h1{margin:6px 0 6px;font-size:30px;line-height:1.15}
+  .head h1 .ac{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .head p{color:var(--mut);max-width:700px;margin:0}
+  .wrap{max-width:1320px;margin:0 auto;padding:18px 22px 120px;display:grid;grid-template-columns:1fr 460px;gap:22px;align-items:start}
+  @media(max-width:1040px){.wrap{grid-template-columns:1fr}}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .step-head{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}
+  .step-head .num{width:30px;height:30px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+  .step.done .num{background:var(--grad);border-color:transparent;color:#fff}
+  .step-head .t{font-weight:700;font-size:15px}
+  .step-head .s{color:var(--mut);font-size:12px;margin-top:1px}
+  .step-head .chev{margin-left:auto;color:var(--mut);transition:.2s}
+  .step.open .chev{transform:rotate(90deg)}
+  .step-body{display:none;padding:4px 18px 20px;border-top:1px solid var(--line)}
+  .step.open .step-body{display:block}
+  label.lbl{display:block;color:var(--mut);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin:14px 0 6px}
+  input[type=text],textarea,select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:inherit}
+  textarea{resize:vertical;min-height:60px}
+  input::placeholder,textarea::placeholder{color:#5b6478}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:150px}
+  .hintl{color:var(--mut);font-size:11.5px;margin:4px 0 0}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:560px){.cards3{grid-template-columns:1fr}}
+  .tcard{border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;background:var(--panel2);position:relative}
+  .tcard.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .tcard .tn{font-weight:700;margin-bottom:2px}
+  .tcard .tp{font-size:20px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tcard .td{color:var(--mut);font-size:11.5px;margin-top:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .chip{border:1px solid var(--line);background:var(--panel2);color:var(--mut);border-radius:20px;padding:6px 13px;font-size:12.5px;cursor:pointer;user-select:none}
+  .chip.on{border-color:var(--accent);color:var(--txt);background:rgba(255,61,166,.1)}
+  .toggle{display:flex;align-items:center;gap:9px;margin:9px 0;font-size:13.5px;cursor:pointer}
+  .toggle input{width:auto}
+  .deliver{display:grid;gap:8px}
+  .deliver .d{display:flex;gap:10px;align-items:flex-start;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .deliver .d b{display:block}
+  .deliver .d span{color:var(--mut);font-size:12px}
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 16px 26px;color:var(--txt);font-size:13.5px}
+  .timeline li::before{content:"";position:absolute;left:6px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--grad)}
+  .timeline li::after{content:"";position:absolute;left:10px;top:12px;bottom:0;width:1px;background:var(--line)}
+  .timeline li:last-child::after{display:none}
+  .timeline small{color:var(--mut)}
+  /* RIGHT */
+  .side{position:sticky;top:84px}
+  .pv-tabs{display:flex;gap:6px;margin-bottom:12px}
+  .pv-tab{flex:1;text-align:center;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--mut);cursor:pointer;font-size:13px;font-weight:600}
+  .pv-tab.on{color:var(--txt);border-color:var(--accent);background:rgba(255,61,166,.08)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .panel h4{margin:0 0 4px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--accent)}
+  .panel .ph{color:var(--mut);font-size:11.5px;margin:0 0 12px}
+  .colorrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
+  .colorrow span{font-size:13px}
+  .colorrow input[type=color]{width:46px;height:30px;border:1px solid var(--line);border-radius:7px;background:none;padding:2px;cursor:pointer}
+  /* site preview */
+  .browserbar{display:flex;align-items:center;gap:6px;background:#0c0e18;border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;padding:9px 12px}
+  .browserbar .d{width:10px;height:10px;border-radius:50%}
+  .browserbar .u{margin-left:10px;flex:1;background:#161a28;border-radius:6px;color:#6b7589;font-size:11px;padding:4px 10px;font-family:"SF Mono",Consolas,monospace}
+  .siteview{border:1px solid var(--line);border-radius:0 0 12px 12px;height:520px;overflow-y:auto;background:#fff;color:#1a2030}
+  .sv-nav{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid #eef0f4;position:sticky;top:0;background:#fff;z-index:2}
+  .sv-logo{font-weight:800}
+  .sv-menu{display:flex;gap:12px;margin-left:auto;font-size:11px;color:#5b6478;flex-wrap:wrap}
+  .sv-hero{padding:40px 22px;text-align:center;color:#fff}
+  .sv-hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:3px 11px;border-radius:20px;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  .sv-hero h1{margin:0 0 8px;font-size:24px}
+  .sv-hero p{margin:0 auto 16px;max-width:340px;opacity:.95;font-size:13px}
+  .sv-hero .cta{display:inline-flex;gap:8px}
+  .sv-hero .b1{background:#fff;color:#1a2030;border:0;padding:9px 16px;border-radius:8px;font-weight:700;font-size:12px}
+  .sv-hero .b2{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);padding:9px 16px;border-radius:8px;font-size:12px}
+  .sv-sec{padding:26px 22px}
+  .sv-sec h2{text-align:center;margin:0 0 4px;font-size:18px}
+  .sv-sec .sub{text-align:center;color:#7a8290;font-size:12px;margin:0 0 18px}
+  .sv-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:520px){.sv-cards{grid-template-columns:1fr}}
+  .sv-card{border:1px solid #eaedf2;border-radius:12px;overflow:hidden;background:#fff}
+  .sv-photo{height:78px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:24px}
+  .sv-card .cc{padding:11px}
+  .sv-card h3{margin:0 0 4px;font-size:13px}
+  .sv-card p{margin:0;color:#7a8290;font-size:11.5px}
+  .sv-reviews{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.sv-reviews{grid-template-columns:1fr}}
+  .sv-rev{border:1px solid #eaedf2;border-radius:12px;padding:13px;background:#fbfcfe}
+  .sv-rev .stars{color:#f5b942;font-size:13px}
+  .sv-rev p{margin:6px 0 6px;font-size:12px}
+  .sv-rev b{font-size:11.5px}
+  .sv-foot{background:#0e1220;color:#aeb6c6;text-align:center;padding:18px;font-size:11px}
+  .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .gthumb{height:54px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.8)}
+  /* action bar + modal (shared) */
+  .actionbar{position:fixed;bottom:0;left:0;right:0;background:rgba(12,14,22,.95);border-top:1px solid var(--line);backdrop-filter:blur(8px);z-index:25}
+  .actionbar .inner{max-width:1320px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .progress{flex:1;min-width:160px}.progress .bar{height:7px;background:var(--panel2);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+  .progress .fill{height:100%;width:0;background:var(--grad);transition:.3s}.progress .ptxt{color:var(--mut);font-size:11.5px;margin-top:4px}
+  .price-pill{font-weight:800;font-size:16px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .btn{border:none;border-radius:10px;padding:12px 20px;font-weight:700;cursor:pointer;font-size:14px}
+  .btn.primary{background:var(--grad);color:#fff}.btn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--txt)}
+  .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:40;align-items:center;justify-content:center;padding:20px}
+  .ov.on{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:680px;width:100%;max-height:86vh;overflow-y:auto;padding:22px}
+  .modal h3{margin:0 0 4px}.modal .mp{color:var(--mut);font-size:12.5px;margin:0 0 14px}
+  .modal textarea{min-height:280px;font-family:"SF Mono",Consolas,monospace;font-size:12px}
+  .mrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="brand">⬢ OSIA<span class="dot">.</span><small>CRÉEZ VOTRE SITE — APERÇU LIVE</small></div>
-  <div class="topbar-actions">
-    <div class="tab-toggle">
-      <button id="tabEdit" class="on" onclick="showTab('edit')">Brief</button>
-      <button id="tabView" onclick="showTab('view')">Aperçu</button>
+<nav class="osia-nav">
+  <div class="osia-logo">OSIA<span class="dot">.</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a class="active" href="commande.html">Créer mon site</a></li>
+    <li><a href="sites.html">Formats &amp; prix</a></li>
+    <li><a href="agent-builder.html">Créer mon agent</a></li>
+    <li><a href="tarifs.html">Tarifs</a></li>
+    <li><a href="marketplace.html">Marketplace</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-cta"><a href="#" onclick="genBrief();return false">Envoyer mon brief →</a></div>
+</nav>
+
+<div class="head">
+  <div class="tag">// CONFIGURATEUR DE SITE WEB</div>
+  <h1>Créez votre site en <span class="ac">direct</span></h1>
+  <p>Choisis ton pack, ton secteur, ton style — l'aperçu à droite se construit en temps réel avec un vrai contenu d'exemple. Quand c'est bon, tu envoies ton brief et OSIA produit le site.</p>
+</div>
+
+<div class="wrap">
+  <div id="builder">
+
+    <!-- 1 -->
+    <div class="step open" data-step>
+      <div class="step-head"><div class="num">1</div><div><div class="t">📦 Présentation du pack</div><div class="s">Pack, objectif, secteur, style</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <label class="lbl">Nom de l'entreprise</label>
+        <input type="text" id="f_nom" placeholder="ex : Le Bistrot d'Augustin">
+        <label class="lbl">Pack</label>
+        <div class="cards3" id="packCards">
+          <div class="tcard" data-pack="Basique" data-price="499"><div class="tn">Basique</div><div class="tp">499 €</div><div class="td">Vitrine simple</div></div>
+          <div class="tcard on" data-pack="Premium" data-price="899"><div class="tn">Premium</div><div class="tp">899 €</div><div class="td">Site complet automatisé</div></div>
+          <div class="tcard" data-pack="Ultra" data-price="1499"><div class="tn">Ultra</div><div class="tp">1499 €</div><div class="td">IA + maintenance + marketing</div></div>
+        </div>
+        <label class="lbl">Objectif du site</label>
+        <div class="chips" data-single id="c_obj"><span class="chip on">Vitrine</span><span class="chip">E-commerce</span><span class="chip">Réservation</span><span class="chip">Portfolio</span></div>
+        <label class="lbl">Secteur d'activité</label>
+        <select id="f_secteur">
+          <option>Restaurant</option><option>Artisan / BTP</option><option>Coach / Thérapeute</option>
+          <option>E-commerce / Boutique</option><option>Immobilier</option><option>Beauté / Bien-être</option><option>Autre / Services</option>
+        </select>
+        <label class="lbl">Style visuel</label>
+        <div class="chips" data-single id="c_style"><span class="chip on">Moderne</span><span class="chip">Minimaliste</span><span class="chip">Fun</span><span class="chip">Pro</span><span class="chip">Sombre</span></div>
+      </div>
     </div>
-    <button class="btn btn-cta" onclick="openOrder()">Envoyer mon brief →</button>
+
+    <!-- 2 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">2</div><div><div class="t">🗂️ Structure du site</div><div class="s">Pages, navigation, sections</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <label class="lbl">Pages souhaitées</label>
+        <div class="chips" id="c_pages">
+          <span class="chip on">Accueil</span><span class="chip on">Services</span><span class="chip">Réservation</span><span class="chip on">Galerie</span><span class="chip on">À propos</span><span class="chip">Horaires</span><span class="chip on">Avis clients</span><span class="chip on">Contact</span><span class="chip">Blog</span><span class="chip">Boutique</span>
+        </div>
+        <label class="lbl">Navigation</label>
+        <div class="chips" data-single id="c_nav"><span class="chip on">Multi-pages (menu)</span><span class="chip">Une seule page (scroll)</span></div>
+        <label class="lbl">Sections dynamiques</label>
+        <div class="chips" id="c_dyn"><span class="chip on">Avis clients</span><span class="chip">Blog</span><span class="chip">Actualités</span><span class="chip">Offres / promos</span></div>
+        <label class="toggle"><input type="checkbox" id="m_maj" checked> Mise à jour automatique du contenu (IA)</label>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">3</div><div><div class="t">⚙️ Automatisations intégrées</div><div class="s">Formulaires, RDV, devis…</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <div class="chips" id="c_auto">
+          <span class="chip on">Formulaire → CRM / email</span><span class="chip">Réservation (Google Calendar)</span><span class="chip">Devis / confirmation auto</span><span class="chip">Gestion des avis auto</span><span class="chip">Publication réseaux sociaux</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">4</div><div><div class="t">🤖 Intelligence IA</div><div class="s">Textes, SEO, chatbot…</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <div class="chips" id="c_ia">
+          <span class="chip on">Génération textes &amp; images</span><span class="chip on">SEO en continu</span><span class="chip">Analyse trafic + reco IA</span><span class="chip on">Chatbot intégré</span><span class="chip">Maintenance prédictive</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">5</div><div><div class="t">☁️ Hébergement &amp; maintenance</div><div class="s">Vercel, sauvegardes, dashboard</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <label class="toggle"><input type="checkbox" id="h_heberg" checked> Hébergement par OSIA (Vercel + domaine inclus)</label>
+        <label class="toggle"><input type="checkbox" id="h_save" checked> Sauvegardes automatiques</label>
+        <label class="toggle"><input type="checkbox" id="h_maj" checked> Mises à jour IA mensuelles</label>
+        <label class="toggle"><input type="checkbox" id="h_dash" checked> Tableau de bord client (performances)</label>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">6</div><div><div class="t">📦 Livrables au client</div><div class="s">Ce que le client reçoit</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <div class="deliver">
+          <div class="d"><div>🌐</div><div><b>Site complet</b><span>Code, design, contenu, automatisations</span></div></div>
+          <div class="d"><div>📊</div><div><b>Tableau de bord</b><span>Gestion des pages, statistiques, IA</span></div></div>
+          <div class="d"><div>📘</div><div><b>Documentation</b><span>Guide d'utilisation et maintenance</span></div></div>
+          <div class="d"><div>🔑</div><div><b>Accès client</b><span>Identifiants, domaine, support</span></div></div>
+          <div class="d"><div>🎓</div><div><b>Formation rapide</b><span>Vidéo ou PDF explicatif</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">7</div><div><div class="t">✨ Options supplémentaires</div><div class="s">Pour aller plus loin</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <div class="chips" id="c_options">
+          <span class="chip">Blog automatisé</span><span class="chip">Fidélisation client</span><span class="chip">E-commerce (Stripe / Shopify)</span><span class="chip">Traduction multilingue IA</span><span class="chip">Marketing auto (email / SMS / push)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">8</div><div><div class="t">🧭 Processus de création</div><div class="s">Comment ça se passe</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <ul class="timeline">
+          <li><b>Brief client</b><br><small>Ce formulaire OSIA</small></li>
+          <li><b>Analyse IA du besoin</b><br><small>Détection du type de site, du contenu</small></li>
+          <li><b>Génération du site</b><br><small>Structure + contenu + automatisations</small></li>
+          <li><b>Validation client</b><br><small>Tu relis, tu ajustes</small></li>
+          <li><b>Mise en ligne automatisée</b><br><small>Vercel + domaine</small></li>
+          <li><b>Maintenance &amp; suivi IA</b><br><small>Mises à jour mensuelles</small></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="step" data-step>
+      <div class="step-head"><div class="num">9</div><div><div class="t">💶 Tarification</div><div class="s">Le prix selon ton pack</div></div><div class="chev">▸</div></div>
+      <div class="step-body">
+        <div class="deliver">
+          <div class="d"><div>🥉</div><div><b>Basique — 499 €</b><span>Vitrine simple</span></div></div>
+          <div class="d"><div>🥈</div><div><b>Premium — 899 €</b><span>Site complet automatisé</span></div></div>
+          <div class="d"><div>🥇</div><div><b>Ultra — 1499 €</b><span>IA + maintenance + marketing</span></div></div>
+        </div>
+        <p class="hintl">Ton pack sélectionné apparaît dans la barre du bas et dans le brief. Prix indicatifs, ajustables selon les options.</p>
+        <label class="lbl">Budget / précisions (optionnel)</label>
+        <textarea id="f_budget" placeholder="Budget, échéance, contraintes particulières…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="side">
+    <div class="pv-tabs">
+      <div class="pv-tab on" data-pv="apercu">👁️ Aperçu du site</div>
+      <div class="pv-tab" data-pv="apparence">🎨 Apparence</div>
+    </div>
+
+    <div class="panel" id="pane-apparence" style="display:none">
+      <h4>Personnalisation visuelle</h4>
+      <p class="ph">Change l'allure — l'aperçu se met à jour en direct.</p>
+      <div class="colorrow"><span>Couleur principale</span><input type="color" id="col_primary" value="#e8638f"></div>
+      <div class="colorrow"><span>Couleur secondaire</span><input type="color" id="col_secondary" value="#7b5cff"></div>
+      <label class="lbl">Typographie</label>
+      <select id="f_font">
+        <option value="system-ui,-apple-system,'Segoe UI',sans-serif">Moderne (sans-serif)</option>
+        <option value="Georgia,'Times New Roman',serif">Élégante (serif)</option>
+        <option value="'Trebuchet MS',Verdana,sans-serif">Arrondie / friendly</option>
+      </select>
+      <label class="lbl">Ambiance photo (placeholders)</label>
+      <select id="f_photo">
+        <option value="grad">Dégradés de marque</option>
+        <option value="warm">Tons chauds</option>
+        <option value="cool">Tons froids</option>
+        <option value="mono">Monochrome doux</option>
+      </select>
+      <p class="hintl">Les vraies photos seront ajoutées à la production (ou tu les fournis). Ici on montre des placeholders propres.</p>
+    </div>
+
+    <div id="pane-apercu">
+      <div class="browserbar">
+        <span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span>
+        <span class="u" id="pvUrl">https://votre-entreprise.fr</span>
+      </div>
+      <div class="siteview" id="siteview"></div>
+      <p class="hintl" style="text-align:center">Aperçu d'exemple — contenu réel généré à la production.</p>
+    </div>
   </div>
 </div>
 
-<div class="shell">
-  <!-- ================= PANNEAU BRIEF ================= -->
-  <aside class="panel show" id="panel">
+<div class="actionbar"><div class="inner">
+  <div class="progress"><div class="bar"><div class="fill" id="pfill"></div></div><div class="ptxt" id="ptxt">0 %</div></div>
+  <div>Pack : <span class="price-pill" id="packPill">Premium · 899 €</span></div>
+  <button class="btn ghost" onclick="saveLocal(true)">💾 Sauvegarder</button>
+  <button class="btn primary" onclick="genBrief()">Générer mon brief →</button>
+</div></div>
 
-    <div class="hsec">// Coordonnées & pack</div>
-    <div class="row2">
-      <div class="field"><label>Nom <span class="req">*</span></label><input id="f_cnom" placeholder="Cédric Robert"></div>
-      <div class="field"><label>Email <span class="req">*</span></label><input id="f_cmail" placeholder="contact@exemple.fr"></div>
-    </div>
-    <div class="row2">
-      <div class="field"><label>Téléphone <span class="opt">(optionnel)</span></label><input id="f_ctel" placeholder="06 12 34 56 78"></div>
-      <div class="field"><label>Pack qui m'intéresse</label>
-        <select id="f_pack">
-          <option>Site Basique (vitrine, coach, artisan)</option>
-          <option>Site Intermédiaire (restaurant, portfolio, landing)</option>
-          <option>Site Complexe (e-commerce, association)</option>
-          <option>Je ne sais pas encore — conseille-moi</option>
-        </select></div>
-    </div>
-    <div class="field"><label>Brief / message <span class="opt">(optionnel)</span></label>
-      <textarea id="f_msg" rows="3" maxlength="2000" oninput="count()" placeholder="Dis-moi en 2 lignes : c'est pour quoi, c'est quand, et tout ce que tu juges utile."></textarea>
-      <div class="counter"><span id="cnt">0</span> / 2000</div></div>
-
-    <div class="divider"></div>
-
-    <div class="hsec">// Brief détaillé</div>
-    <div class="hsub">Tout est optionnel — mais plus tu remplis, mieux je te livre. Et l'aperçu à droite réagit à tes choix.</div>
-
-    <div class="field" style="margin-top:6px"><label>Ton secteur</label>
-      <div class="chips" id="sectors"></div></div>
-
-    <div class="field"><label>Nom de l'entreprise</label><input id="f_name" oninput="setBiz('name',this.value)"></div>
-    <div class="field"><label>Slogan / accroche</label>
-      <div class="with-ai"><input id="f_slogan" oninput="setBiz('slogan',this.value)"><button class="ai-btn" title="Générer avec l'IA" onclick="aiGen('slogan',this)">✨</button></div></div>
-    <div class="field"><label>Description (accueil)</label>
-      <div class="with-ai"><textarea id="f_desc" rows="2" oninput="setBiz('desc',this.value)"></textarea><button class="ai-btn" title="Générer avec l'IA" onclick="aiGen('desc',this)">✨</button></div></div>
-    <div class="row2">
-      <div class="field"><label>Tél. affiché</label><input id="f_phone" oninput="setBiz('phone',this.value)"></div>
-      <div class="field"><label>Email affiché</label><input id="f_email" oninput="setBiz('email',this.value)"></div>
-    </div>
-    <div class="field"><label>Adresse affichée</label><input id="f_address" oninput="setBiz('address',this.value)"></div>
-
-    <div class="hsec">✨ Style visuel souhaité</div>
-    <div class="cards" id="styles"></div>
-
-    <div class="hsec">🎨 Palette de couleurs préférée</div>
-    <div class="cards" id="palettes"></div>
-    <div class="customcol" id="customcol">
-      <div class="cp"><label>Principale</label><input type="color" id="c_primary" value="#ff2e7e" oninput="setCustom()"></div>
-      <div class="cp"><label>Accent</label><input type="color" id="c_accent" value="#8b5cf6" oninput="setCustom()"></div>
-    </div>
-
-    <div class="hsec">📋 Sections souhaitées</div>
-    <div class="hsub">Coche ce qui s'applique.</div>
-    <div class="checks" id="checks"></div>
-    <div class="hsub" style="margin-top:12px">Besoin d'autres pages ? Ajoute-les — on s'adapte à ce que TU veux.</div>
-    <div id="custompages"></div>
-    <button type="button" class="addpage" onclick="addCustomPage()">＋ Ajouter une page</button>
-
-    <div class="hsec">📄 Structure & pages</div>
-    <div class="hsub">Une longue page, ou un vrai site multi-pages avec menu ?</div>
-    <div class="cards stack" id="structures"></div>
-    <div class="pagecount" id="pagecount"></div>
-
-    <div class="hsec">🚀 Hébergement & mise en ligne</div>
-    <div class="hsub">Qui s'occupe de mettre le site en ligne ?</div>
-    <div class="cards stack" id="hostings"></div>
-    <div class="subfield" id="domainField" style="display:none">
-      <div class="field"><label>Nom de domaine souhaité <span class="opt">(optionnel)</span></label><input id="f_domain" placeholder="mon-entreprise.fr" oninput="state.domain=this.value"></div>
-    </div>
-  </aside>
-
-  <!-- ================= APERÇU ================= -->
-  <main class="stage" id="stage">
-    <div class="device-bar">
-      <button id="dDesk" class="on" onclick="setDevice('desktop')">🖥 Ordinateur</button>
-      <button id="dMob" onclick="setDevice('mobile')">📱 Mobile</button>
-    </div>
-    <div class="frame-wrap"><div class="frame" id="frame"><div id="site"></div></div></div>
-  </main>
-</div>
-
-<!-- MODAL -->
-<div class="mobile-cta"><button class="btn btn-cta" onclick="openOrder()">Envoyer mon brief &#8594;</button></div>
-
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <button class="close" onclick="closeOrder()">×</button>
-    <h2>Envoyer mon brief</h2>
-    <p class="sub">Récapitulatif complet de ta demande. Valide et OSIA revient vers toi avec ton site.</p>
-    <div class="err" id="err">Renseigne au moins ton nom et ton email.</div>
-    <div class="recap" id="recap"></div>
-    <div class="actions">
-      <button class="btn btn-cta" onclick="sendOrder()">Envoyer ma demande</button>
-      <button class="btn btn-ghost" onclick="copyConfig()">Copier le brief</button>
-    </div>
+<div class="ov" id="ov"><div class="modal">
+  <h3>📦 Brief de ton site</h3>
+  <p class="mp">Brief complet prêt à envoyer à OSIA pour la production. Copie-le ou télécharge-le.</p>
+  <textarea id="briefOut" readonly></textarea>
+  <div class="mrow">
+    <button class="btn primary" onclick="copyBrief()">📋 Copier</button>
+    <button class="btn ghost" onclick="dlBrief()">⬇ Télécharger .json</button>
+    <button class="btn ghost" onclick="closeOv()">Fermer</button>
   </div>
-</div>
-<div class="toast" id="toast"></div>
+</div></div>
 
 <script>
-/* =========================================================
-   CONFIG IA — moteur compatible OpenAI (Mistral/DeepSeek/Groq
-   ou ta passerelle api.osia-pro.com). Vide => texte de secours.
-   ⚠ En public, fais passer l'appel par TA gateway (clé non exposée).
-   ========================================================= */
-const OSIA_AI = { endpoint:"", apiKey:"", model:"mistral-small-latest" };
-const OSIA_ORDER_EMAIL = "crashcool.iaos@gmail.com";
-/* Brief/commande envoyé DIRECT dans le pipeline OSIA2 (gateway).
-   Repli automatique sur mailto si la gateway est injoignable. */
-const OSIA_WEBHOOK = "https://api.osia-pro.com/api/webhook/lead";
+"use strict";
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const LS = "osia_site_builder_v1";
+const state = { pack:"Premium", price:"899" };
 
-/* ===== Données ===== */
-const SECTORS={
-  restaurant:{ico:"🍽",label:"Restaurant",name:"Le Bistrot d'Augustin",slogan:"Cuisine de saison, produits du terroir ariégeois",desc:"Une table conviviale au cœur de Tarascon, où chaque plat raconte le pays.",p:"#b8453a",a:"#e8a13c",sections:["services","reservation","gallery","about","hours","contact"]},
-  artisan:{ico:"🔧",label:"Artisan/BTP",name:"Dupont Rénovation",slogan:"Votre artisan de confiance en Ariège depuis 15 ans",desc:"Maçonnerie, rénovation, isolation. Devis clair et gratuit sous 48h.",p:"#2563eb",a:"#f0a500",sections:["services","gallery","about","testimonials","contact"]},
-  coach:{ico:"🎯",label:"Coach/Conseil",name:"Clara Méthode",slogan:"Reprenez le contrôle de votre activité",desc:"Coaching individuel et collectif pour dirigeants et indépendants.",p:"#6d4ed8",a:"#22c4a8",sections:["services","about","testimonials","contact"]},
-  commerce:{ico:"🛍",label:"Commerce",name:"La Boutique du Centre",slogan:"Le bon produit, le bon conseil, près de chez vous",desc:"Une sélection soignée et un accueil chaleureux au centre de Foix.",p:"#c2455e",a:"#f3b13a",sections:["boutique","services","about","contact"]},
-  beaute:{ico:"💇",label:"Beauté",name:"Studio Élixir",slogan:"Votre parenthèse beauté en plein cœur de l'Ariège",desc:"Coiffure, soins et bien-être dans un cadre apaisant.",p:"#b5728f",a:"#d9b06a",sections:["services","reservation","gallery","contact"]},
-  ecommerce:{ico:"📦",label:"E-commerce",name:"Boutique en ligne",slogan:"Tous vos produits préférés, livrés chez vous",desc:"Une boutique simple, rapide et sécurisée.",p:"#0ea5a3",a:"#f59e0b",sections:["boutique","services","testimonials","contact"]},
-  asso:{ico:"🤝",label:"Association",name:"Association Solidaire",slogan:"Agir ensemble, près de chez nous",desc:"Rejoignez-nous et soutenez nos actions sur le territoire.",p:"#2f9e5f",a:"#3fc77e",sections:["about","gallery","services","contact"]},
-  pro:{ico:"💼",label:"Profession lib.",name:"Cabinet Martin",slogan:"Un accompagnement à la hauteur de vos enjeux",desc:"Expertise, écoute et confidentialité au service de vos projets.",p:"#1e3a8a",a:"#3b82f6",sections:["services","about","contact"]},
-  autre:{ico:"✨",label:"Autre",name:"Votre Entreprise",slogan:"Une accroche claire qui donne envie",desc:"Décrivez en deux phrases ce que vous faites et pourquoi vous choisir.",p:"#ff2e7e",a:"#8b5cf6",sections:["services","about","gallery","contact"]}
+/* sector example content (replaces "Service 1/2/3") */
+const SECTORS = {
+  "Restaurant":{emoji:"🍽️",badge:"Restaurant",tag:"Une cuisine de saison, faite maison",
+    secTitle:"Notre carte",secSub:"Des produits frais, préparés chaque jour",
+    cards:[["🍷","Carte & menus","Plats du jour, formules midi et soir"],["📅","Réserver une table","En ligne, en 30 secondes"],["🎉","Groupes & événements","Anniversaires, repas d'affaires"]],
+    cta:"Réserver une table"},
+  "Artisan / BTP":{emoji:"🛠️",badge:"Artisan",tag:"Un savoir-faire local, un travail qui dure",
+    secTitle:"Nos prestations",secSub:"De l'étude au chantier fini, sans surprise",
+    cards:[["🧱","Travaux & rénovation","Devis clair, délais tenus"],["📐","Étude & conseil","On vous guide selon votre budget"],["✅","Garantie & SAV","Suivi après chantier"]],
+    cta:"Demander un devis"},
+  "Coach / Thérapeute":{emoji:"🌿",badge:"Accompagnement",tag:"Avancez, à votre rythme, bien accompagné",
+    secTitle:"Mon approche",secSub:"Un suivi sur-mesure, bienveillant",
+    cards:[["🧭","Séances individuelles","En cabinet ou en visio"],["📦","Packs & programmes","Des parcours selon vos objectifs"],["💬","Premier échange","Gratuit, sans engagement"]],
+    cta:"Prendre rendez-vous"},
+  "E-commerce / Boutique":{emoji:"🛍️",badge:"Boutique",tag:"Nos produits préférés, livrés chez vous",
+    secTitle:"Nos best-sellers",secSub:"Sélection du moment",
+    cards:[["⭐","Produits vedettes","Les coups de cœur clients"],["🚚","Livraison rapide","Suivi de commande inclus"],["🔒","Paiement sécurisé","Stripe / CB / Apple Pay"]],
+    cta:"Voir la boutique"},
+  "Immobilier":{emoji:"🏠",badge:"Immobilier",tag:"Votre prochain bien, en toute confiance",
+    secTitle:"Nos services",secSub:"Achat, vente, estimation",
+    cards:[["🔑","Biens à la vente","Annonces à jour"],["📈","Estimation gratuite","En 48h, sans engagement"],["🤝","Accompagnement","De la visite à la signature"]],
+    cta:"Estimer mon bien"},
+  "Beauté / Bien-être":{emoji:"💅",badge:"Beauté & bien-être",tag:"Prenez soin de vous, on s'occupe du reste",
+    secTitle:"Nos prestations",secSub:"Un moment rien que pour vous",
+    cards:[["✨","Soins & forfaits","Visage, corps, ongles"],["📅","Réservation en ligne","Choisissez votre créneau"],["🎁","Cartes cadeaux","À offrir toute l'année"]],
+    cta:"Réserver"},
+  "Autre / Services":{emoji:"💼",badge:"Services",tag:"Une solution sur-mesure pour votre besoin",
+    secTitle:"Nos services",secSub:"Ce qu'on fait le mieux pour vous",
+    cards:[["⚡","Service principal","Décrit selon votre activité"],["🤝","Accompagnement","Un interlocuteur dédié"],["✅","Résultats concrets","Un livrable exploitable"]],
+    cta:"Nous contacter"}
 };
-const STYLES={
-  minimaliste:{t:"Minimaliste",s:"Épuré, beaucoup de blanc",ff:"'Inter', sans-serif",dark:false,rad:"6px"},
-  moderne:{t:"Moderne",s:"Tendance, dynamique",ff:"'Poppins', sans-serif",dark:false,rad:"16px"},
-  luxe:{t:"Luxe",s:"Élégant, premium",ff:"'Playfair Display', serif",dark:true,rad:"4px"},
-  fun:{t:"Fun",s:"Coloré, friendly",ff:"'Poppins', sans-serif",dark:false,rad:"26px"},
-  pro:{t:"Pro",s:"Sérieux, corporate",ff:"'Montserrat', sans-serif",dark:false,rad:"8px"},
-  sombre:{t:"Sombre",s:"Dark, gaming/tech",ff:"'Montserrat', sans-serif",dark:true,rad:"10px"}
+const PHOTO_SETS = {
+  grad:["#ff3da6","#7b5cff","#2dd4ff"], warm:["#ff7a59","#ffb24d","#ff5f8f"],
+  cool:["#4d8bff","#2dd4ff","#5ce0c6"], mono:["#9aa3b5","#7f8aa0","#b4bccd"]
 };
-const PALETTES={
-  bleu:{t:"Bleu / Blanc (corporate)",sw:["#1d4ed8","#ffffff","#0f172a"],p:"#1d4ed8",a:"#3b82f6",dark:false},
-  vert:{t:"Vert nature",sw:["#1f7a4d","#7fd1a0","#eafaf0"],p:"#1f9e5f",a:"#3fc77e",dark:false},
-  orange:{t:"Orange chaleureux",sw:["#e8821e","#f0b429","#0c2a4a"],p:"#e8821e",a:"#f0b429",dark:false},
-  rose:{t:"Rose / Violet",sw:["#ec4899","#f9a8d4","#a855f7"],p:"#ec4899",a:"#a855f7",dark:false},
-  or:{t:"Noir / Or (luxe)",sw:["#0f0f0f","#d4af37","#ffffff"],p:"#d4af37",a:"#caa028",dark:true},
-  cyber:{t:"Cyberpunk (néons)",sw:["#0a0a0a","#ff2d95","#22d3ee"],p:"#ff2d95",a:"#22d3ee",dark:true},
-  pastel:{t:"Pastel doux",sw:["#f9a8d4","#fbcfe8","#a7f3d0"],p:"#f472b6",a:"#34d399",dark:false},
-  autre:{t:"Autre (je précise)",sw:["rainbow"],p:"#ff2e7e",a:"#8b5cf6",dark:false,custom:true}
-};
-const SECTION_LABELS={services:"Services",reservation:"Réservation",boutique:"Boutique",gallery:"Galerie",about:"À propos",testimonials:"Avis clients",hours:"Horaires",contact:"Contact"};
-const SECTION_ICONS={services:"🧩",reservation:"📅",boutique:"🛒",gallery:"🖼",about:"📖",testimonials:"⭐",hours:"🕒",contact:"✉️"};
-const HOSTINGS={
-  osia:{t:"Hébergé par OSIA",s:"Mise en ligne (Vercel), nom de domaine & maintenance — on s'occupe de tout.",tag:"abonnement",domain:true},
-  self:{t:"Je l'héberge moi-même",s:"Tu reçois le site en ZIP, tu le mets en ligne (Vercel, OVH…).",tag:"one-shot",domain:true},
-  unsure:{t:"Je ne sais pas encore",s:"Conseille-moi selon mon projet et mon budget.",tag:"",domain:false}
-};
-const STRUCTURES={
-  onepage:{t:"Une seule page",s:"Tout sur une page, navigation par défilement (scroll)."},
-  multipage:{t:"Plusieurs pages séparées",s:"Chaque rubrique devient une page, avec menu — jusqu'à 50 pages."}
-};
-const FALLBACK={slogan:["L'excellence à portée de main, près de chez vous","Votre satisfaction, notre métier depuis toujours","Du savoir-faire local, un résultat qui se voit"],desc:["Nous mettons notre savoir-faire au service de vos projets, avec une exigence de qualité à chaque étape.","Une équipe à votre écoute, des solutions sur-mesure et un accompagnement de proximité."]};
 
-/* ===== État ===== */
-let state={contact:{nom:"",mail:"",tel:""},pack:"Site Basique (vitrine, coach, artisan)",msg:"",hosting:"osia",domain:"",structure:"multipage",currentPage:"accueil",customPages:[],
-  sector:"restaurant",style:"moderne",palette:"rose",custom:{p:"#ff2e7e",a:"#8b5cf6"},
-  biz:{name:"",slogan:"",desc:"",phone:"06 12 34 56 78",email:"contact@exemple.fr",address:"Tarascon-sur-Ariège, 09400"},
-  sections:{services:true,reservation:true,boutique:false,gallery:true,about:true,testimonials:false,hours:true,contact:true},
-  device:"desktop"};
-
-/* ===== Init UI ===== */
-function initSectors(){document.getElementById('sectors').innerHTML=Object.entries(SECTORS).map(([k,v])=>`<div class="chip ${k==state.sector?'on':''}" data-s="${k}" onclick="pickSector('${k}')"><span class="ico">${v.ico}</span>${v.label}</div>`).join('');}
-function initStyles(){document.getElementById('styles').innerHTML=Object.entries(STYLES).map(([k,v])=>`<div class="opt-card ${k==state.style?'on':''}" data-st="${k}" onclick="pickStyle('${k}')"><div class="t">${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
-function initPalettes(){document.getElementById('palettes').innerHTML=Object.entries(PALETTES).map(([k,v])=>{const sw=v.sw[0]==='rainbow'?`<i class="rainbow" style="width:100%"></i>`:v.sw.map(c=>`<i style="background:${c};border:1px solid rgba(128,128,128,.2)"></i>`).join('');return `<div class="opt-card ${k==state.palette?'on':''}" data-pal="${k}" onclick="pickPalette('${k}')"><div class="swatches">${sw}</div><div class="s">${v.t}</div></div>`;}).join('');}
-function initChecks(){document.getElementById('checks').innerHTML=Object.keys(SECTION_LABELS).map(k=>`<div class="check ${state.sections[k]?'on':''}" data-c="${k}" onclick="toggleSection('${k}',this)"><div class="box">✓</div><span class="ci">${SECTION_ICONS[k]}</span> ${SECTION_LABELS[k]}</div>`).join('');}
-function initHostings(){document.getElementById('hostings').innerHTML=Object.entries(HOSTINGS).map(([k,v])=>`<div class="opt-card ${k==state.hosting?'on':''}" data-h="${k}" onclick="pickHosting('${k}')"><div class="t">${v.t}${v.tag?`<span class="tag">${v.tag}</span>`:''}</div><div class="s">${v.s}</div></div>`).join('');}
-function initStructures(){document.getElementById('structures').innerHTML=Object.entries(STRUCTURES).map(([k,v])=>`<div class="opt-card ${k==state.structure?'on':''}" data-struct="${k}" onclick="pickStructure('${k}')"><div class="t">${v.t}</div><div class="s">${v.s}</div></div>`).join('');}
-
-/* ===== Handlers ===== */
-function pickSector(k){state.sector=k;const s=SECTORS[k];
-  state.biz.name=s.name;state.biz.slogan=s.slogan;state.biz.desc=s.desc;
-  if(PALETTES[state.palette]&&PALETTES[state.palette].custom===undefined){} // palette garde la main sur couleurs
-  // sections par défaut du secteur
-  Object.keys(state.sections).forEach(x=>state.sections[x]=s.sections.includes(x));
-  ['name','slogan','desc'].forEach(f=>document.getElementById('f_'+f).value=s[f==='name'?'name':f]);
-  document.querySelectorAll('#sectors .chip').forEach(c=>c.classList.toggle('on',c.dataset.s===k));
-  initChecks();render();}
-function setBiz(k,v){state.biz[k]=v;render();}
-function pickStyle(k){state.style=k;document.querySelectorAll('#styles .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.st===k));render();}
-function pickPalette(k){state.palette=k;document.querySelectorAll('#palettes .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.pal===k));
-  document.getElementById('customcol').classList.toggle('show',!!PALETTES[k].custom);render();}
-function setCustom(){state.custom.p=document.getElementById('c_primary').value;state.custom.a=document.getElementById('c_accent').value;render();}
-function toggleSection(k,el){state.sections[k]=!state.sections[k];el.classList.toggle('on',state.sections[k]);render();}
-function pickHosting(k){state.hosting=k;document.querySelectorAll('#hostings .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));document.getElementById('domainField').style.display=HOSTINGS[k].domain?'block':'none';}
-function pickStructure(k){state.structure=k;state.currentPage='accueil';document.querySelectorAll('#structures .opt-card').forEach(c=>c.classList.toggle('on',c.dataset.struct===k));render();}
-function initCustomPages(){document.getElementById('custompages').innerHTML=state.customPages.map((n,i)=>`<div class="cpage"><span class="ci">📄</span><input value="${(n||'').replace(/"/g,'&quot;')}" placeholder="Nom de la page (ex : Blog, FAQ, Équipe)" oninput="setCustomPage(${i},this.value)"><button type="button" class="rm" onclick="removeCustomPage(${i})" title="Retirer">×</button></div>`).join('');}
-function addCustomPage(){if(state.customPages.length>=41){toast('Maximum 50 pages au total');return;}state.customPages.push('');initCustomPages();render();const ins=document.querySelectorAll('#custompages input');if(ins.length)ins[ins.length-1].focus();}
-function setCustomPage(i,v){state.customPages[i]=v;render();}
-function removeCustomPage(i){state.customPages.splice(i,1);initCustomPages();render();}
-function setDevice(d){state.device=d;document.getElementById('frame').classList.toggle('mobile',d==='mobile');
-  document.getElementById('dDesk').classList.toggle('on',d==='desktop');document.getElementById('dMob').classList.toggle('on',d==='mobile');}
-function showTab(t){document.getElementById('panel').classList.toggle('show',t==='edit');document.getElementById('stage').classList.toggle('show',t==='view');
-  document.getElementById('tabEdit').classList.toggle('on',t==='edit');document.getElementById('tabView').classList.toggle('on',t==='view');}
-function count(){const v=document.getElementById('f_msg').value;state.msg=v;document.getElementById('cnt').textContent=v.length;}
-
-/* ===== IA ===== */
-async function aiGen(field,btn){const s=SECTORS[state.sector];btn.disabled=true;const old=btn.textContent;btn.textContent="…";let text="";
-  if(OSIA_AI.endpoint&&OSIA_AI.apiKey){
-    const prompt=field==='slogan'?`Génère UN slogan court (max 10 mots), percutant, en français, pour une entreprise du secteur "${s.label}" nommée "${state.biz.name||s.name}". Réponds uniquement par le slogan.`:`Rédige une accroche de 2 phrases (max 40 mots), chaleureuse et professionnelle, en français, pour la page d'accueil d'une entreprise du secteur "${s.label}" nommée "${state.biz.name||s.name}". Réponds uniquement par le texte.`;
-    try{const r=await fetch(OSIA_AI.endpoint.replace(/\/$/,'')+"/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+OSIA_AI.apiKey},body:JSON.stringify({model:OSIA_AI.model,messages:[{role:"user",content:prompt}],temperature:0.8,max_tokens:120})});const d=await r.json();text=(d.choices?.[0]?.message?.content||"").trim().replace(/^["«»]|["«»]$/g,'');}catch(e){text="";}}
-  if(!text){const arr=FALLBACK[field];text=arr[Math.floor(Math.random()*arr.length)];}
-  if(field==='slogan'){state.biz.slogan=text;document.getElementById('f_slogan').value=text;}else{state.biz.desc=text;document.getElementById('f_desc').value=text;}
-  render();btn.disabled=false;btn.textContent=old;}
-
-/* ===== Rendu ===== */
-function activeColors(){const pal=PALETTES[state.palette];if(pal.custom)return{p:state.custom.p,a:state.custom.a,dark:false};return{p:pal.p,a:pal.a,dark:pal.dark};}
-function ordered(){return Object.keys(SECTION_LABELS).filter(k=>state.sections[k]);}
-function extraList(){return state.customPages.map(x=>(x||'').trim()).filter(Boolean);}
-function allPages(){
-  if(state.structure!=='multipage')return [{key:'accueil',label:'Accueil'}];
-  const built=[{key:'accueil',label:'Accueil'},...ordered().map(k=>({key:k,label:SECTION_LABELS[k]}))];
-  const extra=extraList().map((n,i)=>({key:'x'+i,label:n}));
-  return built.concat(extra).slice(0,50);
+/* accordion + chips */
+$$("[data-step] .step-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
+$$("#packCards .tcard").forEach(c=>c.onclick=()=>{
+  $$("#packCards .tcard").forEach(x=>x.classList.remove("on")); c.classList.add("on");
+  state.pack=c.dataset.pack; state.price=c.dataset.price;
+  $("#packPill").textContent=state.pack+" · "+state.price+" €"; saveLocal(false); progress();
+});
+function wireChips(sel){
+  const box=$(sel); if(!box) return; const single=box.hasAttribute("data-single");
+  box.querySelectorAll(".chip").forEach(ch=>ch.onclick=()=>{
+    if(single){ box.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); ch.classList.add("on"); }
+    else ch.classList.toggle("on");
+    render(); progress(); saveLocal(false);
+  });
 }
-function pageLabel(key){const p=allPages().find(x=>x.key===key);return p?p.label:'Accueil';}
-function heroBlock(b,s){return `<div class="hero"><span class="kick">${s.label}</span><h1>${b.name||s.name}</h1><div class="slo">${b.slogan||s.slogan}</div><div class="ds">${b.desc||s.desc}</div><div class="btns"><a class="b1">Demander un devis</a><a class="b2">En savoir plus</a></div></div>`;}
-function sectionBlock(key,b,s){switch(key){
-  case 'services':return `<h2>Nos services</h2><p class="lead">Ce que nous faisons le mieux pour vous.</p><div class="cards3">${[["⭐","Service 1","Décrivez votre première prestation phare ici."],["⭐","Service 2","Un deuxième atout fort qui vous démarque."],["⭐","Service 3","Et un troisième pour compléter votre offre."]].map(c=>`<div class="c"><div class="ci">${c[0]}</div><h3>${c[1]}</h3><p>${c[2]}</p></div>`).join('')}</div>`;
-  case 'reservation':return `<div class="resa"><h2>Réservez en ligne</h2><p class="lead">Choisissez votre créneau en quelques secondes, 24h/24.</p><div class="pick"><span>📅 Aujourd'hui</span><span>🕐 12h30</span><span>👥 2 pers.</span></div><a class="b1">Réserver maintenant</a></div>`;
-  case 'boutique':return `<h2>Boutique</h2><p class="lead">Nos produits, en ligne.</p><div class="shop">${[["Produit A","—"],["Produit B","—"],["Produit C","—"],["Produit D","—"]].map(p=>`<div class="prod"><div class="pimg"></div><div class="pb"><h4>${p[0]}</h4><div class="pr">${p[1]}</div></div></div>`).join('')}</div>`;
-  case 'gallery':{const cols=['var(--p)','var(--a)','#6c7a89','var(--a)','var(--p)','#8a93a0'];return `<h2>Galerie</h2><p class="lead">Un aperçu de notre univers.</p><div class="gal">${cols.map((c,i)=>`<div class="ph" style="background:linear-gradient(135deg,${c},color-mix(in srgb,${c} 60%,#000))">Photo ${i+1}</div>`).join('')}</div>`;}
-  case 'about':return `<div class="about"><div class="ph">Votre photo / équipe</div><div><h2>À propos</h2><p>${b.desc||s.desc} Nous mettons un point d'honneur à offrir un service de proximité, attentif et durable.</p></div></div>`;
-  case 'testimonials':{const q=[["Un travail impeccable et un vrai sens du détail. Je recommande sans hésiter.","Marie L."],["Réactif, professionnel et à l'écoute. Exactement ce que je cherchais.","Thomas R."]];return `<h2>Avis clients</h2><p class="lead">Ils nous ont fait confiance.</p><div class="quotes">${q.map(x=>`<div class="q"><p>« ${x[0]} »</p><div class="who"><div class="av">${x[1][0]}</div><div><b>${x[1]}</b><span>Client</span></div></div></div>`).join('')}</div>`;}
-  case 'hours':{const d=[["Lundi – Vendredi","9h00 – 19h00"],["Samedi","9h00 – 12h30"],["Dimanche","Fermé"]];return `<h2>Horaires</h2><p class="lead">Quand nous trouver.</p><div class="hours">${d.map(x=>`<div class="hr"><span>${x[0]}</span><span>${x[1]}</span></div>`).join('')}</div>`;}
-  case 'contact':return `<div class="contact"><h2>Contactez-nous</h2><p class="lead">Un projet, une question ? Réponse rapide garantie.</p><div class="info"><div><b>Téléphone</b>${b.phone}</div><div><b>Email</b>${b.email}</div><div><b>Adresse</b>${b.address}</div></div></div>`;
-} return '';}
-function gotoPage(p){state.currentPage=p;render();}
+["#c_obj","#c_style","#c_pages","#c_nav","#c_dyn","#c_auto","#c_ia","#c_options"].forEach(wireChips);
+function chipVals(sel){ return $$(sel+" .chip.on").map(c=>c.textContent.trim()); }
+function chipOne(sel){ const c=$(sel+" .chip.on"); return c?c.textContent.trim():""; }
+
+/* preview render */
+function shade(hex,p){ const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.round(r*(1-p));g=Math.round(g*(1-p));b=Math.round(b*(1-p));return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
 function render(){
-  const b=state.biz,s=SECTORS[state.sector],sty=STYLES[state.style],col=activeColors();
-  const dark=col.dark||sty.dark;
-  const site=document.getElementById('site');site.className=dark?'dark':'';
-  site.style.setProperty('--p',col.p);site.style.setProperty('--a',col.a);site.style.setProperty('--rad',sty.rad);site.style.setProperty('--ff',sty.ff);
-  const name=b.name||s.name;
-  const logo=`<div class="logo">${name.split(' ')[0]}<b>${name.split(' ').slice(1).join(' ')?' '+name.split(' ').slice(1).join(' '):'.'}</b></div>`;
-  const pages=allPages(),multi=state.structure==='multipage';
-  const contactPage=pages.some(p=>p.key==='contact')?'contact':'accueil';
-  if(multi&&!pages.some(p=>p.key===state.currentPage))state.currentPage='accueil';
-  let nav,body='';
-  if(multi){
-    const links=pages.map(po=>`<a class="${po.key===state.currentPage?'navon':''}" onclick="gotoPage('${po.key}')">${po.label}</a>`).join('');
-    nav=`<div class="nav">${logo}<div class="links">${links}</div><div class="cta" onclick="gotoPage('${contactPage}')">Contact</div></div>`;
-    if(state.currentPage==='accueil'){
-      body=heroBlock(b,s);
-      if(state.sections.services)body+=`<div class="sec alt">${sectionBlock('services',b,s)}</div>`;
-      body+=`<div class="sec"><div class="resa"><h2>Prêt à démarrer ?</h2><p class="lead">Discutons de votre projet dès aujourd'hui.</p><a class="b1" onclick="gotoPage('${contactPage}')">Nous contacter</a></div></div>`;
-    }else{
-      const lab=pageLabel(state.currentPage);
-      const inner=SECTION_LABELS[state.currentPage]?sectionBlock(state.currentPage,b,s):`<p class="lead">La page « ${lab} » sera rédigée sur-mesure pour votre projet.</p>`;
-      body=`<div class="pagehead"><span class="kick">${s.label}</span><h1>${lab}</h1></div><div class="sec">${inner}</div>`;
-    }
-  }else{
-    const nl=ordered().filter(k=>k!=='contact').map(k=>`<a>${SECTION_LABELS[k]}</a>`).join('');
-    nav=`<div class="nav">${logo}<div class="links">${nl}</div><div class="cta">Contact</div></div>`;
-    body=heroBlock(b,s);
-    let alt=false;const A=()=>{alt=!alt;return alt?'alt':'';};
-    ordered().forEach(k=>{body+=`<div class="sec ${A()}">${sectionBlock(k,b,s)}</div>`;});
-  }
-  site.innerHTML=nav+body+`<div class="foot">© ${new Date().getFullYear()} ${name} — Site réalisé par OSIA · osia-pro.com</div>`;
-  const pc=document.getElementById('pagecount');
-  if(pc)pc.innerHTML=multi?`📄 <b>${pages.length} page${pages.length>1?'s':''}</b> : ${pages.map(p=>p.label).join(' · ')}`:`📄 <b>1 page</b> — tout au défilement (scroll)`;
+  const name=$("#f_nom").value.trim()||"Votre entreprise";
+  const sector=$("#f_secteur").value; const S=SECTORS[sector]||SECTORS["Autre / Services"];
+  const primary=$("#col_primary").value, secondary=$("#col_secondary").value;
+  const style=chipOne("#c_style"); const font=$("#f_font").value;
+  const photos=PHOTO_SETS[$("#f_photo").value]||PHOTO_SETS.grad;
+  const pages=chipVals("#c_pages"); const showRev=chipVals("#c_dyn").includes("Avis clients")||pages.includes("Avis clients");
+  const showGal=pages.includes("Galerie");
+  const heroBg = style==="Sombre" ? `linear-gradient(135deg,#1a1f2e,${shade(primary,.2)})`
+               : style==="Minimaliste" ? `linear-gradient(135deg,${primary},${shade(primary,.18)})`
+               : `linear-gradient(135deg,${primary},${secondary})`;
+  $("#pvUrl").textContent="https://"+name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+".fr";
+  const photo=(i)=>`<div class="sv-photo" style="background:linear-gradient(135deg,${photos[i%photos.length]},${shade(photos[i%photos.length],.25)})">📷</div>`;
+  const cards=S.cards.map((c,i)=>`<div class="sv-card">${photo(i)}<div class="cc"><h3>${esc(c[1])}</h3><p>${esc(c[2])}</p></div></div>`).join("");
+  const menu=(pages.length?pages:["Accueil","Services","Contact"]).slice(0,6).map(p=>`<span>${esc(p)}</span>`).join("");
+  const reviews = showRev?`<div class="sv-sec" style="background:#f7f8fb"><h2>Avis clients</h2><p class="sub">Ils nous ont fait confiance</p>
+     <div class="sv-reviews">
+       <div class="sv-rev"><div class="stars">★★★★★</div><p>"Travail impeccable, je recommande à 100%. Très pro du début à la fin."</p><b>— Marie L.</b></div>
+       <div class="sv-rev"><div class="stars">★★★★★</div><p>"Réactif, à l'écoute et le résultat dépasse mes attentes."</p><b>— Thomas R.</b></div>
+     </div></div>`:"";
+  const gallery = showGal?`<div class="sv-sec"><h2>Galerie</h2><p class="sub">Quelques réalisations</p>
+     <div class="gallery">${[0,1,2,3].map(i=>`<div class="gthumb" style="background:linear-gradient(135deg,${photos[i%photos.length]},${shade(photos[i%photos.length],.3)})">🖼️</div>`).join("")}</div></div>`:"";
+  $("#siteview").style.fontFamily=font;
+  $("#siteview").innerHTML=`
+    <div class="sv-nav"><div class="sv-logo" style="color:${primary}">${esc(name)}</div><div class="sv-menu">${menu}</div></div>
+    <div class="sv-hero" style="background:${heroBg}">
+      <span class="badge">${esc(S.badge)}</span>
+      <h1>${esc(name)}</h1>
+      <p>${esc(S.tag)}</p>
+      <div class="cta"><button class="b1">${esc(S.cta)}</button><button class="b2">En savoir plus</button></div>
+    </div>
+    <div class="sv-sec"><h2>${esc(S.secTitle)}</h2><p class="sub">${esc(S.secSub)}</p><div class="sv-cards">${cards}</div></div>
+    ${gallery}${reviews}
+    <div class="sv-foot">© ${esc(name)} — Site réalisé par OSIA · ${esc(state.pack)}</div>`;
 }
 
-/* ===== Commande ===== */
-function readContact(){state.contact.nom=document.getElementById('f_cnom').value;state.contact.mail=document.getElementById('f_cmail').value;state.contact.tel=document.getElementById('f_ctel').value;state.pack=document.getElementById('f_pack').value;state.msg=document.getElementById('f_msg').value;}
-function buildBrief(){readContact();const active=Object.keys(state.sections).filter(k=>state.sections[k]).map(k=>SECTION_LABELS[k]);const pages=allPages();
-  return{nom:state.contact.nom,email:state.contact.mail,telephone:state.contact.tel,pack:state.pack,message:state.msg,
-    secteur:SECTORS[state.sector].label,entreprise:state.biz.name||SECTORS[state.sector].name,slogan:state.biz.slogan||SECTORS[state.sector].slogan,
-    style:STYLES[state.style].t,palette:PALETTES[state.palette].t,couleur_principale:activeColors().p,accent:activeColors().a,
-    structure:STRUCTURES[state.structure].t,nombre_de_pages:state.structure==='multipage'?pages.length:1,pages:state.structure==='multipage'?pages.map(p=>p.label):['Page unique (scroll)'],
-    hebergement:HOSTINGS[state.hosting].t,nom_de_domaine:state.domain,
-    tel_site:state.biz.phone,email_site:state.biz.email,adresse_site:state.biz.address,sections:active};}
-function openOrder(){const c=buildBrief();
-  document.getElementById('recap').innerHTML=`
-    <div class="r"><span>Nom</span><span>${c.nom||'—'}</span></div>
-    <div class="r"><span>Email</span><span>${c.email||'—'}</span></div>
-    <div class="r"><span>Pack</span><span>${c.pack}</span></div>
-    <div class="r"><span>Secteur</span><span>${c.secteur}</span></div>
-    <div class="r"><span>Entreprise</span><span>${c.entreprise}</span></div>
-    <div class="r"><span>Style</span><span>${c.style}</span></div>
-    <div class="r"><span>Palette</span><span>${c.palette}</span></div>
-    <div class="r"><span>Sections</span><span>${c.sections.join(', ')}</span></div>
-    <div class="r"><span>Structure</span><span>${c.structure} · ${c.nombre_de_pages} ${c.nombre_de_pages>1?'pages':'page'}</span></div>
-    <div class="r"><span>Hébergement</span><span>${c.hebergement}${c.nom_de_domaine?' · '+c.nom_de_domaine:''}</span></div>`;
-  document.getElementById('err').style.display='none';document.getElementById('overlay').classList.add('open');}
-function closeOrder(){document.getElementById('overlay').classList.remove('open');}
-/* Pack du configurateur -> clé attendue par la gateway (PACK_MAP) */
-function packTier(p){p=(p||'').toLowerCase();if(p.includes('essentiel'))return'essentiel';if(p.includes('premium'))return'premium';if(p.includes('pro'))return'pro';return'';}
-/* Brief lisible (tout le détail du configurateur) -> champ message du lead */
-function briefText(c){return [
-  `Demande via le configurateur osia-pro.com.`,
-  `Entreprise : ${c.entreprise} (${c.secteur})`,
-  `Pack souhaité : ${c.pack}`,
-  `Slogan : ${c.slogan}`,
-  `Style : ${c.style} · Palette : ${c.palette} (${c.couleur_principale} / ${c.accent})`,
-  `Structure : ${c.structure} — ${c.nombre_de_pages} page(s) : ${(c.pages||[]).join(', ')}`,
-  `Sections : ${(c.sections||[]).join(', ')}`,
-  `Hébergement : ${c.hebergement}${c.nom_de_domaine?' · domaine : '+c.nom_de_domaine:''}`,
-  `Coordonnées à afficher : ${c.tel_site||'—'} / ${c.email_site||'—'} / ${c.adresse_site||'—'}`,
-  c.message?`Message du client : ${c.message}`:''
-].filter(Boolean).join('\n');}
-async function sendOrder(){const c=buildBrief();if(!c.nom||!c.email){document.getElementById('err').style.display='block';return;}
-  const payload={name:c.nom,email:c.email,phone:c.telephone,pack:packTier(c.pack),message:briefText(c),source:'configurateur'};
-  // 1) envoi DIRECT au backend OSIA2 (pipeline)
-  try{
-    const r=await fetch(OSIA_WEBHOOK,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-    if(r.ok){toast("Brief envoyé à OSIA ✓");closeOrder();return;}
-    throw new Error("HTTP "+r.status);
-  }catch(e){
-    // 2) repli mailto si la gateway est injoignable
-    const body=`Bonjour, voici mon brief (le serveur OSIA était injoignable).%0D%0A%0D%0A`+encodeURIComponent(briefText(c))+`%0D%0A%0D%0ANom : ${c.nom} · Email : ${c.email} · Tél : ${c.telephone||'—'}`;
-    window.location.href=`mailto:${OSIA_ORDER_EMAIL}?subject=${encodeURIComponent('[OSIA][COMMANDE] '+c.entreprise)}&body=${body}`;
-    toast("Serveur injoignable — envoi par email");
-  }}
-function copyConfig(){navigator.clipboard.writeText(JSON.stringify(buildBrief(),null,2));toast("Brief copié ✓");}
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+/* tabs */
+$$(".pv-tab").forEach(t=>t.onclick=()=>{
+  $$(".pv-tab").forEach(x=>x.classList.remove("on")); t.classList.add("on");
+  $("#pane-apercu").style.display=t.dataset.pv==="apercu"?"block":"none";
+  $("#pane-apparence").style.display=t.dataset.pv==="apparence"?"block":"none";
+});
+["f_nom","f_secteur","col_primary","col_secondary","f_font","f_photo"].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener("input",()=>{render();saveLocal(false);});});
+$$("#builder input,#builder textarea,#builder select").forEach(el=>el.addEventListener("input",()=>{progress();saveLocal(false);}));
 
-/* ===== Boot ===== */
-initSectors();initStyles();initPalettes();initChecks();initCustomPages();initHostings();initStructures();
-document.getElementById('f_phone').value=state.biz.phone;document.getElementById('f_email').value=state.biz.email;document.getElementById('f_address').value=state.biz.address;
-pickSector('restaurant');pickPalette('rose');pickHosting('osia');pickStructure('multipage');
+/* progress */
+function progress(){
+  const checks=[$("#f_nom").value,state.pack,chipOne("#c_obj"),$("#f_secteur").value,chipOne("#c_style"),
+    chipVals("#c_pages").length,chipOne("#c_nav"),chipVals("#c_auto").length,chipVals("#c_ia").length];
+  const f=checks.filter(Boolean).length,pct=Math.round(f/checks.length*100);
+  $("#pfill").style.width=pct+"%"; $("#ptxt").textContent=pct+" %";
+  $$("[data-step]").forEach(st=>{
+    const has=Array.from(st.querySelectorAll("input[type=text],textarea,.chip.on,.tcard.on,input[type=checkbox]:checked"))
+      .some(e=>(e.classList&&(e.classList.contains("chip")||e.classList.contains("tcard")))?true:(e.value&&e.value.trim())||e.checked);
+    st.classList.toggle("done",has||st.querySelector(".deliver,.timeline"));
+  });
+}
+
+/* brief */
+function gather(){
+  return {
+    pack:{ nom:state.pack, prix_indicatif:state.price+" €", objectif:chipOne("#c_obj"), secteur:$("#f_secteur").value, style:chipOne("#c_style"),
+      entreprise:$("#f_nom").value, couleur_principale:$("#col_primary").value, couleur_secondaire:$("#col_secondary").value, typo:$("#f_font").value },
+    structure:{ pages:chipVals("#c_pages"), navigation:chipOne("#c_nav"), sections_dynamiques:chipVals("#c_dyn"), maj_auto:$("#m_maj").checked },
+    automatisations:chipVals("#c_auto"),
+    ia:chipVals("#c_ia"),
+    hebergement:{ osia:$("#h_heberg").checked, sauvegardes:$("#h_save").checked, maj_mensuelles:$("#h_maj").checked, dashboard_client:$("#h_dash").checked },
+    options:chipVals("#c_options"),
+    budget:$("#f_budget").value
+  };
+}
+function genBrief(){
+  const b=gather();
+  if(!b.pack.entreprise){ alert("Indique le nom de l'entreprise (section 1)."); return; }
+  $("#briefOut").value=JSON.stringify(b,null,2); $("#ov").classList.add("on");
+}
+function copyBrief(){ navigator.clipboard.writeText($("#briefOut").value); }
+function dlBrief(){ const b=new Blob([$("#briefOut").value],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="brief-site-"+(($("#f_nom").value||"osia").toLowerCase().replace(/[^a-z0-9]+/g,"-"))+".json";a.click(); }
+function closeOv(){ $("#ov").classList.remove("on"); }
+$("#ov").onclick=e=>{if(e.target.id==="ov")closeOv();};
+
+/* persistence */
+function saveLocal(flash){
+  const d={pack:state.pack,price:state.price,vals:{},chips:{},checks:{}};
+  $$("#builder input[type=text],#builder textarea,#builder select,#col_primary,#col_secondary,#f_font,#f_photo").forEach(e=>d.vals[e.id]=e.value);
+  ["c_obj","c_style","c_pages","c_nav","c_dyn","c_auto","c_ia","c_options"].forEach(id=>d.chips[id]=chipVals("#"+id));
+  ["m_maj","h_heberg","h_save","h_maj","h_dash"].forEach(id=>d.checks[id]=$("#"+id).checked);
+  localStorage.setItem(LS,JSON.stringify(d));
+  if(flash){const t=$("#ptxt");const o=t.textContent;t.textContent="✓";setTimeout(()=>t.textContent=o,1000);}
+}
+function restore(){
+  let d;try{d=JSON.parse(localStorage.getItem(LS)||"null");}catch(e){}
+  if(!d) return;
+  if(d.pack){state.pack=d.pack;state.price=d.price;$$("#packCards .tcard").forEach(c=>c.classList.toggle("on",c.dataset.pack===d.pack));$("#packPill").textContent=d.pack+" · "+d.price+" €";}
+  if(d.vals)Object.entries(d.vals).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});
+  if(d.chips)Object.entries(d.chips).forEach(([id,vals])=>{const box=$("#"+id);if(box)box.querySelectorAll(".chip").forEach(ch=>ch.classList.toggle("on",vals.includes(ch.textContent.trim())));});
+  if(d.checks)Object.entries(d.checks).forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.checked=v;});
+}
+function esc(s){ return (s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m])); }
+
+restore(); render(); progress();
 </script>
 </body>
 </html>
